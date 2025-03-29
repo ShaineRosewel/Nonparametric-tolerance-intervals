@@ -1,0 +1,80 @@
+---
+title: ""
+output: html_notebook
+---
+
+## Nonparametric simultaneous tolerance intervals for small dimensions based on kernel density estimates
+
+
+### Abstract
+
+- This study aims to contribute to the existing knowledge on the computation of STIs by developing procedures to compute nonparametric STIs with accurate coverage.
+- The tolerance interval's property of containing a specified proportion of sampled population values with high degree of confidence makes its computation meaningful.
+- Whenever there are several populations, it may be of interest to perform simultaneous inference. For this reason, this study proposes methods to construct simultaneous tolerance intervals (STIs). 
+- Furthermore, since in many cases of practical applications the underlying distribution is
+unknown, the proposed STIs are derived under a nonparametric setting. 
+- The proposed procedures and algorithms are then assessed through performance metrics, such as estimated coverage probabilities and expected lengths. 
+- The performance of the proposed methodology is also compared with the Bonferroni correction approach. 
+- The proposed methods show accurate results, with coverage probabilities close to the nominal level. 
+- The nonparametric STIs computed using the proposed methods are generally better than the ones obtained through a Bonferroni-corrected approach.
+- A real-life application on the assessment of liver function is presented to illustrate the use of the proposed method.
+
+### Definitions
+- **Tolerance intervals**
+
+  - an interval that contains at least a specified proportion $\gamma$ of the population, with a specified degree of confidence, $100 \left( 1 - \alpha\right)\%$
+
+  - Let $\mathcal{X} = \left\{ X_1, X_2, \dots, X_n \right\}$ be a random sample from univariate distribution $F(\cdot)$ and suppose $X \sim F(\cdot)$, where $X$ is independent of the random sample, then a subset of $\mathbb{R}$, say $T = T (\mathcal{X})$, computed from the random sample, is a $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval for $X$ if it satisfies the ff: (probability over $\mathcal{X}$ of the event, that probability over $X$ that X is in T given $\mathcal{X}$ is at least $\gamma$, is $1-\alpha$)
+  
+  $$
+  P_{\mathcal{X}} \left\{ P_X \left( X \in T \mid \mathcal{X} \right) \geq \gamma \right\} = 1 - \alpha
+  $$
+  
+  - set $T$ could be of the form:
+    - $\left( L(\mathcal{X}), U(\mathcal{X}) \right)$ for a two-sided tolerance interval
+    - $\left(-\infty, U(\mathcal{X}) \right)$ for a one-sided upper tolerance interval
+    - $\left( L(\mathcal{X}), +\infty) \right)$ for a one-sided lower tolerance interval
+    - $U(\mathcal{X})$ and $L(\mathcal{X})$: upper and lower tolerance limits
+    
+  - sample use case: deriving appropriate process capability limits ($U(\mathcal{X})$ and $L(\mathcal{X})$) for a manufactured product ($X$), so that with a given level of confidence ($1 - \alpha$), they contain the capability measurements of at least a specified proportion of units ($\gamma$) from the sampled manufacturing process (ie, gusto mo may confidence ka na yung ganto karaming units, pag tinest mo, pasok sa interval na yun)
+  
+- **Simultaneous inference**
+  - Whenever there are several populations, it is of interest to construct simultaneous statistical intervals from the sample data.
+  - Having several simultaneous interval estimates that are naïvely constructed only increases the likelihood that at least one of such inferential statements does not hold true. 
+  - For this reason, this study considers integrating the criteria for simultaneous inference in computing statistical tolerance intervals so that the resulting coverage probabilities are close to the nominal confidence level.
+  
+- **Current studies**
+  - The STIs that are available in literature rely on the assumption of normality. However, in many applications, this assumption is unwarranted. For instance, Wright and Royston (1999) point out that positive skewness is common among laboratory measurements, which are the bases for the construction of reference intervals. Thus, there is a need to establish STIs through nonparametric means.
+  - While approaches to compute nonparametric tolerance regions are available in some existing studies [see, for instance Young and Mathew (2020) and Lucagbo (2021)], these studies do not use the criterion for simultaneous inference.
+    
+- **Nonparametric tolerance intervals**
+  - Suppose $X_{(1)}, X_{(2)}, \dots, X_{(n)}$ are order statistics of a random sample from a population with a univariate continuous distribution function $F(x)$.
+  - Wilk's approach: 2 sided interval
+    - sets values $L(\mathcal{X}) = X_{(r)}$ and $U(\mathcal{X}) = X_{(s)}$ where $r < s$, as the limits of the $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval $\left( L(\mathcal{X}), U(\mathcal{X}) \right)$
+    - The values of $r$ and $s$ are chosen to satisfy $1 \le r \le s \le n$ and $s-r=m$ where $m$ is the smallest value for which $P(Y \le m-1) \ge 1-\alpha$, and $Y \sim \text{Binomial}(n, \gamma)$. It is customary to take the value of $s$ to be equal to $n-r+1$, as suggested by Wilks et.al. so that
+    - the nonparametric interval is given by $(X_{(r)}, X_{(n-r+1)})$
+  - Wilk's approach: 1 sided interval: Lower tolerance limit
+    - sets $L(\mathcal{X}) = X_{(r)}$ as the lower limit of the $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval. 
+    - The value of $r$ is taken to be the largest integer for which $P(Y \ge r \mid n, 1- \gamma) \ge 1 - \alpha$ where $Y \sim \text{Binomial}(n, 1-\gamma)$. 
+    - The non parametric one-sided lower tolerance interval is given by $(X_{(r)}, \infty)$
+  - Wilk's approach: 1 sided interval: Upper tolerance limit
+    - sets $U(\mathcal{X}) = X_{S}$, where it can be shown that 
+    - $s=n-r+1$ and $r$ is the value derived for the lower tolerance limit.
+    - The nonparametric one-sided upper tolerance interval is given by $(-\infty, X_{(n-r+1)})$
+  - There is a minimum sample size requirement in computing the nonparametric tolerance intervals. This depends on the values of $\gamma$ and $1-\alpha$
+  - The coverage probabilities associated with nonparametric tolerance intervals are known to be conservative.
+  - Although in this study we shall only be using Wilks’ approach, we mention that recently some developments aimed at improving coverage probabilities of nonparametric tolerance intervals have been available in literature. For
+  
+- **Kernel density estimation**
+  - The methodologies proposed in this study involve estimating the Cumulative Distribution Function (CDF) through kernel density estimation (KDE), which is a generalization of density estimation through histograms.
+  - A weight function in histogram construction is simply replaced by another function, called the kernel function, denoted by $K(\cdot)$, which satisfies the ff conditions: $K(\cdot) \ge 0$ and $\int^{\infty}_{-\infty} K(x) dx = 1$
+  - This function is often taken as a symmetric density function, such as a standard normal density function.
+  - KDE, as a nonparametric statistical tool, estimates the unknown Probability Density Function (PDF) or CDF.
+  - KDE Methodology
+    - Suppose that $X_1, X_2, \dots, X_n$ is a random sample from some unknown PDF $f(x)$ and CDF $F(x)$. Then, KDE estimates the PDF as $\hat{f}(x) = \frac{1}{n} \sum^n_{i=1} \frac{1}{h} K \left( \frac{x-X_i}{h} \right)$ where
+    - $h$ is the bandwidth that acts as a smoothing parameter. Here, larger values of $h$ result in smoother density estimates. As it gets smaller, the density gets rougher. Optimal choices for $h$ include Silverman's rule of thumb given by: $h = 0.9 n^{-\frac{1}{5}} min \left\{ S, \frac{IQR}{1.34}\right\}$ where $S$ is the standard deviation of the sample data and IQR is its interquartile range.
+    - Common choices for $K(\cdot)$ include Gaussian kernel and the Epanichikov kernel. This study uses the Gaussian kernel and estimtes the CDF by plugging the PDF of the standard normal distribution into $K(\cdot)$ and integrating the resulting quantity, giving $\hat{F}(x)=\frac{1}{n} \sum^n_{i=1} \Phi \left( \frac{x-X_i}{h} \right)$ where $\hat{F}(x)$ is the estimate of $F(x)$ and $\Phi$ is the CDF of the standard normal distribution.
+    
+
+  
+  
