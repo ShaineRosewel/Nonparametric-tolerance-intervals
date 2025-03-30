@@ -75,6 +75,130 @@ unknown, the proposed STIs are derived under a nonparametric setting.
     - $h$ is the bandwidth that acts as a smoothing parameter. Here, larger values of $h$ result in smoother density estimates. As it gets smaller, the density gets rougher. Optimal choices for $h$ include Silverman's rule of thumb given by: $h = 0.9 n^{-\frac{1}{5}} min \left\{ S, \frac{IQR}{1.34}\right\}$ where $S$ is the standard deviation of the sample data and IQR is its interquartile range.
     - Common choices for $K(\cdot)$ include Gaussian kernel and the Epanichikov kernel. This study uses the Gaussian kernel and estimtes the CDF by plugging the PDF of the standard normal distribution into $K(\cdot)$ and integrating the resulting quantity, giving $\hat{F}(x)=\frac{1}{n} \sum^n_{i=1} \Phi \left( \frac{x-X_i}{h} \right)$ where $\hat{F}(x)$ is the estimate of $F(x)$ and $\Phi$ is the CDF of the standard normal distribution.
     
+### Methodology {.tabset .tabset-fade}
 
-  
-  
+#### Data layout & statistical criterion
+
+Here discusses the data to be used in computing STIs and the criterion to be followed.
+
+**Data**: random sample $\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n$ of multivariate measurements with dimension $p$, coming from an unknown continuous distributions, say $F_X(\cdot)$. Each $\mathbf{X}_i = \left( X_{i1}, X_{i2}, \dots, X_{ip}\right)'$ is a $(p \times 1)$ column vector of measurements taken from the $i$th subject, $i = 1, 2, \dots, n$
+
+---
+
+**2 sided STIs**
+
+**Objective**: We want to construct two-sided STIs for each component of $\mathbf{X} = (X_1, X_2, \dots, X_p)'$. That is, we want to find a region of the form $(c_1, d_1) \times (c_2, d_2) \times \dots \times (c_p, d_p)$ where $c_j$ and $d_j$, $j = 1, 2, \dots, p$, are functions of the random sample $\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n$ such that
+
+$$
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ P_{X_j} \left(c_j < X_j <d_j \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma, \forall j = 1, 2, \dots, p \right\} = 1 - \alpha
+$$
+
+The quantities $\gamma$ and $\left( 1-\alpha\right)$ are between 0 and 1 and are referred to as the **content probability** and **confidence level**.
+
+**Criterion**: With a confidence level of $100(1-\alpha)\%$, each marginal interval $(c_j, d_j), j = 1, 2, \dots, p$, should have a content of at least $\gamma$.
+
+---
+
+**1 sided STIs**
+
+**Objective**: We want to construct 1-sided STIs.
+
+These only have either lower limits only or upper limits only. That is, we want to find a region of the forms
+
+$$
+(c_1, \infty) \times (c_2, \infty) \times \dots, (c_p, \infty)
+$$
+
+and
+
+$$
+(-\infty, d_1) \times (-\infty, d_2) \times \dots (-\infty, d_p)
+$$
+
+where $c_j$ and $d_j$, $j=1, 2, \dots p$, are still functions of the random sample $\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n$, such that 
+
+$$
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ P_{X_j} \left(X_j > c_j \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma, \forall j = 1, 2, \dots, p \right\} = 1 - \alpha
+$$
+
+and
+
+$$
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ P_{X_j} \left(X_j < d_j \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma, \forall j = 1, 2, \dots, p \right\} = 1 - \alpha
+$$
+
+**Idea**:The process of obtaining simultaneous tolerance limits for the random vector $X = \left( X_1, X_2, \dots, X_p  \right)$ with $p$-variate distribution $F_X(\cdot)$ can also be thought of as constructing simultaneous tolerance limits for the $p$ populations represented by the $p$ components of $\mathbf{X}$.
+
+**Notes**: Methodologies here make no assumptions about the correlation structure of $\mathbf{X}$ and so procedures also apply to case where $X_1, X_2, \dots, X_p$ are independent.
+
+
+#### Method A: nonparametric two-sided STIs
+
+Reference: Lucagbo (2021), who develops nonparametric rectangular tolerance regions. The main idea of the proposed methods is to transform each component in $\mathbf{X}$.
+
+Let $F_j(\cdot)$ be the CDF of the continuous random variable $X_j$, the $j$th component of $\mathbf{X}$. Moreover, let $k \equiv k(\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n)$ and $k' \equiv k'(\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n)$ be some functions of the random sample. The $\gamma$-content, $100(1-\alpha)\%$ confidence two-sided STIs for $\mathbf{X}$ are set to be of the following form:
+
+$$
+\prod^p_{j=1} \left( F^{-1}_j (k'), F^{-1}_j(k) \right)
+$$
+
+For each $j = 1, 2, \dots, p$, the end points of the $j$th interval are expressed as quantiles of $X_j$. And aligned with the criterion, the values of $k$ and $k'$ are computed to satisfy the following condition:
+
+$$
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ P_{X_j} \left(F_j^{-1} \left(k'\right) < X_j < F_j^{-1} \left(k\right) \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma, \forall j = 1, 2, \dots, p \right\} = 1 - \alpha
+$$
+
+Equivalently, 
+
+$$
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ P_{X_j} \left( k' < F \left( X_j \right) < k \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma, \forall j = 1, 2, \dots, p \right\} = 1 - \alpha
+$$
+
+Note that $F_j(X_j), j = 1, 2, \dots, p$ are identically distributed as $U(0, 1)$ random variables. Hence, the choice of common $k$ and $k'$ for the $p$ components.
+
+Moreover, using the symmetry property of the uniform distribution, we can choose $k'$ as $1-k$ (ex: Since $k' < k$, let k = 0.7. Since dist is uniform, its max is 1. Hence, $k' = 1 - k = 1-0.7 = 0.3 \rightarrow k'=0.3 < k=0.7$). Thus, the criterion can be written as
+
+$$
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ P_{X_j} \left( 1-k < F_j \left( X_j \right) < k \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma, \forall j = 1, 2, \dots, p \right\} = 1 - \alpha
+\\
+\Rightarrow
+\\
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ \min\limits_{1 \le j \le p} P_{X_j} \left( 1-k < F_j \left( X_j \right) < k \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma \right\} = 1 - \alpha \
+\\\text{take the min prob across j for w/c the prob that at least proportion gamma is within the interval}
+\\
+\text{this is mostly correct/acceptable prob for all j than taking the max one}
+$$
+
+
+Since the CDF $F_j(\cdot), j = 1, 2, \dots p$ are unknown, we estimate them marginally via KDE, through the procedure in [definitions section](### Definitions)
+
+$$
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ \min\limits_{1 \le j \le p} P_{X_j} \left( 1-k < \hat{F}_j \left( X_j \right) < k \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma \right\} = 1 - \alpha
+$$
+
+is also equivalent to 
+
+$$
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ \min\limits_{1 \le j \le p} P_{X_j} \left( \max \left\{ \hat{F}_j(X_j) , 1 - \hat{F}_j(X_j)\right\} \left( X_j \right) < k \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma \right\} = 1 - \alpha
+$$
+
+
+Explanation: 
+
+$$
+1-k < \hat{F}_j \left( X_j \right) < k
+\\
+\equiv
+\\
+1-k < \hat{F}_j\left( X_j \right) \ \text{and} \  \hat{F}_j \left( X_j \right) < k
+\\
+\equiv
+\\
+1-\hat{F}_j\left( X_j \right) < k \ \text{and} \  \hat{F}_j \left( X_j \right) < k
+\\
+\text{this shows that both 1-F and F are less than k and is mathematically equal to saying}
+\\
+\max \left\{ \hat{F}_j(X_j) , 1 - \hat{F}_j(X_j)\right\} < k
+$$
+
+Define $Y_j = \max \left\{ \hat{F}_j(X_j) , 1 - \hat{F}_j(X_j)\right\}$ and disregard the "minimum" condition for now.
