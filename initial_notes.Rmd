@@ -50,8 +50,8 @@ K2
 #download.file(url, destfile = "MPC62.DAT")
 
 # Load the dataset into R
-m = read.table("MPC62.DAT",header=FALSE, skip=50)
-colnames(m) = c("cr", "wafer", "mo", "day", "h", "min", "op", 
+mdat = read.table("MPC62.DAT",header=FALSE, skip=50)
+colnames(mdat) = c("cr", "wafer", "mo", "day", "h", "min", "op", 
                  "hum", "probe", "temp", "y", "sw", "df")
 ```
 
@@ -59,14 +59,67 @@ colnames(m) = c("cr", "wafer", "mo", "day", "h", "min", "op",
 ```{r}
 ## Attach tolerance library and call function.
 library(tolerance)
-ti=normtol.int(m$y, alpha=0.01, P=.90, side=2, method = "EXACT",m=100)
-ti
+pout=normtol.int(mdat$y, alpha=0.01, P=.90, side=2, method = "EXACT",m=100)
+pout
 ```
 
 ```{r}
-ti$x.bar-K2*sd(m$y); ti$x.bar+K2*sd(m$y)
+pout$x.bar-K2*sd(mdat$y); pout$x.bar+K2*sd(mdat$y)
 ```
 
+
+```{r}
+npout = nptol.int(mdat$y, alpha = 0.01, P = 0.90, side = 2, method = "WILKS",
+                  upper = NULL, lower = NULL)
+npout
+```
+
+
+
+```{r}
+plottol(pout, mdat$y, plot.type = "both", side = "two", x.lab = "X")
+```
+```{r}
+plottol(npout, mdat$y, plot.type = "both", side = "two", x.lab = "X")
+```
+```{r}
+npout
+```
+
+```{r}
+min(mdat$y); max(mdat$y)
+```
+
+```{r}
+#1 <= r < s < 25
+
+
+#let s = n−r+1
+# n-r+1-r = m 
+# (n-m+1)/2 = r
+
+# Parameters
+n <- 25    # Number of trials
+gamma <- 0.90 # Probability of success in each trial
+alpha <- 0.01 # Significance level (1 - confidence level)
+
+# Find the smallest m such that P(Y <= m-1) >= 1 - alpha
+m <- qbinom(1 - alpha, size = n, prob = gamma)
+
+
+r = (n-m+1)/2
+s = m+r
+```
+
+```{r}
+sort(mdat$y)[ceiling(r)]; sort(mdat$y)[floor(n-r+1)]
+```
+
+
+- Wilk's approach: 2 sided interval
+  - sets values $L(\mathcal{X}) = X_{(r)}$ and $U(\mathcal{X}) = X_{(s)}$ where $r < s$, as the limits of the $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval $\left( L(\mathcal{X}), U(\mathcal{X}) \right)$
+  - The values of $r$ and $s$ are chosen to satisfy $1 \le r \le s \le n$ and $s-r=m$ where $m$ is the smallest value for which $P(Y \le m-1) \ge 1-\alpha$, and $Y \sim \text{Binomial}(n, \gamma)$. It is customary to take the value of $s$ to be equal to $n-r+1$, as suggested by Wilks et.al. so that
+  - the nonparametric interval is given by $(X_{(r)}, X_{(n-r+1)})$
 
 
 
@@ -122,7 +175,7 @@ unknown, the proposed STIs are derived under a nonparametric setting.
   - Suppose $X_{(1)}, X_{(2)}, \dots, X_{(n)}$ are order statistics of a random sample from a population with a univariate continuous distribution function $F(x)$.
   - Wilk's approach: 2 sided interval
     - sets values $L(\mathcal{X}) = X_{(r)}$ and $U(\mathcal{X}) = X_{(s)}$ where $r < s$, as the limits of the $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval $\left( L(\mathcal{X}), U(\mathcal{X}) \right)$
-    - The values of $r$ and $s$ are chosen to satisfy $1 \le r \le s \le n$ and $s-r=m$ where $m$ is the smallest value for which $P(Y \le m-1) \ge 1-\alpha$, and $Y \sim \text{Binomial}(n, \gamma)$. It is customary to take the value of $s$ to be equal to $n-r+1$, as suggested by Wilks et.al. so that
+    - The values of $r$ and $s$ are chosen to satisfy $1 \le r \le s \le n$ and $s-r=m$ where $m$ is the smallest value for which $P(Y \le m-1) \ge 1-\alpha$, and $Y \sim \text{Binomial}(n, \gamma)$. It is customary to take the value of $s$ to be equal to $n-r+1$, as suggested by Wilks et.al. so that 
     - the nonparametric interval is given by $(X_{(r)}, X_{(n-r+1)})$
   - Wilk's approach: 1 sided interval: Lower tolerance limit
     - sets $L(\mathcal{X}) = X_{(r)}$ as the lower limit of the $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval. 
@@ -495,7 +548,6 @@ Case for unknown $\mu$ and $\sigma$: Estimate the mean $\bar{x}$ and standard de
 
 hist(m$y)
 
-
 # Q-Q plot
 qqnorm(m$y)
 qqline(m$y, col = "blue")
@@ -508,9 +560,12 @@ shapiro.test(m$y)
 ```
 
 
+Aside:
 
+In R, to find the smallest value $m$ such that $P(Y \le m-1) \ge 1-\alpha$ for a binomial distribution 
+$Y \sim \text{Binomial}(n, \gamma)$, you can use the cumulative distribution function (CDF) for the Binomial distribution, which is available in the `pbinom()` function.
 
-
+The condition $P(Y \le m-1) \ge 1-\alpha$ suggests that you are looking for the quantile $m$ such that the cumulative probability is at least $1-\alpha$.
 
 
 
