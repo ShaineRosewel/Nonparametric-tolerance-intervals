@@ -4,14 +4,19 @@ output:
   bookdown::html_document2: default
 ---
 
-# Basics
+# Basics {.tabset}
 
-**Questions answered by tolerance intervals**
+**Questions answered by tolerance intervals**  
 Question (1) leads to a two-sided interval; questions (2) and (3) lead to one-sided intervals.
-- What interval will contain percent of the population measurements?
-- What interval guarantees that percent of population measurements will not fall below a lower limit?
-- What interval guarantees that percent of population measurements will not exceed an upper limit?
+- What interval will contain percent of the population measurements?  
+- What interval guarantees that percent of population measurements will not fall below a lower limit?  
+- What interval guarantees that percent of population measurements will not exceed an upper limit?  
 
+## Univariate Tolerance Intervals {.tabset}
+
+### Tolerance factor
+
+**2-sided - manual calculation**
 
 ```{r}
 ## Compute the approximate and exact k2 factor.
@@ -29,6 +34,7 @@ k2 = sqrt(nu*(1 + 1/N)*z2/c2)
 k2
 ```
 
+**2-sided tolerance factor thru `tolerance` package**
 
 ```{r}
 ## Compute the exact k2 factor for a two-sided tolerance interval using 
@@ -37,6 +43,10 @@ library(tolerance)
 K2 = K.factor(n=N, f=nu, alpha=1-g, P=p, side=2, method="EXACT", m=100)
 K2
 ```
+
+### Example {.tabset}
+
+#### The data
 
 ```{r}
 ## "Direct" calculation of a tolerance interval.
@@ -56,6 +66,11 @@ colnames(mdat) = c("cr", "wafer", "mo", "day", "h", "min", "op",
 ```
 
 
+#### Parametric
+
+**`tolerance` package - parametric**
+
+
 ```{r}
 ## Attach tolerance library and call function.
 library(tolerance)
@@ -63,10 +78,16 @@ pout=normtol.int(mdat$y, alpha=0.01, P=.90, side=2, method = "EXACT",m=100)
 pout
 ```
 
+
+**Manually calculated tolerance factor - parametric**
+
 ```{r}
 pout$x.bar-K2*sd(mdat$y); pout$x.bar+K2*sd(mdat$y)
 ```
 
+#### Nonparametric
+
+**`tolerance` package - nonparametric**
 
 ```{r}
 npout = nptol.int(mdat$y, alpha = 0.01, P = 0.90, side = 2, method = "WILKS",
@@ -77,18 +98,10 @@ npout
 
 
 ```{r}
-plottol(pout, mdat$y, plot.type = "both", side = "two", x.lab = "X")
-```
-```{r}
-plottol(npout, mdat$y, plot.type = "both", side = "two", x.lab = "X")
-```
-```{r}
 npout
 ```
 
-```{r}
-min(mdat$y); max(mdat$y)
-```
+**Manually calculated tolerance factor - nonparametric**
 
 ```{r}
 #1 <= r < s < 25
@@ -115,6 +128,15 @@ s = m+r
 sort(mdat$y)[ceiling(r)]; sort(mdat$y)[floor(n-r+1)]
 ```
 
+#### Plots
+
+
+```{r}
+plottol(pout, mdat$y, plot.type = "both", side = "two", x.lab = "X")
+```
+```{r}
+plottol(npout, mdat$y, plot.type = "both", side = "two", x.lab = "X")
+```
 
 - Wilk's approach: 2 sided interval
   - sets values $L(\mathcal{X}) = X_{(r)}$ and $U(\mathcal{X}) = X_{(s)}$ where $r < s$, as the limits of the $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval $\left( L(\mathcal{X}), U(\mathcal{X}) \right)$
@@ -122,9 +144,32 @@ sort(mdat$y)[ceiling(r)]; sort(mdat$y)[floor(n-r+1)]
   - the nonparametric interval is given by $(X_{(r)}, X_{(n-r+1)})$
 
 
-
-
 [Ref](https://www.itl.nist.gov/div898/handbook/prc/section2/prc263.htm)
+
+
+## Kernel density estimation
+
+Kernel
+-  Kernel functions are used to estimate density of random variables and as weighing function in non-parametric regression. 
+
+```{r}
+x_data <- c(65, 75, 67, 79, 81, 91)
+x_data_sd <- sd(x_data)
+x_data_iqr <- IQR(x_data)
+x_data_n <- length(x_data)
+h_silver <- 0.9*x_data_n^(-1/5)*min(c(x_data_sd, x_data_iqr/1.34))
+h_silver
+```
+
+
+```{r}
+xi <- x_data[1]
+h <- h_silver
+
+```
+
+
+
 
 # Nonparametric simultaneous tolerance intervals for small dimensions based on kernel density estimates
 
@@ -197,7 +242,8 @@ unknown, the proposed STIs are derived under a nonparametric setting.
   - KDE Methodology
     - Suppose that $X_1, X_2, \dots, X_n$ is a random sample from some unknown PDF $f(x)$ and CDF $F(x)$. Then, KDE estimates the PDF as $\hat{f}(x) = \frac{1}{n} \sum^n_{i=1} \frac{1}{h} K \left( \frac{x-X_i}{h} \right)$ where
     - $h$ is the bandwidth that acts as a smoothing parameter. Here, larger values of $h$ result in smoother density estimates. As it gets smaller, the density gets rougher. Optimal choices for $h$ include Silverman's rule of thumb given by: $h = 0.9 n^{-\frac{1}{5}} min \left\{ S, \frac{IQR}{1.34}\right\}$ where $S$ is the standard deviation of the sample data and IQR is its interquartile range.
-    - Common choices for $K(\cdot)$ include Gaussian kernel and the Epanichikov kernel. This study uses the Gaussian kernel and estimtes the CDF by plugging the PDF of the standard normal distribution into $K(\cdot)$ and integrating the resulting quantity, giving $\hat{F}(x)=\frac{1}{n} \sum^n_{i=1} \Phi \left( \frac{x-X_i}{h} \right)$ where $\hat{F}(x)$ is the estimate of $F(x)$ and $\Phi$ is the CDF of the standard normal distribution.
+    - Common choices for $K(\cdot)$ include Gaussian kernel and the Epanichikov kernel. 
+    - This study uses the Gaussian kernel and estimtes the CDF by plugging the PDF of the standard normal distribution into $K(\cdot)$ and integrating the resulting quantity, giving $\hat{F}(x)=\frac{1}{n} \sum^n_{i=1} \Phi \left( \frac{x-X_i}{h} \right)$ where $\hat{F}(x)$ is the estimate of $F(x)$ and $\Phi$ is the CDF of the standard normal distribution.
     
 ## Methodology
 
@@ -546,13 +592,13 @@ Case for unknown $\mu$ and $\sigma$: Estimate the mean $\bar{x}$ and standard de
 #set.seed(777)
 #v = rnorm(20, mean = 10, sd = 0.25)
 
-hist(m$y)
+hist(mdat$y)
 
 # Q-Q plot
-qqnorm(m$y)
-qqline(m$y, col = "blue")
+qqnorm(mdat$y)
+qqline(mdat$y, col = "blue")
 
-shapiro.test(m$y)
+shapiro.test(mdat$y)
 
 #W: the test statistic
 #p-value > 0.05 → data is likely normally distributed
