@@ -149,11 +149,14 @@ plottol(npout, mdat$y, plot.type = "both", side = "two", x.lab = "X")
 
 ## Kernel density estimation
 
+[Reference 1](https://medium.com/analytics-vidhya/kernel-density-estimation-kernel-construction-and-bandwidth-optimization-using-maximum-b1dfce127073)
+[Plotting KDE](https://rpubs.com/mcocam12/kdf_byhand)
+
 Kernel
 -  Kernel functions are used to estimate density of random variables and as weighing function in non-parametric regression. 
 
 ```{r}
-x_data <- c(65, 75, 67, 79, 81, 91)
+x_data <- sort(c(65, 75, 67, 79, 81, 91))
 x_data_sd <- sd(x_data)
 x_data_iqr <- IQR(x_data)
 x_data_n <- length(x_data)
@@ -163,10 +166,52 @@ h_silver
 
 
 ```{r}
-xi <- x_data[1]
-h <- h_silver
 
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+xi <- 65#x_data[1]
+h <- 5.5 #h_silver
+
+
+min_val <- 40#min(x_data)-round(h)
+max_val <- 120#max(x_data)+round(h)
+x <- seq(from = min_val, to = max_val, by = 1)
+
+gaussian_kernel <- function(xi, x, h){
+  (1/(h*sqrt(2*pi)))*exp(-0.5*((x-xi)/h)^2)
+}
+
+
+#gaussian_kernel(xi,x,h)
+
+outmat <- sapply(x_data, function(xi) gaussian_kernel(xi = xi, x = x, h = h))
+rownames(outmat) <- x
+colnames(outmat) <- x_data
+
+
+mat <- cbind(grid = rownames(outmat), outmat)
+rownames(outmat) <- 1:nrow(outmat)
+
+
+df_long <- as.data.frame(mat,as.numeric) %>%
+  pivot_longer(cols = colnames(outmat), names_to = "sample", values_to = "k")
+
+
+df_long$grid <- as.numeric(df_long$grid)
+df_long$sample <- as.factor(df_long$sample)
+df_long$k <- as.numeric(df_long$k)
+
+ggplot() +
+  geom_area(data = df_long, aes(x=grid,y=k, fill=sample), position="dodge", alpha = 0.5) +
+  xlim(min_val, max_val)
+#df_long %>% filter(sample==65) %>% select(k) %>% pull() %>% hist()
 ```
+
+
+
+
+
 
 
 
