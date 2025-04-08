@@ -161,6 +161,8 @@ x_data_sd <- sd(x_data)
 x_data_iqr <- IQR(x_data)
 x_data_n <- length(x_data)
 h_silver <- 0.9*x_data_n^(-1/5)*min(c(x_data_sd, x_data_iqr/1.34))
+
+
 xi <- 65#x_data[1]
 h <- 5.5 #h_silver
 min_val <- 40#min(x_data)-round(h)
@@ -311,6 +313,174 @@ f.inv(.2)
 
 
 ```
+
+## DGP
+
+```{r}
+.31*2.81+2.81
+```
+
+
+```{r}
+library("MASS")
+mvrnorm(n = 1, mu, Sigma)
+```
+
+
+```{r}
+# STEP 1
+library("compositions")
+gamma <- 0.95
+alpha <- 0.05
+n<-100
+MyVar <- matrix(c(
+1,0.95,0.95,
+0.95,1,0.95,
+0.95,0.95,1),byrow=TRUE,nrow=3)
+MyMean <- c(0,0,0)
+p <- 3
+set.seed(7)
+datas <- rlnorm.rplus(n,MyMean,MyVar)
+colnames(datas) <- c("p_1", "p_2", "p_3")
+mat <- cbind(grid = rownames(datas), datas)
+rownames(datas) <- sapply(1:100, function(i) paste0("n_", sprintf("%03d", i)))
+```
+
+```{r}
+
+find_silver_bw <- function(sample){
+  n <- length(sample)
+  iqr <- IQR(sample)
+  sd <- sd(sample)
+  return(0.9*n^(-1/5)*min(c(sd, iqr/1.34)))
+}
+
+get_grid <- function(sample){
+  lb <- min(sort(sample)) - sd(sample)
+  ub <- max(sort(sample)) + sd(sample)
+  return(seq(from=lb, to=ub, by=0.0001))
+}
+
+estimated_pdf <- function(n, kernel_matrix){
+  return(rowSums(kernel_matrix)/n)
+}
+
+h <- find_silver_bw(datas[,1])
+x <- get_grid(datas[,1])
+
+p1_outmat <-sapply(datas[,1], function(xi) gaussian_kernel(xi = xi, x = x, h = h))
+
+dx <- diff(x)
+dx <- c(dx, tail(dx, 1))
+
+cdf_vals <- cumsum(estimated_pdf(n ,p1_outmat) * dx) #ESTIMATED CDF
+
+plot(x, cdf_vals, type = "l", lwd = 2,
+     xlab = "x", ylab = "Estimated CDF",
+     main = "Manually Derived CDF from Estimated PDF")
+```
+
+
+
+```{r}
+plot(x, estimated_pdf(n ,p1_outmat), type = "l", lwd = 2,
+      xlab = "x", ylab = "Estimated CDF",
+      main = "Estimated PDF")
+```
+
+```{r}
+# Now, transform the data using the CDF (empirical CDF transformation)
+transform_data <- function(data, cdf_vals, x_grid) {
+  # Apply the transformation: For each data point, find the corresponding CDF value
+  transformed <- sapply(data, function(xi) {
+    # Find the closest grid point in `x_grid`
+    idx <- which.min(abs(x_grid - xi))
+    return(cdf_vals[idx])  # Return the corresponding CDF value
+  })
+  return(transformed)
+}
+
+# Apply transformation to the data
+transformed_data <- transform_data(datas[, 1], cdf_vals, x)
+
+
+hist(transformed_data,prob = TRUE)
+```
+
+
+
+```{r}
+u<-data.frame(original = transformed_data, complement = 1 - transformed_data)
+y1 <- apply(u, 1, max)
+
+
+library(tolerance)
+npout = nptol.int(y1, alpha = alpha, P = gamma, side = 1, method = "WILKS",
+                  upper = NULL, lower = NULL)
+npout
+```
+
+
+```{r}
+inverse_transform <- function(transformed, cdf_vals, x_grid) {
+  # For each transformed value (which is a CDF value),
+  # find the corresponding x value from the grid
+  inverted <- sapply(transformed, function(p) {
+    # Find the smallest index where the cdf is greater than or equal to p
+    idx <- which.min(abs(cdf_vals - p))
+    return(x_grid[idx])
+  })
+  return(inverted)
+}
+
+# Try to recover the original data
+restored_data <- inverse_transform(transformed_data, cdf_vals, x)
+hist(restored_data)
+
+```
+
+
+
+```{r}
+hist(datas[,1])
+```
+
+[Probability Integral Transform](https://matthewfeickert.github.io/Statistics-Notes/notebooks/Introductory/probability-integral-transform.html)
+
+
+
+```{r}
+# STEP 2
+outmat <-sapply(x_data, function(xi) gaussian_kernel(xi = xi, x = x, h = h))
+
+
+rownames(outmat) <- x
+colnames(outmat) <- x_data
+mat <- cbind(grid = rownames(outmat), outmat)
+rownames(outmat) <- 1:nrow(outmat)
+
+df_long <- as.data.frame(mat,as.numeric) %>%
+  pivot_longer(cols = colnames(outmat), names_to = "sample", values_to = "k")
+
+df_long$grid <- as.numeric(df_long$grid)
+df_long$sample <- as.factor(df_long$sample)
+df_long$k <- as.numeric(df_long$k)
+df_long <- df_long %>% mutate(norm_kern = k/6)
+comp <- df_long %>% group_by(grid) %>% summarize(composite=sum(k)/x_data_n)
+ggplot() +
+  geom_line(data = df_long, aes(x = grid, y = norm_kern, color = sample, group = sample), alpha = 0.75) +
+  geom_line(data = comp, aes(x = grid, y = composite), alpha = 0.5) +
+  xlim(min_val, max_val) +
+  geom_vline(xintercept = c(65, 67, 75, 79, 81, 91), linetype = "dotted", size = 0.2) +
+  theme_minimal() +
+  ggtitle("Kernels at different data points")
+
+#df_long %>% filter(sample==65) %>% select(k) %>% pull() %>% hist()
+
+
+}
+```
+
 
 
 
