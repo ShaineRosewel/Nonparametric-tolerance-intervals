@@ -340,7 +340,8 @@ MyVar <- matrix(c(
 MyMean <- c(0,1,0)
 p <- 3
 set.seed(1724532)
-datas <- rlnorm.rplus(n,MyMean,MyVar)
+#datas <- rlnorm.rplus(n,MyMean,MyVar)
+datas <- mvrnorm(n,MyMean,MyVar, tol = 1e-06, empirical = FALSE)
 colnames(datas) <- c("p_1", "p_2", "p_3")
 mat <- cbind(grid = rownames(datas), datas)
 rownames(datas) <- sapply(1:200, function(i) paste0("n_", sprintf("%03d", i)))
@@ -372,32 +373,6 @@ plot(x, estimated_density, type = "l", lwd = 2,
       main = "Estimated PDF")
 ```
 
-```{r}
-# Now, transform the data using the CDF (empirical CDF transformation)
-transform_data <- function(data, cdf_vals, x_grid) {
-#  # Apply the transformation: For each data point, find the corresponding CDF value
-#  transformed <- sapply(data, function(xi) {
-#    # Find the closest grid point in `x_grid`
-#    idx <- which.min(abs(x_grid - xi))
-#    return(cdf_vals[idx])  # Return the corresponding CDF value
-#  })
-  
-  U_mat <- matrix(NA, nrow = n, j = 1)
-  h_j <- find_silver_bw(datas[, j])
-  U_mat[, j] <- kde_cdf(datas[, j], datas[, j], h_j)
-  
-  # Step 4: Compute Y_ij = max{U_ij, 1 - U_ij}
-  Y_mat <- pmax(U_mat, 1 - U_mat)
-
-  return(Y_mat)
-}
-
-# Apply transformation to the data
-transformed_data <- transform_data(datas[, 1], estimated_cdf, x)
-
-
-#hist(transformed_data,prob = TRUE)
-```
 
 
 ```{r}
@@ -517,10 +492,6 @@ abline(h = 1, col = "red", lwd = 2)
 ```
 
 
-```{r}
-gamma
-```
-
 
 
 
@@ -531,6 +502,31 @@ apply(p_data, 2, get_tolerance_interval)
 ```{r}
 apply(p_data, 2, bonferonni)
 ```
+
+```{r}
+hist(datas[,1], col = rgb(1, 0, 0, 0.4), xlim = range(datas), main = "Overlaid Histograms", xlab = "Values")
+hist(datas[,2], col = rgb(0, 1, 0, 0.4), add = TRUE)
+hist(datas[,3], col = rgb(0, 0, 1, 0.4), add = TRUE)
+legend("topright", legend = c("1", "2", "3"),
+       fill = c(rgb(1, 0, 0, 0.4), rgb(0, 1, 0, 0.4), rgb(0, 0, 1, 0.4)))
+
+```
+
+
+
+
+
+```{r}
+par(mfrow = c(1, 3))  # 1 row, 3 columns
+hist(datas[,1], main = "Column 1", xlab = "Values", col = "skyblue")
+hist(datas[,2], main = "Column 2", xlab = "Values", col = "salmon")
+hist(datas[,3], main = "Column 3", xlab = "Values", col = "lightgreen")
+par(mfrow = c(1, 1))  # reset layout
+
+```
+
+
+
 
 ```{r}
 # 1. Simulate data from a known distribution
@@ -556,14 +552,7 @@ abline(h = 1, col = "red", lwd = 2)  # Uniform(0,1) density line
 
 
 
-```{r}
-hist(datas[,1], col = rgb(1, 0, 0, 0.4), xlim = range(datas), main = "Overlaid Histograms", xlab = "Values")
-hist(datas[,2], col = rgb(0, 1, 0, 0.4), add = TRUE)
-hist(datas[,3], col = rgb(0, 0, 1, 0.4), add = TRUE)
-legend("topright", legend = c("1", "2", "3"),
-       fill = c(rgb(1, 0, 0, 0.4), rgb(0, 1, 0, 0.4), rgb(0, 0, 1, 0.4)))
 
-```
 
 
 ```{r}
