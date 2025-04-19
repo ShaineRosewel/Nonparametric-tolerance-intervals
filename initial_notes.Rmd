@@ -205,7 +205,6 @@ kde_manual_presum <- function(grid, datapoints, bandwidth) {
 
 # KDE for CDF estimation using Gaussian kernel
 kde_cdf <- function(grid, datapoints, bandwidth) {
-  n <- length(datapoints)
   sapply(grid, function(grid_val) {
     mean(pnorm((grid_val - datapoints) / bandwidth))
   })
@@ -333,7 +332,7 @@ npout
 library("compositions")
 gamma <- 0.95
 alpha <- 0.05
-n<-100
+n<-200
 MyVar <- matrix(c(
 1,0.95,0.95,
 0.95,1,0.95,
@@ -344,10 +343,8 @@ set.seed(1724532)
 datas <- rlnorm.rplus(n,MyMean,MyVar)
 colnames(datas) <- c("p_1", "p_2", "p_3")
 mat <- cbind(grid = rownames(datas), datas)
-rownames(datas) <- sapply(1:100, function(i) paste0("n_", sprintf("%03d", i)))
-```
+rownames(datas) <- sapply(1:200, function(i) paste0("n_", sprintf("%03d", i)))
 
-```{r}
 h <- find_silver_bw(datas[,1])
 x <- get_grid(datas[,1])
 
@@ -362,6 +359,10 @@ estimated_cdf <- kde_cdf(x, datas[,1], h)
 plot(x, estimated_cdf, type = "l", lwd = 2,
      xlab = "x", ylab = "Estimated CDF",
      main = "Estimated CDF")
+
+plot(x, estimated_cdf, type = "p",
+     xlab = "x", ylab = "Estimated CDF",
+     main = "Estimated CDF")
 ```
 
 ```{r}
@@ -374,13 +375,21 @@ plot(x, estimated_density, type = "l", lwd = 2,
 ```{r}
 # Now, transform the data using the CDF (empirical CDF transformation)
 transform_data <- function(data, cdf_vals, x_grid) {
-  # Apply the transformation: For each data point, find the corresponding CDF value
-  transformed <- sapply(data, function(xi) {
-    # Find the closest grid point in `x_grid`
-    idx <- which.min(abs(x_grid - xi))
-    return(cdf_vals[idx])  # Return the corresponding CDF value
-  })
-  return(transformed)
+#  # Apply the transformation: For each data point, find the corresponding CDF value
+#  transformed <- sapply(data, function(xi) {
+#    # Find the closest grid point in `x_grid`
+#    idx <- which.min(abs(x_grid - xi))
+#    return(cdf_vals[idx])  # Return the corresponding CDF value
+#  })
+  
+  U_mat <- matrix(NA, nrow = n, j = 1)
+  h_j <- find_silver_bw(datas[, j])
+  U_mat[, j] <- kde_cdf(datas[, j], datas[, j], h_j)
+  
+  # Step 4: Compute Y_ij = max{U_ij, 1 - U_ij}
+  Y_mat <- pmax(U_mat, 1 - U_mat)
+
+  return(Y_mat)
 }
 
 # Apply transformation to the data
@@ -397,20 +406,23 @@ library(tolerance)
 get_upper_limit <- function(p_data){
   h <- find_silver_bw(p_data)
   x <- get_grid(p_data)
-  estimated_cdf <- kde_cdf(x, p_data, h)
-  transformed_data <- transform_data(p_data, estimated_cdf, x)
-  u<-data.frame(original = transformed_data, complement = 1 - transformed_data)
-  y1 <- apply(u, 1, max)
-  npout = nptol.int(y1, alpha = alpha, P = gamma, side = 1, method = "WILKS",
+  #estimated_cdf <- kde_cdf(x, p_data, h)
+  #transformed_data <- transform_data(p_data, estimated_cdf, x)
+  
+
+  U_mat <- kde_cdf(p_data, p_data, h)
+  
+  # Step 4: Compute Y_ij = max{U_ij, 1 - U_ij}
+  Y_mat <- pmax(U_mat, 1 - U_mat)
+  
+  #u<-data.frame(original = transformed_data, complement = 1 - transformed_data)
+  #y1 <- apply(u, 1, max)
+  npout = nptol.int(Y_mat, alpha = alpha, P = gamma, side = 1, method = "WILKS",
                   upper = NULL, lower = NULL)
   return(npout$`1-sided.upper`)
 }
 
 get_upper_limit(datas[,1])
-```
-
-```{r}
-find_silver_bw
 ```
 
 
@@ -424,9 +436,6 @@ k_j <- apply(datas, 2, get_upper_limit)
 k_j
 ```
 
-```{r}
-k_j
-```
 
 
 
@@ -478,10 +487,73 @@ get_tolerance_interval(datas[,1])
 ```
 
 ```{r}
+# Bonferoni
+
+bonferonni <- function(p_data) {
+  
+  if (length(p_data) >= 119) {
+    to <- nptol.int(p_data, alpha = alpha/3, P = gamma, side = 2, method = "WILKS",
+                  upper = NULL, lower = NULL)
+    print(to)
+    lower_bound <- to$`2-sided.lower`
+    upper_bound <- to$`2-sided.upper`
+      
+  }
+  
+  else {
+    lower_bound <- min(p_data)
+    upper_bound <- max(p_data)
+  }
+
+  return(c(lower_bound, upper_bound))
+}
+```
+
+```{r}
+hist(kde_cdf(datas[,1], datas[,1], h), probability = TRUE, 
+     main = "Histogram of PIT-transformed values",
+     xlab = "PIT values")
+abline(h = 1, col = "red", lwd = 2) 
+```
+
+
+```{r}
+gamma
+```
+
+
+
+
+```{r}
 apply(p_data, 2, get_tolerance_interval)
-# Set histogram parameters
+```
+
+```{r}
+apply(p_data, 2, bonferonni)
+```
+
+```{r}
+# 1. Simulate data from a known distribution
+set.seed(123)
+n <- 1000
+x <- rnorm(n, mean = 0, sd = 1)  # X ~ N(0, 1)
+
+# 2. Compute the CDF values (i.e., PIT values)
+u <- pnorm(x, mean = 0, sd = 1)  # F(X), should follow Uniform(0, 1)
+
+# 3. Plot to verify PIT behavior
+hist(u, breaks = 20, probability = TRUE, 
+     main = "Histogram of PIT-transformed values",
+     xlab = "PIT values (CDF of Normal)")
+abline(h = 1, col = "red", lwd = 2)  # Uniform(0,1) density line
 
 ```
+
+
+
+
+
+
 
 
 ```{r}
@@ -759,7 +831,7 @@ $$
 
 2.  For each $j = 1, 2, \dots, p$, obtain the estimate $\hat{F}_j(x)$ via KDE using $X_{1j}, X_{2j}, \dots, X_{nj}$.
 
-3.  Compute $U_{ij} = \hat{F}_j(X_{ij}), i = 1, 2, \dots, n$ and $j = 1, 2, \dots, p$ (parang transformation using the estimated distribution for each variable $j$)
+3.  Compute $U_{ij} = \hat{F}_j(X_{ij}), i = 1, 2, \dots, n$ and $j = 1, 2, \dots, p$
 
 4.  Compute $Y_{ij} = \max \left\{ U_{ij}, 1-U_{ij} \right\}, i = 1, 2, \dots, n$ and $j = 1, 2, \dots, p$
 
