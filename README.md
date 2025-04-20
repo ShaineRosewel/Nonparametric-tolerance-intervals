@@ -7,7 +7,8 @@ A repo to motivate me to work on my degree pls.
 ### To do:
 
 - [ ] Review lognormal and normal  
-- [ ] Rewrite the codes to make them readable  
+- [ ] Rewrite the codes to make them readable
+- [ ] Write a separate source code (package, if possible)
 - [ ] Multivariate 2-sided intervals: Try reproducing for other means and variance covariance matrices (started)
 - [ ] Univariate 2-sided intervals: Try reproducing for other means and variance covariance matrices  
   
