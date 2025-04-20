@@ -1,7 +1,6 @@
 ---
 title: ""
-output:
-  bookdown::html_document2: default
+output: rmarkdown::github_document
 ---
 
 # Basics {.tabset}
@@ -153,6 +152,50 @@ hist(simulated)
 ```
 
 ```{r}
+find_silver_bw <- function(sample){
+  n <- length(sample)
+  iqr <- IQR(sample)
+  sd <- sd(sample)
+  return(0.9*n^(-1/5)*min(c(sd, iqr/1.34)))
+}
+
+get_grid <- function(sample){
+  lb <- min(sort(sample)) - sd(sample)
+  ub <- max(sort(sample)) + sd(sample)
+  return(seq(from=lb, to=ub, by=0.0001))
+}
+
+gaussian_kernel <- function(bandwidth, grid, datapoint) {
+  return((1/(bandwidth*sqrt(2*pi))) * exp(-0.5*((grid-datapoint)/bandwidth)^2))
+#  return((1 / sqrt(2 * pi)) * exp(-0.5 * u^2))
+}
+
+
+# fcn to estimate 
+kde_manual <- function(grid, datapoints, bandwidth) {
+  n <- length(datapoints)
+  sapply(grid, function(grid_val) {
+    sum(gaussian_kernel(bandwidth, grid_val, datapoints) / n)
+  })
+}
+
+kde_manual_presum <- function(grid, datapoints, bandwidth) {
+  n <- length(datapoints)
+  sapply(grid, function(grid_val) {
+    gaussian_kernel(bandwidth, grid_val, datapoints)
+  })
+}
+
+
+# KDE for CDF estimation using Gaussian kernel
+kde_cdf <- function(grid, datapoints, bandwidth) {
+  sapply(grid, function(grid_val) {
+    mean(pnorm((grid_val - datapoints) / bandwidth))
+  })
+}
+```
+
+```{r}
 estimated_cdf_sim <- kde_cdf(get_grid(simulated), simulated, find_silver_bw(simulated))
 
 
@@ -171,6 +214,7 @@ plot(get_grid(simulated), estimated_pdf_sim, type = "l", lwd = 2, col = "blue",
 ```
 
 ```{r}
+library("GoFKernel")
 kde_cdf_value <- function(x, datapoints, bandwidth) {
   mean(pnorm((x - datapoints) / bandwidth))
 }
@@ -264,48 +308,6 @@ x <- seq(from = min_val, to = max_val, by = 1) # grid
 
 
 ```{r}
-find_silver_bw <- function(sample){
-  n <- length(sample)
-  iqr <- IQR(sample)
-  sd <- sd(sample)
-  return(0.9*n^(-1/5)*min(c(sd, iqr/1.34)))
-}
-
-get_grid <- function(sample){
-  lb <- min(sort(sample)) - sd(sample)
-  ub <- max(sort(sample)) + sd(sample)
-  return(seq(from=lb, to=ub, by=0.0001))
-}
-
-gaussian_kernel <- function(bandwidth, grid, datapoint) {
-  return((1/(bandwidth*sqrt(2*pi))) * exp(-0.5*((grid-datapoint)/bandwidth)^2))
-#  return((1 / sqrt(2 * pi)) * exp(-0.5 * u^2))
-}
-
-
-# fcn to estimate 
-kde_manual <- function(grid, datapoints, bandwidth) {
-  n <- length(datapoints)
-  sapply(grid, function(grid_val) {
-    sum(gaussian_kernel(bandwidth, grid_val, datapoints) / n)
-  })
-}
-
-kde_manual_presum <- function(grid, datapoints, bandwidth) {
-  n <- length(datapoints)
-  sapply(grid, function(grid_val) {
-    gaussian_kernel(bandwidth, grid_val, datapoints)
-  })
-}
-
-
-# KDE for CDF estimation using Gaussian kernel
-kde_cdf <- function(grid, datapoints, bandwidth) {
-  sapply(grid, function(grid_val) {
-    mean(pnorm((grid_val - datapoints) / bandwidth))
-  })
-}
-
 # Estimate PDF
 outmat <- t(kde_manual_presum(x, x_data, h))
 estimated_density <- kde_manual(x, x_data, h)
@@ -315,9 +317,6 @@ estimated_density <- kde_manual(x, x_data, h)
 estimated_cdf <- kde_cdf(x, x_data, h)
 ```
 
-```{r}
-summary(kde_manual(x, datas[,1], find_silver_bw(datas[,1])))
-```
 
 
 
@@ -403,8 +402,6 @@ c(1, 2, 3), lwd = 2)
 
 
 ```{r}
-library("GoFKernel")
-
 f <- function(x) pnorm(x, mean = 0, sd = 1)
 f.inv <- inverse(f,lower=-100,upper=100)
 f.inv(.2)
@@ -412,9 +409,6 @@ f.inv(.2)
 
 ## DGP
 
-```{r}
-.31*2.81+2.81
-```
 
 
 ```{r}
@@ -484,8 +478,6 @@ hist(estimated_density)
 
 
 ```{r}
-library(tolerance)
-
 get_upper_limit <- function(p_data){
   h <- find_silver_bw(p_data)
   #x <- get_grid(p_data)
@@ -530,8 +522,6 @@ max(k_j)
 ```{r}
 # step 7
 
-library("GoFKernel")
-
 #p_data <- datas#[,1]
 
 # Custom CDF function
@@ -550,10 +540,6 @@ get_tolerance_interval <- function(p_data, maxk=max(k_j)){
 }
 ```
 
-
-```{r}
-hist(p_data[,1])
-```
 
 
 # SIM
@@ -584,6 +570,16 @@ legend("topright", legend = c("1", "2", "3"),
 colnames(datas) <- c("p_1", "p_2", "p_3")
 mat <- cbind(grid = rownames(datas), datas)
 rownames(datas) <- sapply(1:n, function(i) paste0("n_", sprintf("%03d", i)))
+```
+
+
+```{r}
+par(mfrow = c(1, 3))
+hist(datas[,1], main = "1", xlab = "Values", col = "skyblue")
+hist(datas[,2], main = "2", xlab = "Values", col = "salmon")
+hist(datas[,3], main = "3", xlab = "Values", col = "lightgreen")
+par(mfrow = c(1, 1))
+
 ```
 
 ```{r}
@@ -624,6 +620,28 @@ I
 Lj <- sapply(1:3, step4)
 ```
 
+```{r}
+# Bonferoni
+
+bonferonni <- function(p_data) {
+  
+  if (length(p_data) >= 119) {
+    to <- nptol.int(p_data, alpha = alpha/3, P = gamma, side = 2, method = "WILKS",
+                  upper = NULL, lower = NULL)
+
+    lower_bound <- to$`2-sided.lower`
+    upper_bound <- to$`2-sided.upper`
+      
+  }
+  
+  else {
+    lower_bound <- min(p_data)
+    upper_bound <- max(p_data)
+  }
+
+  return(c(lower_bound, upper_bound))
+}
+```
 
 
 ```{r}
@@ -693,19 +711,6 @@ mean(Ib_vals)
 colMeans(Ljb_vals)
 ```
 
-```{r}
-colMeans(Lj_vals)
-```
-
-```{r}
-datas <- rlnorm.rplus(n, MyMean, MyVar)
-mean((datas[,1]))
-hist(datas[,1])
-```
-
-
-
-
 
 
 ```{r}
@@ -720,33 +725,6 @@ hist((uninorm))
 
 
 ```{r}
-get_tolerance_interval(datas[,1])
-```
-
-```{r}
-# Bonferoni
-
-bonferonni <- function(p_data) {
-  
-  if (length(p_data) >= 119) {
-    to <- nptol.int(p_data, alpha = alpha/3, P = gamma, side = 2, method = "WILKS",
-                  upper = NULL, lower = NULL)
-
-    lower_bound <- to$`2-sided.lower`
-    upper_bound <- to$`2-sided.upper`
-      
-  }
-  
-  else {
-    lower_bound <- min(p_data)
-    upper_bound <- max(p_data)
-  }
-
-  return(c(lower_bound, upper_bound))
-}
-```
-
-```{r}
 hist(kde_cdf(datas[,1], datas[,1], h), probability = TRUE, 
      main = "Histogram of PIT-transformed values",
      xlab = "PIT values")
@@ -758,53 +736,6 @@ abline(h = 1, col = "red", lwd = 2)
 
 
 
-```{r}
-apply(p_data, 2, bonferonni)
-```
-
-```{r}
-
-
-hist(datas[,1], col = rgb(1, 0, 0, 0.4), xlim = range(datas), main = "Overlaid Histograms", xlab = "Values")
-hist(datas[,2], col = rgb(0, 1, 0, 0.4), add = TRUE)
-hist(datas[,3], col = rgb(0, 0, 1, 0.4), add = TRUE)
-legend("topright", legend = c("1", "2", "3"),
-       fill = c(rgb(1, 0, 0, 0.4), rgb(0, 1, 0, 0.4), rgb(0, 0, 1, 0.4)))
-
-```
-
-
-
-
-
-```{r}
-par(mfrow = c(1, 3))  # 1 row, 3 columns
-hist(datas[,1], main = "Column 1", xlab = "Values", col = "skyblue")
-hist(datas[,2], main = "Column 2", xlab = "Values", col = "salmon")
-hist(datas[,3], main = "Column 3", xlab = "Values", col = "lightgreen")
-par(mfrow = c(1, 1))  # reset layout
-
-```
-
-
-
-
-```{r}
-# 1. Simulate data from a known distribution
-set.seed(123)
-n <- 1000
-x <- rnorm(n, mean = 0, sd = 1)  # X ~ N(0, 1)
-
-# 2. Compute the CDF values (i.e., PIT values)
-u <- pnorm(x, mean = 0, sd = 1)  # F(X), should follow Uniform(0, 1)
-
-# 3. Plot to verify PIT behavior
-hist(u, breaks = 20, probability = TRUE, 
-     main = "Histogram of PIT-transformed values",
-     xlab = "PIT values (CDF of Normal)")
-abline(h = 1, col = "red", lwd = 2)  # Uniform(0,1) density line
-
-```
 
 
 
@@ -816,14 +747,10 @@ abline(h = 1, col = "red", lwd = 2)  # Uniform(0,1) density line
 
 
 
-```{r}
-par(mfrow = c(1, 3))  # 1 row, 3 columns
-hist(datas[,1], main = "Column 1", xlab = "Values", col = "skyblue")
-hist(datas[,2], main = "Column 2", xlab = "Values", col = "salmon")
-hist(datas[,3], main = "Column 3", xlab = "Values", col = "lightgreen")
-par(mfrow = c(1, 1))  # reset layout
 
-```
+
+
+
 
 
 
@@ -1231,24 +1158,6 @@ For method A, also compute the expected lengths of the toleerance intervals for 
 1.  Generate the random sample $\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n$ from the multivariate lognormal distribution with log-scale mean $\boldsymbol{\mu}$ and given log-scale covariance matrix $\Sigma$. Let $\mu_j$ be the $j$th element of $\boldsymbol{\mu}$ and $\sigma^2_j$ be the $j$th diagonal element of $\Sigma$.
 
 2.  Compute the 2-sided tolerance limits $c_j$ and $d_j$, $j = 1, 2, \dots, p$ using the procedure in Algo A.
-
-```{r}
-tols <- apply(p_data, 2, get_tolerance_interval)
-
-step3 <- function(i){
-  return(pnorm(tols[2,i],MyMean[i],MyVar[i,i]) - pnorm(tols[1,i],MyMean[i],MyVar[i,i]))
-}
-
-step4 <- function(i){
-  return(tols[2,i] - tols[1,i])
-}
-
-
-I <- min(sapply(1:3, step3)) >= gamma
-Lj <- sapply(1:3, step4)
-I
-Lj
-```
 
 3.  Compute $\min_{1 \leq j \leq p} \left\{ \Phi \left( \log d_j; \mu_j, \sigma^2_j\right) - \Phi \left( \log c_j; \mu_j, \sigma^2_j\right) \right\}$ where $\Phi \left( x; \mu_j, \sigma^2_j\right)$ denotes the CDF of the $N \left( \mu_j, \sigma_j^2 \right)$
 
