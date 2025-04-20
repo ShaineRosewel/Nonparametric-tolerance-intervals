@@ -141,6 +141,102 @@ plottol(npout, mdat$y, plot.type = "both", side = "two", x.lab = "X")
 
 [Ref](https://www.itl.nist.gov/div898/handbook/prc/section2/prc263.htm)
 
+
+#### Aside
+
+
+```{r}
+set.seed(5)
+simulated <- rlnorm(1000, 0, 1)
+
+hist(simulated)
+```
+
+```{r}
+estimated_cdf_sim <- kde_cdf(get_grid(simulated), simulated, find_silver_bw(simulated))
+
+
+plot(get_grid(simulated), estimated_cdf_sim, type = "l", lwd = 2, col = "blue",
+     xlab = "x", ylab = "Estimated CDF",
+     main = "Estimated CDFs Comparison")
+```
+
+```{r}
+estimated_pdf_sim <- kde_manual(get_grid(simulated), simulated, find_silver_bw(simulated))
+
+
+plot(get_grid(simulated), estimated_pdf_sim, type = "l", lwd = 2, col = "blue",
+     xlab = "x", ylab = "Estimated PDF",
+     main = "Estimated CDFs Comparison")
+```
+
+```{r}
+kde_cdf_value <- function(x, datapoints, bandwidth) {
+  mean(pnorm((x - datapoints) / bandwidth))
+}
+
+kde_cdf_inverse <- function(probabilities, datapoints, bandwidth, lower = -10, upper = 10) {
+  sapply(probabilities, function(p) {
+    root_func <- function(x) kde_cdf_value(x, datapoints, bandwidth) - p
+    uniroot(root_func, lower = lower, upper = upper)$root
+  })
+}
+
+kde_cdf_function <- function(datapoints, bandwidth) {
+  function(x) mean(pnorm((x - datapoints) / bandwidth))
+}
+
+
+
+
+# =================
+
+U_mat <- kde_cdf(simulated, simulated, find_silver_bw(simulated))
+#U_mat <- sapply(p_data, function(i) kde_cdf(i, p_data, h))
+
+# Step 4: Compute Y_ij = max{U_ij, 1 - U_ij}
+Y_mat <- pmax(U_mat, 1 - U_mat)
+
+#u<-data.frame(original = transformed_data, complement = 1 - transformed_data)
+#y1 <- apply(u, 1, max)
+npout = nptol.int(Y_mat, alpha = alpha, P = gamma, side = 1, method = "WILKS",
+                upper = NULL, lower = NULL)
+p <- npout$`1-sided.upper`
+
+f.inv <- inverse(kde_cdf_function(simulated,find_silver_bw(simulated)),lower=-100,upper=100)
+  
+#f.inv(p);f.inv(1-p); qlnorm(1-p); exp(qnorm(1-p))
+
+
+pnorm(log(f.inv(p)),0,1) - pnorm(log(f.inv(1-p)),0,1)
+```
+
+```{r}
+plnorm(f.inv(p),0,1) - plnorm(f.inv(1-p),0,1)
+```
+
+
+```{r}
+f.inv <- inverse(function(i)kde_cdf(i, simulated,find_silver_bw(simulated)),lower=-1000,upper=1000)
+  
+p <- 0.97
+f.inv(p); qnorm(p)
+```
+
+
+
+
+
+
+
+```{r}
+f <- function(x) pbeta(x, shape1=2, shape2=3)
+f.inv <- inverse(f,lower=0,upper=1)
+f.inv(.2)
+qbeta(p=0.2, shape1=2, shape2=3)
+```
+
+
 ## Kernel density estimation {.tabset}  
 
 [Reference 1](https://medium.com/analytics-vidhya/kernel-density-estimation-kernel-construction-and-bandwidth-optimization-using-maximum-b1dfce127073) [Plotting KDE](https://rpubs.com/mcocam12/kdf_byhand)
@@ -219,8 +315,16 @@ estimated_density <- kde_manual(x, x_data, h)
 estimated_cdf <- kde_cdf(x, x_data, h)
 ```
 
+```{r}
+summary(kde_manual(x, datas[,1], find_silver_bw(datas[,1])))
+```
+
+
 
 ```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
 
 rownames(outmat) <- x
 colnames(outmat) <- x_data
@@ -269,9 +373,7 @@ x <- seq(from = min_val, to = max_val, by = 1) # grid
 
 
 ```{r}
-library(dplyr)
-library(tidyr)
-library(ggplot2)
+
 # Assume: x_grid and pdf_vals are already defined and same length
 
 # Approximate CDF using left Riemann sums
@@ -316,7 +418,8 @@ f.inv(.2)
 
 
 ```{r}
-
+set.seed(1029)
+uninorm <- rlnorm(100,0,1)
 ```
 
 
@@ -332,19 +435,21 @@ npout
 library("compositions")
 gamma <- 0.95
 alpha <- 0.05
-n<-200
+n<-500
 MyVar <- matrix(c(
 1,0.95,0.95,
 0.95,1,0.95,
 0.95,0.95,1),byrow=TRUE,nrow=3)
 MyMean <- c(0,1,0)
 p <- 3
+
+library("MASS")
 set.seed(1724532)
-#datas <- rlnorm.rplus(n,MyMean,MyVar)
-datas <- mvrnorm(n,MyMean,MyVar, tol = 1e-06, empirical = FALSE)
+datas <- rlnorm.rplus(n,MyMean,MyVar)
+#datas <- mvrnorm(n,MyMean,MyVar, tol = 1e-06, empirical = FALSE)
 colnames(datas) <- c("p_1", "p_2", "p_3")
 mat <- cbind(grid = rownames(datas), datas)
-rownames(datas) <- sapply(1:200, function(i) paste0("n_", sprintf("%03d", i)))
+rownames(datas) <- sapply(1:n, function(i) paste0("n_", sprintf("%03d", i)))
 
 h <- find_silver_bw(datas[,1])
 x <- get_grid(datas[,1])
@@ -371,6 +476,9 @@ estimated_density <- kde_manual(x, datas[,1], h)
 plot(x, estimated_density, type = "l", lwd = 2,
       xlab = "x", ylab = "Estimated CDF",
       main = "Estimated PDF")
+
+
+hist(estimated_density)
 ```
 
 
@@ -380,12 +488,13 @@ library(tolerance)
 
 get_upper_limit <- function(p_data){
   h <- find_silver_bw(p_data)
-  x <- get_grid(p_data)
+  #x <- get_grid(p_data)
   #estimated_cdf <- kde_cdf(x, p_data, h)
   #transformed_data <- transform_data(p_data, estimated_cdf, x)
   
 
   U_mat <- kde_cdf(p_data, p_data, h)
+  #U_mat <- sapply(p_data, function(i) kde_cdf(i, p_data, h))
   
   # Step 4: Compute Y_ij = max{U_ij, 1 - U_ij}
   Y_mat <- pmax(U_mat, 1 - U_mat)
@@ -423,30 +532,198 @@ max(k_j)
 
 library("GoFKernel")
 
-p_data <- datas#[,1]
+#p_data <- datas#[,1]
 
 # Custom CDF function
 
 get_tolerance_interval <- function(p_data, maxk=max(k_j)){
   h <- find_silver_bw(p_data)
-  #print(h)
-  #print(min(p_data))
-  #print(max(p_data))
-  x <- get_grid(p_data)
- # estimated_cdf <- kde_cdf(x, p_data, h)
   
-  f.inv <- inverse(function(i) kde_cdf(i, p_data, h),lower=-100,upper=200)
+  #f.inv <- inverse(function(i) kde_cdf(i, p_data, h),#kde_cdf(i, p_data, h),
+  #                 lower=-100,upper=100)
+  f.inv <- inverse(kde_cdf_function(p_data,h),lower=-100,upper=100)
   lower_bound <- f.inv(1 - maxk)
   upper_bound <- f.inv(maxk)
 
+  print(f.inv(1 - maxk))
   return(c(lower_bound, upper_bound))
 }
 ```
 
 
+```{r}
+hist(p_data[,1])
+```
+
+
+# SIM
 
 ```{r}
-uninorm <- rlnorm(100,0,1)
+
+# STEP 1
+library("compositions")
+gamma <- 0.95
+alpha <- 0.05
+n<-100
+MyVar <- matrix(c(
+1,0,0,
+0,1,0,
+0,0,1),byrow=TRUE,nrow=3)
+MyMean <- c(0,0,0)
+p <- 3
+
+set.seed(7779)
+datas <- rlnorm.rplus(n,MyMean,MyVar)
+
+
+hist(datas[,1], col = rgb(1, 0, 0, 0.4), xlim = range(datas), main = "Overlaid Histograms", xlab = "Values")
+hist(datas[,2], col = rgb(0, 1, 0, 0.4), add = TRUE)
+hist(datas[,3], col = rgb(0, 0, 1, 0.4), add = TRUE)
+legend("topright", legend = c("1", "2", "3"),
+       fill = c(rgb(1, 0, 0, 0.4), rgb(0, 1, 0, 0.4), rgb(0, 0, 1, 0.4)))
+colnames(datas) <- c("p_1", "p_2", "p_3")
+mat <- cbind(grid = rownames(datas), datas)
+rownames(datas) <- sapply(1:n, function(i) paste0("n_", sprintf("%03d", i)))
+```
+
+```{r}
+k_j <- apply(datas, 2, get_upper_limit)
+k_j
+maxkj <- max(k_j)
+max(k_j)
+```
+```{r}
+tols <- apply(datas, 2, function(s) get_tolerance_interval(s,maxk=maxkj))
+tols
+```
+
+```{r}
+p_data <- datas[,1]
+h <- find_silver_bw(p_data)
+
+#f.inv <- inverse(function(i) kde_cdf(i, p_data, h),#kde_cdf(i, p_data, h),
+#                 lower=-100,upper=100)
+f.inv <- inverse(kde_cdf_function(p_data,h),lower=-100,upper=100)
+lower_bound <- f.inv(1 - maxkj)
+upper_bound <- f.inv(maxkj)
+lower_bound;upper_bound 
+```
+
+```{r}
+
+
+
+step3 <- function(i){
+  return(plnorm(tols[2,i],MyMean[i],MyVar[i,i]) - plnorm(tols[1,i],MyMean[i],MyVar[i,i]))
+}
+
+step4 <- function(i){
+  return(tols[2,i] - tols[1,i])
+}
+
+
+I <- min(sapply(1:3, step3)) >= gamma
+I
+Lj <- sapply(1:3, step4)
+```
+
+
+```{r}
+
+full_sim <- function(iter){
+  datas <- rlnorm.rplus(n,MyMean,MyVar)
+  colnames(datas) <- c("p_1", "p_2", "p_3")
+  mat <- cbind(grid = rownames(datas), datas)
+  rownames(datas) <- sapply(1:n, function(i) paste0("n_", sprintf("%03d", i)))
+  
+  k_j <- apply(datas, 2, get_upper_limit)
+
+  tols <- apply(datas, 2, function(s) get_tolerance_interval(s,maxk=max(k_j)))
+  
+  step3 <- function(i){
+    return(plnorm(tols[2,i],MyMean[i],MyVar[i,i]) - plnorm(tols[1,i],MyMean[i],MyVar[i,i]))
+  }
+  
+  step4 <- function(i){
+    return(tols[2,i] - tols[1,i])
+  }
+  
+  
+  I <- min(sapply(1:3, step3)) >= gamma
+  Lj <- sapply(1:3, step4)
+}
+
+
+full_sim(1)
+```
+
+
+
+
+```{r}
+results <- replicate(5000, {
+  datas <- rlnorm.rplus(n, MyMean, MyVar)
+  
+ # library(MASS)
+  
+  ## Step 1: Generate multivariate normal samples
+  #Y <- mvrnorm(n = n, mu = MyMean, Sigma = MyVar)
+  
+  ## Step 2: Exponentiate to get multivariate lognormal samples
+  #datas <- exp(Y)  
+  
+  
+  colnames(datas) <- c("p_1", "p_2", "p_3")
+  mat <- cbind(grid = rownames(datas), datas)
+  rownames(datas) <- sapply(1:n, function(i) paste0("n_", sprintf("%03d", i)))
+  
+  k_j <- apply(datas, 2, get_upper_limit)
+  tols <- apply(datas, 2, function(s) get_tolerance_interval(s, maxk = max(k_j)))
+  
+  step3 <- function(i){
+    vb <- plnorm(tols[2, i], MyMean[i], MyVar[i, i]) - plnorm(tols[1, i], MyMean[i], MyVar[i, i])
+    #print(vb)
+    return(vb)
+  }
+  
+  step4 <- function(i){
+    return(tols[2, i] - tols[1, i])
+  }
+  
+  #print(min(sapply(1:3, step3)))
+  I <- min(sapply(1:3, step3)) >= gamma
+  #print(I)
+  Lj <- sapply(1:3, step4)
+  
+  list(Lj = Lj, I = I)
+}, simplify = FALSE)
+
+# If you want to extract all I values and all Lj values in a matrix form:
+I_vals <- sapply(results, function(res) res$I)
+Lj_vals <- t(sapply(results, function(res) res$Lj))
+colnames(Lj_vals) <- c("Lj1", "Lj2", "Lj3")
+
+
+mean(I_vals)
+colMeans(Lj_vals)
+```
+
+```{r}
+colMeans(Lj_vals)
+```
+
+```{r}
+datas <- rlnorm.rplus(n, MyMean, MyVar)
+mean((datas[,1]))
+hist(datas[,1])
+```
+
+
+
+
+
+
+```{r}
 mk <- get_upper_limit(uninorm)
 get_tolerance_interval(uninorm,mk)
 hist(log(uninorm))
@@ -469,7 +746,7 @@ bonferonni <- function(p_data) {
   if (length(p_data) >= 119) {
     to <- nptol.int(p_data, alpha = alpha/3, P = gamma, side = 2, method = "WILKS",
                   upper = NULL, lower = NULL)
-    print(to)
+
     lower_bound <- to$`2-sided.lower`
     upper_bound <- to$`2-sided.upper`
       
@@ -495,15 +772,14 @@ abline(h = 1, col = "red", lwd = 2)
 
 
 
-```{r}
-apply(p_data, 2, get_tolerance_interval)
-```
 
 ```{r}
 apply(p_data, 2, bonferonni)
 ```
 
 ```{r}
+
+
 hist(datas[,1], col = rgb(1, 0, 0, 0.4), xlim = range(datas), main = "Overlaid Histograms", xlab = "Values")
 hist(datas[,2], col = rgb(0, 1, 0, 0.4), add = TRUE)
 hist(datas[,3], col = rgb(0, 0, 1, 0.4), add = TRUE)
@@ -971,7 +1247,28 @@ For method A, also compute the expected lengths of the toleerance intervals for 
 
 2.  Compute the 2-sided tolerance limits $c_j$ and $d_j$, $j = 1, 2, \dots, p$ using the procedure in Algo A.
 
-3.  Compute
+```{r}
+tols <- apply(p_data, 2, get_tolerance_interval)
+
+step3 <- function(i){
+  return(pnorm(tols[2,i],MyMean[i],MyVar[i,i]) - pnorm(tols[1,i],MyMean[i],MyVar[i,i]))
+}
+
+step4 <- function(i){
+  return(tols[2,i] - tols[1,i])
+}
+
+
+I <- min(sapply(1:3, step3)) >= gamma
+Lj <- sapply(1:3, step4)
+I
+Lj
+```
+
+3.  Compute $\min_{1 \leq j \leq p} \left\{ \Phi \left( \log d_j; \mu_j, \sigma^2_j\right) - \Phi \left( \log c_j; \mu_j, \sigma^2_j\right) \right\}$ where $\Phi \left( x; \mu_j, \sigma^2_j\right)$ denotes the CDF of the $N \left( \mu_j, \sigma_j^2 \right)$
+
+
+
 
 ## Basics
 
