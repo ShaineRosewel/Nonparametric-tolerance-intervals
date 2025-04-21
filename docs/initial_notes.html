@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.54">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>initial_notes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="basics" class="level1 tabset">
+<h1 class="tabset">Basics</h1>
+<p><strong>Questions answered by tolerance intervals</strong>&nbsp; Question (1) leads to a two-sided interval; questions (2) and (3) lead to one-sided intervals.<br>
+- What interval will contain percent of the population measurements?<br>
+- What interval guarantees that percent of population measurements will not fall below a lower limit?<br>
+- What interval guarantees that percent of population measurements will not exceed an upper limit?</p>
+<section id="univariate-tolerance-intervals" class="level2 tabset">
+<h2 class="tabset anchored" data-anchor-id="univariate-tolerance-intervals">Univariate Tolerance Intervals</h2>
+<section id="tolerance-factor" class="level3">
+<h3 class="anchored" data-anchor-id="tolerance-factor">Tolerance factor</h3>
+<p><strong>2-sided - manual calculation</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the approximate and exact k2 factor.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the approximate k2 factor for a two-sided tolerance interval. </span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="do">## For this example, the standard deviation is computed from the sample,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">## so the degrees of freedom are nu = N - 1.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>N <span class="ot">=</span> <span class="dv">25</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>nu <span class="ot">=</span> N <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="fl">0.90</span> <span class="co"># proportion</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>g <span class="ot">=</span> <span class="fl">0.99</span> <span class="co"># alpha</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>z2 <span class="ot">=</span> (<span class="fu">qnorm</span>((<span class="dv">1</span><span class="sc">+</span>p)<span class="sc">/</span><span class="dv">2</span>))<span class="sc">**</span><span class="dv">2</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>c2 <span class="ot">=</span> <span class="fu">qchisq</span>(<span class="dv">1</span><span class="sc">-</span>g,nu)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>k2 <span class="ot">=</span> <span class="fu">sqrt</span>(nu<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>N)<span class="sc">*</span>z2<span class="sc">/</span>c2)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>k2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.494063</code></pre>
+</div>
+</div>
+<p><strong>2-sided tolerance factor thru <code>tolerance</code> package</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the exact k2 factor for a two-sided tolerance interval using </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">## the K.factor function in the tolerance library</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tolerance)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>tolerance package, version 3.0.0, Released 2024-04-18
+This package is based upon work supported by the Chan Zuckerberg Initiative: Essential Open Source Software for Science (Grant No. 2020-255193).</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>K2 <span class="ot">=</span> <span class="fu">K.factor</span>(<span class="at">n=</span>N, <span class="at">f=</span>nu, <span class="at">alpha=</span><span class="dv">1</span><span class="sc">-</span>g, <span class="at">P=</span>p, <span class="at">side=</span><span class="dv">2</span>, <span class="at">method=</span><span class="st">"EXACT"</span>, <span class="at">m=</span><span class="dv">100</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>K2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.505927</code></pre>
+</div>
+</div>
+</section>
+<section id="example" class="level3 tabset">
+<h3 class="tabset anchored" data-anchor-id="example">Example</h3>
+<section id="the-data" class="level4">
+<h4 class="anchored" data-anchor-id="the-data">The data</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## "Direct" calculation of a tolerance interval.</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Read data and name variables.</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># URL of the dataset</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#url &lt;- "https://www.itl.nist.gov/div898/handbook/datasets/MPC62.DAT"</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the file (you can specify a path where you want to save it)</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#download.file(url, destfile = "MPC62.DAT")</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the dataset into R</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>mdat <span class="ot">=</span> <span class="fu">read.table</span>(<span class="st">"MPC62.DAT"</span>,<span class="at">header=</span><span class="cn">FALSE</span>, <span class="at">skip=</span><span class="dv">50</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mdat) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"cr"</span>, <span class="st">"wafer"</span>, <span class="st">"mo"</span>, <span class="st">"day"</span>, <span class="st">"h"</span>, <span class="st">"min"</span>, <span class="st">"op"</span>, </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"hum"</span>, <span class="st">"probe"</span>, <span class="st">"temp"</span>, <span class="st">"y"</span>, <span class="st">"sw"</span>, <span class="st">"df"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="parametric" class="level4">
+<h4 class="anchored" data-anchor-id="parametric">Parametric</h4>
+<p><strong><code>tolerance</code> package - parametric</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Attach tolerance library and call function.</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tolerance)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>pout<span class="ot">=</span><span class="fu">normtol.int</span>(mdat<span class="sc">$</span>y, <span class="at">alpha=</span><span class="fl">0.01</span>, <span class="at">P=</span>.<span class="dv">90</span>, <span class="at">side=</span><span class="dv">2</span>, <span class="at">method =</span> <span class="st">"EXACT"</span>,<span class="at">m=</span><span class="dv">100</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>pout</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  alpha   P    x.bar 2-sided.lower 2-sided.upper
+1  0.01 0.9 97.06984      97.00269      97.13699</code></pre>
+</div>
+</div>
+<p><strong>Manually calculated tolerance factor - parametric</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>pout<span class="sc">$</span>x.bar<span class="sc">-</span>K2<span class="sc">*</span><span class="fu">sd</span>(mdat<span class="sc">$</span>y); pout<span class="sc">$</span>x.bar<span class="sc">+</span>K2<span class="sc">*</span><span class="fu">sd</span>(mdat<span class="sc">$</span>y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 97.00269</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 97.13699</code></pre>
+</div>
+</div>
+</section>
+<section id="nonparametric" class="level4">
+<h4 class="anchored" data-anchor-id="nonparametric">Nonparametric</h4>
+<p><strong><code>tolerance</code> package - nonparametric</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>npout <span class="ot">=</span> <span class="fu">nptol.int</span>(mdat<span class="sc">$</span>y, <span class="at">alpha =</span> <span class="fl">0.01</span>, <span class="at">P =</span> <span class="fl">0.90</span>, <span class="at">side =</span> <span class="dv">2</span>, <span class="at">method =</span> <span class="st">"WILKS"</span>,</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">upper =</span> <span class="cn">NULL</span>, <span class="at">lower =</span> <span class="cn">NULL</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>npout</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  alpha   P 2-sided.lower 2-sided.upper
+1  0.01 0.9        97.014        97.114</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>npout</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  alpha   P 2-sided.lower 2-sided.upper
+1  0.01 0.9        97.014        97.114</code></pre>
+</div>
+</div>
+<p><strong>Manually calculated tolerance factor - nonparametric</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#1 &lt;= r &lt; s &lt; 25</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#let s = n−r+1</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># n-r+1-r = m </span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># (n-m+1)/2 = r</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">25</span>    <span class="co"># Number of trials</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fl">0.90</span> <span class="co"># Probability of success in each trial</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.01</span> <span class="co"># Significance level (1 - confidence level)</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the smallest m such that P(Y &lt;= m-1) &gt;= 1 - alpha</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">qbinom</span>(<span class="dv">1</span> <span class="sc">-</span> alpha, <span class="at">size =</span> n, <span class="at">prob =</span> gamma)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>r <span class="ot">=</span> (n<span class="sc">-</span>m<span class="sc">+</span><span class="dv">1</span>)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>s <span class="ot">=</span> m<span class="sc">+</span>r</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(mdat<span class="sc">$</span>y)[<span class="fu">ceiling</span>(r)]; <span class="fu">sort</span>(mdat<span class="sc">$</span>y)[<span class="fu">floor</span>(n<span class="sc">-</span>r<span class="sc">+</span><span class="dv">1</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 97.014</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 97.114</code></pre>
+</div>
+</div>
+</section>
+<section id="plots" class="level4">
+<h4 class="anchored" data-anchor-id="plots">Plots</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plottol</span>(pout, mdat<span class="sc">$</span>y, <span class="at">plot.type =</span> <span class="st">"both"</span>, <span class="at">side =</span> <span class="st">"two"</span>, <span class="at">x.lab =</span> <span class="st">"X"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plottol</span>(npout, mdat<span class="sc">$</span>y, <span class="at">plot.type =</span> <span class="st">"both"</span>, <span class="at">side =</span> <span class="st">"two"</span>, <span class="at">x.lab =</span> <span class="st">"X"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>Wilk’s approach: 2 sided interval</p>
+<ul>
+<li>sets values <span class="math inline">\(L(\mathcal{X}) = X_{(r)}\)</span> and <span class="math inline">\(U(\mathcal{X}) = X_{(s)}\)</span> where <span class="math inline">\(r &lt; s\)</span>, as the limits of the <span class="math inline">\(\gamma\)</span>-content <span class="math inline">\(100 \left( 1 - \alpha\right)\%\)</span>-confidence tolerance interval <span class="math inline">\(\left( L(\mathcal{X}), U(\mathcal{X}) \right)\)</span></li>
+<li>The values of <span class="math inline">\(r\)</span> and <span class="math inline">\(s\)</span> are chosen to satisfy <span class="math inline">\(1 \le r \le s \le n\)</span> and <span class="math inline">\(s-r=m\)</span> where <span class="math inline">\(m\)</span> is the smallest value for which <span class="math inline">\(P(Y \le m-1) \ge 1-\alpha\)</span>, and <span class="math inline">\(Y \sim \text{Binomial}(n, \gamma)\)</span>. It is customary to take the value of <span class="math inline">\(s\)</span> to be equal to <span class="math inline">\(n-r+1\)</span>, as suggested by Wilks et.al. so that</li>
+<li>the nonparametric interval is given by <span class="math inline">\((X_{(r)}, X_{(n-r+1)})\)</span></li>
+</ul></li>
+</ul>
+<p><a href="https://www.itl.nist.gov/div898/handbook/prc/section2/prc263.htm">Ref</a></p>
+</section>
+<section id="aside" class="level4">
+<h4 class="anchored" data-anchor-id="aside">Aside</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>simulated <span class="ot">&lt;-</span> <span class="fu">rlnorm</span>(<span class="dv">1000</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(simulated)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>find_silver_bw <span class="ot">&lt;-</span> <span class="cf">function</span>(sample){</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(sample)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  iqr <span class="ot">&lt;-</span> <span class="fu">IQR</span>(sample)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  sd <span class="ot">&lt;-</span> <span class="fu">sd</span>(sample)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fl">0.9</span><span class="sc">*</span>n<span class="sc">^</span>(<span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>)<span class="sc">*</span><span class="fu">min</span>(<span class="fu">c</span>(sd, iqr<span class="sc">/</span><span class="fl">1.34</span>)))</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>get_grid <span class="ot">&lt;-</span> <span class="cf">function</span>(sample){</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  lb <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">sort</span>(sample)) <span class="sc">-</span> <span class="fu">sd</span>(sample)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  ub <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">sort</span>(sample)) <span class="sc">+</span> <span class="fu">sd</span>(sample)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">seq</span>(<span class="at">from=</span>lb, <span class="at">to=</span>ub, <span class="at">by=</span><span class="fl">0.0001</span>))</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>gaussian_kernel <span class="ot">&lt;-</span> <span class="cf">function</span>(bandwidth, grid, datapoint) {</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>((<span class="dv">1</span><span class="sc">/</span>(bandwidth<span class="sc">*</span><span class="fu">sqrt</span>(<span class="dv">2</span><span class="sc">*</span>pi))) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.5</span><span class="sc">*</span>((grid<span class="sc">-</span>datapoint)<span class="sc">/</span>bandwidth)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="co">#  return((1 / sqrt(2 * pi)) * exp(-0.5 * u^2))</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="co"># fcn to estimate </span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>kde_manual <span class="ot">&lt;-</span> <span class="cf">function</span>(grid, datapoints, bandwidth) {</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(datapoints)</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>(grid, <span class="cf">function</span>(grid_val) {</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(<span class="fu">gaussian_kernel</span>(bandwidth, grid_val, datapoints) <span class="sc">/</span> n)</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>kde_manual_presum <span class="ot">&lt;-</span> <span class="cf">function</span>(grid, datapoints, bandwidth) {</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(datapoints)</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>(grid, <span class="cf">function</span>(grid_val) {</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gaussian_kernel</span>(bandwidth, grid_val, datapoints)</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a><span class="co"># KDE for CDF estimation using Gaussian kernel</span></span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>kde_cdf <span class="ot">&lt;-</span> <span class="cf">function</span>(grid, datapoints, bandwidth) {</span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>(grid, <span class="cf">function</span>(grid_val) {</span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mean</span>(<span class="fu">pnorm</span>((grid_val <span class="sc">-</span> datapoints) <span class="sc">/</span> bandwidth))</span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>estimated_cdf_sim <span class="ot">&lt;-</span> <span class="fu">kde_cdf</span>(<span class="fu">get_grid</span>(simulated), simulated, <span class="fu">find_silver_bw</span>(simulated))</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">get_grid</span>(simulated), estimated_cdf_sim, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"Estimated CDF"</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Estimated CDFs Comparison"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>estimated_pdf_sim <span class="ot">&lt;-</span> <span class="fu">kde_manual</span>(<span class="fu">get_grid</span>(simulated), simulated, <span class="fu">find_silver_bw</span>(simulated))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">get_grid</span>(simulated), estimated_pdf_sim, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"Estimated PDF"</span>,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Estimated CDFs Comparison"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"GoFKernel"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: KernSmooth</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>KernSmooth 2.23 loaded
+Copyright M. P. Wand 1997-2009</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>kde_cdf_value <span class="ot">&lt;-</span> <span class="cf">function</span>(x, datapoints, bandwidth) {</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(<span class="fu">pnorm</span>((x <span class="sc">-</span> datapoints) <span class="sc">/</span> bandwidth))</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>kde_cdf_inverse <span class="ot">&lt;-</span> <span class="cf">function</span>(probabilities, datapoints, bandwidth, <span class="at">lower =</span> <span class="sc">-</span><span class="dv">10</span>, <span class="at">upper =</span> <span class="dv">10</span>) {</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>(probabilities, <span class="cf">function</span>(p) {</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    root_func <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">kde_cdf_value</span>(x, datapoints, bandwidth) <span class="sc">-</span> p</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">uniroot</span>(root_func, <span class="at">lower =</span> lower, <span class="at">upper =</span> upper)<span class="sc">$</span>root</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>kde_cdf_function <span class="ot">&lt;-</span> <span class="cf">function</span>(datapoints, bandwidth) {</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(x) <span class="fu">mean</span>(<span class="fu">pnorm</span>((x <span class="sc">-</span> datapoints) <span class="sc">/</span> bandwidth))</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="co"># =================</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>U_mat <span class="ot">&lt;-</span> <span class="fu">kde_cdf</span>(simulated, simulated, <span class="fu">find_silver_bw</span>(simulated))</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a><span class="co">#U_mat &lt;- sapply(p_data, function(i) kde_cdf(i, p_data, h))</span></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4: Compute Y_ij = max{U_ij, 1 - U_ij}</span></span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>Y_mat <span class="ot">&lt;-</span> <span class="fu">pmax</span>(U_mat, <span class="dv">1</span> <span class="sc">-</span> U_mat)</span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a><span class="co">#u&lt;-data.frame(original = transformed_data, complement = 1 - transformed_data)</span></span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a><span class="co">#y1 &lt;- apply(u, 1, max)</span></span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>npout <span class="ot">=</span> <span class="fu">nptol.int</span>(Y_mat, <span class="at">alpha =</span> alpha, <span class="at">P =</span> gamma, <span class="at">side =</span> <span class="dv">1</span>, <span class="at">method =</span> <span class="st">"WILKS"</span>,</span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>                <span class="at">upper =</span> <span class="cn">NULL</span>, <span class="at">lower =</span> <span class="cn">NULL</span>)</span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> npout<span class="sc">$</span><span class="st">`</span><span class="at">1-sided.upper</span><span class="st">`</span></span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a>f.inv <span class="ot">&lt;-</span> <span class="fu">inverse</span>(<span class="fu">kde_cdf_function</span>(simulated,<span class="fu">find_silver_bw</span>(simulated)),<span class="at">lower=</span><span class="sc">-</span><span class="dv">100</span>,<span class="at">upper=</span><span class="dv">100</span>)</span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a><span class="co">#f.inv(p);f.inv(1-p); qlnorm(1-p); exp(qnorm(1-p))</span></span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="fu">log</span>(<span class="fu">f.inv</span>(p)),<span class="dv">0</span>,<span class="dv">1</span>) <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="fu">log</span>(<span class="fu">f.inv</span>(<span class="dv">1</span><span class="sc">-</span>p)),<span class="dv">0</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9274381</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plnorm</span>(<span class="fu">f.inv</span>(p),<span class="dv">0</span>,<span class="dv">1</span>) <span class="sc">-</span> <span class="fu">plnorm</span>(<span class="fu">f.inv</span>(<span class="dv">1</span><span class="sc">-</span>p),<span class="dv">0</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9274381</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>f.inv <span class="ot">&lt;-</span> <span class="fu">inverse</span>(<span class="cf">function</span>(i)<span class="fu">kde_cdf</span>(i, simulated,<span class="fu">find_silver_bw</span>(simulated)),<span class="at">lower=</span><span class="sc">-</span><span class="dv">1000</span>,<span class="at">upper=</span><span class="dv">1000</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fl">0.97</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">f.inv</span>(p); <span class="fu">qnorm</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.773139</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.880794</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">pbeta</span>(x, <span class="at">shape1=</span><span class="dv">2</span>, <span class="at">shape2=</span><span class="dv">3</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>f.inv <span class="ot">&lt;-</span> <span class="fu">inverse</span>(f,<span class="at">lower=</span><span class="dv">0</span>,<span class="at">upper=</span><span class="dv">1</span>)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">f.inv</span>(.<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2123161</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qbeta</span>(<span class="at">p=</span><span class="fl">0.2</span>, <span class="at">shape1=</span><span class="dv">2</span>, <span class="at">shape2=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2123171</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="kernel-density-estimation" class="level2 tabset">
+<h2 class="tabset anchored" data-anchor-id="kernel-density-estimation">Kernel density estimation</h2>
+<p><a href="https://medium.com/analytics-vidhya/kernel-density-estimation-kernel-construction-and-bandwidth-optimization-using-maximum-b1dfce127073">Reference 1</a> <a href="https://rpubs.com/mcocam12/kdf_byhand">Plotting KDE</a></p>
+<p>Kernel - Kernel functions are used to estimate density of random variables and as weighing function in non-parametric regression.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>x_data <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">c</span>(<span class="dv">65</span>, <span class="dv">75</span>, <span class="dv">67</span>, <span class="dv">79</span>, <span class="dv">81</span>, <span class="dv">91</span>))</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>x_data_sd <span class="ot">&lt;-</span> <span class="fu">sd</span>(x_data)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>x_data_iqr <span class="ot">&lt;-</span> <span class="fu">IQR</span>(x_data)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>x_data_n <span class="ot">&lt;-</span> <span class="fu">length</span>(x_data)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>h_silver <span class="ot">&lt;-</span> <span class="fl">0.9</span><span class="sc">*</span>x_data_n<span class="sc">^</span>(<span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>)<span class="sc">*</span><span class="fu">min</span>(<span class="fu">c</span>(x_data_sd, x_data_iqr<span class="sc">/</span><span class="fl">1.34</span>))</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>xi <span class="ot">&lt;-</span> <span class="dv">65</span><span class="co">#x_data[1]</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="fl">5.5</span> <span class="co">#h_silver</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>min_val <span class="ot">&lt;-</span> <span class="dv">40</span><span class="co">#min(x_data)-round(h)</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>max_val <span class="ot">&lt;-</span> <span class="dv">120</span><span class="co">#max(x_data)+round(h)</span></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> min_val, <span class="at">to =</span> max_val, <span class="at">by =</span> <span class="dv">1</span>) <span class="co"># grid</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="manual" class="level3">
+<h3 class="anchored" data-anchor-id="manual">manual</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimate PDF</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>outmat <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">kde_manual_presum</span>(x, x_data, h))</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>estimated_density <span class="ot">&lt;-</span> <span class="fu">kde_manual</span>(x, x_data, h)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimate CDF</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>estimated_cdf <span class="ot">&lt;-</span> <span class="fu">kde_cdf</span>(x, x_data, h)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(outmat) <span class="ot">&lt;-</span> x</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(outmat) <span class="ot">&lt;-</span> x_data</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">grid =</span> <span class="fu">rownames</span>(outmat), outmat)</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(outmat) <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(outmat)</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>df_long <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(mat,as.numeric) <span class="sc">%&gt;%</span></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">colnames</span>(outmat), <span class="at">names_to =</span> <span class="st">"sample"</span>, <span class="at">values_to =</span> <span class="st">"k"</span>)</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>df_long<span class="sc">$</span>grid <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(df_long<span class="sc">$</span>grid)</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>df_long<span class="sc">$</span>sample <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(df_long<span class="sc">$</span>sample)</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>df_long<span class="sc">$</span>k <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(df_long<span class="sc">$</span>k)</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>df_long <span class="ot">&lt;-</span> df_long <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">norm_kern =</span> k<span class="sc">/</span><span class="dv">6</span>)</span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>comp <span class="ot">&lt;-</span> df_long <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(grid) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">composite=</span><span class="fu">sum</span>(k)<span class="sc">/</span>x_data_n)</span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> df_long, <span class="fu">aes</span>(<span class="at">x =</span> grid, <span class="at">y =</span> norm_kern, <span class="at">color =</span> sample, <span class="at">group =</span> sample), <span class="at">alpha =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> comp, <span class="fu">aes</span>(<span class="at">x =</span> grid, <span class="at">y =</span> composite), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(min_val, max_val) <span class="sc">+</span></span>
+<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="dv">65</span>, <span class="dv">67</span>, <span class="dv">75</span>, <span class="dv">79</span>, <span class="dv">81</span>, <span class="dv">91</span>), <span class="at">linetype =</span> <span class="st">"dotted"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Kernels at different data points"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co">#df_long %&gt;% filter(sample==65) %&gt;% select(k) %&gt;% pull() %&gt;% hist()</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="co">#estimated_pdf &lt;- function(n, kernel_matrix){</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="co">#  return(rowSums(kernel_matrix)/n)</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="co">#}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>x_data <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">c</span>(<span class="dv">65</span>, <span class="dv">75</span>, <span class="dv">67</span>, <span class="dv">79</span>, <span class="dv">81</span>, <span class="dv">91</span>))</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>x_data_sd <span class="ot">&lt;-</span> <span class="fu">sd</span>(x_data)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>x_data_iqr <span class="ot">&lt;-</span> <span class="fu">IQR</span>(x_data)</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>x_data_n <span class="ot">&lt;-</span> <span class="fu">length</span>(x_data)</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>h_silver <span class="ot">&lt;-</span> <span class="fl">0.9</span><span class="sc">*</span>x_data_n<span class="sc">^</span>(<span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>)<span class="sc">*</span><span class="fu">min</span>(<span class="fu">c</span>(x_data_sd, x_data_iqr<span class="sc">/</span><span class="fl">1.34</span>))</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>xi <span class="ot">&lt;-</span> <span class="dv">65</span><span class="co">#x_data[1]</span></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="fl">5.5</span> <span class="co">#h_silver</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>min_val <span class="ot">&lt;-</span> <span class="dv">40</span><span class="co">#min(x_data)-round(h)</span></span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>max_val <span class="ot">&lt;-</span> <span class="dv">120</span><span class="co">#max(x_data)+round(h)</span></span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> min_val, <span class="at">to =</span> max_val, <span class="at">by =</span> <span class="dv">1</span>) <span class="co"># grid</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="manual-1" class="level3">
+<h3 class="anchored" data-anchor-id="manual-1">manual</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assume: x_grid and pdf_vals are already defined and same length</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Approximate CDF using left Riemann sums</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>dx <span class="ot">&lt;-</span> <span class="fu">diff</span>(x)            <span class="co"># Spacing between x points (assumes equally spaced)</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>dx <span class="ot">&lt;-</span> <span class="fu">c</span>(dx, <span class="fu">tail</span>(dx, <span class="dv">1</span>))      <span class="co"># Pad to same length</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>cdf_from_pdf <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(comp[[<span class="st">'composite'</span>]] <span class="sc">*</span> dx)</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, cdf_from_pdf, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>,</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"Estimated CDF"</span>,</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Estimated CDFs Comparison"</span>)</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x, estimated_cdf, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Add empirical CDF for reference</span></span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x, <span class="fu">ecdf</span>(x_data)(x), <span class="at">col =</span> <span class="st">"darkgreen"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">lty =</span> <span class="dv">3</span>)</span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Numerical Integration"</span>, <span class="st">"Kernel CDF (pnorm)"</span>, <span class="st">"Empirical CDF"</span>),</span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co">#legend("bottomright", legend = c("From PDF (numerical integration)", "From pnorm (kernel CDF)"),</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   col = c("blue", "red"), lty = c(1, 2), lwd = 2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">pnorm</span>(x, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>f.inv <span class="ot">&lt;-</span> <span class="fu">inverse</span>(f,<span class="at">lower=</span><span class="sc">-</span><span class="dv">100</span>,<span class="at">upper=</span><span class="dv">100</span>)</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="fu">f.inv</span>(.<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.8416276</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="dgp" class="level2">
+<h2 class="anchored" data-anchor-id="dgp">DGP</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1029</span>)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>uninorm <span class="ot">&lt;-</span> <span class="fu">rlnorm</span>(<span class="dv">100</span>,<span class="dv">0</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>npout <span class="ot">=</span> <span class="fu">nptol.int</span>(uninorm, <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">P =</span> <span class="fl">0.95</span>, <span class="at">side =</span> <span class="dv">2</span>, <span class="at">method =</span> <span class="st">"WILKS"</span>,</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">upper =</span> <span class="cn">NULL</span>, <span class="at">lower =</span> <span class="cn">NULL</span>)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>npout</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  alpha    P 2-sided.lower 2-sided.upper
+1  0.05 0.95     0.1768112      5.782058</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># STEP 1</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"compositions"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Welcome to compositions, a package for compositional data analysis.
+Find an intro with "? compositions"</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'compositions'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    anova, cor, cov, dist, var</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:graphics':
+
+    segments</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    %*%, norm, scale, scale.default</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fl">0.95</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>n<span class="ot">&lt;-</span><span class="dv">500</span></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>MyVar <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>,<span class="fl">0.95</span>,<span class="fl">0.95</span>,</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a><span class="fl">0.95</span>,<span class="dv">1</span>,<span class="fl">0.95</span>,</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a><span class="fl">0.95</span>,<span class="fl">0.95</span>,<span class="dv">1</span>),<span class="at">byrow=</span><span class="cn">TRUE</span>,<span class="at">nrow=</span><span class="dv">3</span>)</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>MyMean <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>)</span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"MASS"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'MASS'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    select</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1724532</span>)</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>datas <span class="ot">&lt;-</span> <span class="fu">rlnorm.rplus</span>(n,MyMean,MyVar)</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="co">#datas &lt;- mvrnorm(n,MyMean,MyVar, tol = 1e-06, empirical = FALSE)</span></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datas) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"p_1"</span>, <span class="st">"p_2"</span>, <span class="st">"p_3"</span>)</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">grid =</span> <span class="fu">rownames</span>(datas), datas)</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(datas) <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="cf">function</span>(i) <span class="fu">paste0</span>(<span class="st">"n_"</span>, <span class="fu">sprintf</span>(<span class="st">"%03d"</span>, i)))</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="fu">find_silver_bw</span>(datas[,<span class="dv">1</span>])</span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">get_grid</span>(datas[,<span class="dv">1</span>])</span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a><span class="co">#p1_outmat &lt;-sapply(datas[,1], function(xi) gaussian_kernel(xi = xi, x = x, h = h))</span></span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a><span class="co">#dx &lt;- diff(x)</span></span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a><span class="co">#dx &lt;- c(dx, tail(dx, 1))</span></span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-15"><a href="#cb67-15" aria-hidden="true" tabindex="-1"></a>estimated_cdf <span class="ot">&lt;-</span> <span class="fu">kde_cdf</span>(x, datas[,<span class="dv">1</span>], h)</span>
+<span id="cb67-16"><a href="#cb67-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-17"><a href="#cb67-17" aria-hidden="true" tabindex="-1"></a><span class="co">#cdf_vals &lt;- cumsum(estimated_pdf(n ,p1_outmat) * dx) #ESTIMATED CDF</span></span>
+<span id="cb67-18"><a href="#cb67-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-19"><a href="#cb67-19" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, estimated_cdf, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb67-20"><a href="#cb67-20" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"Estimated CDF"</span>,</span>
+<span id="cb67-21"><a href="#cb67-21" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Estimated CDF"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, estimated_cdf, <span class="at">type =</span> <span class="st">"p"</span>,</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"Estimated CDF"</span>,</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Estimated CDF"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-28-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>estimated_density <span class="ot">&lt;-</span> <span class="fu">kde_manual</span>(x, datas[,<span class="dv">1</span>], h)</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, estimated_density, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"Estimated CDF"</span>,</span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">main =</span> <span class="st">"Estimated PDF"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(estimated_density)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-29-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>get_upper_limit <span class="ot">&lt;-</span> <span class="cf">function</span>(p_data){</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  h <span class="ot">&lt;-</span> <span class="fu">find_silver_bw</span>(p_data)</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#x &lt;- get_grid(p_data)</span></span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#estimated_cdf &lt;- kde_cdf(x, p_data, h)</span></span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#transformed_data &lt;- transform_data(p_data, estimated_cdf, x)</span></span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a>  U_mat <span class="ot">&lt;-</span> <span class="fu">kde_cdf</span>(p_data, p_data, h)</span>
+<span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#U_mat &lt;- sapply(p_data, function(i) kde_cdf(i, p_data, h))</span></span>
+<span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb71-11"><a href="#cb71-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 4: Compute Y_ij = max{U_ij, 1 - U_ij}</span></span>
+<span id="cb71-12"><a href="#cb71-12" aria-hidden="true" tabindex="-1"></a>  Y_mat <span class="ot">&lt;-</span> <span class="fu">pmax</span>(U_mat, <span class="dv">1</span> <span class="sc">-</span> U_mat)</span>
+<span id="cb71-13"><a href="#cb71-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb71-14"><a href="#cb71-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#u&lt;-data.frame(original = transformed_data, complement = 1 - transformed_data)</span></span>
+<span id="cb71-15"><a href="#cb71-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">#y1 &lt;- apply(u, 1, max)</span></span>
+<span id="cb71-16"><a href="#cb71-16" aria-hidden="true" tabindex="-1"></a>  npout <span class="ot">=</span> <span class="fu">nptol.int</span>(Y_mat, <span class="at">alpha =</span> alpha, <span class="at">P =</span> gamma, <span class="at">side =</span> <span class="dv">1</span>, <span class="at">method =</span> <span class="st">"WILKS"</span>,</span>
+<span id="cb71-17"><a href="#cb71-17" aria-hidden="true" tabindex="-1"></a>                  <span class="at">upper =</span> <span class="cn">NULL</span>, <span class="at">lower =</span> <span class="cn">NULL</span>)</span>
+<span id="cb71-18"><a href="#cb71-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(npout<span class="sc">$</span><span class="st">`</span><span class="at">1-sided.upper</span><span class="st">`</span>)</span>
+<span id="cb71-19"><a href="#cb71-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb71-20"><a href="#cb71-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-21"><a href="#cb71-21" aria-hidden="true" tabindex="-1"></a><span class="fu">get_upper_limit</span>(datas[,<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9661319</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co"># step 5</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>k_j <span class="ot">&lt;-</span> <span class="fu">apply</span>(datas, <span class="dv">2</span>, get_upper_limit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>k_j</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      p_1       p_2       p_3 
+0.9661319 0.9661984 0.9677460 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co"># step 6</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(k_j)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.967746</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co"># step 7</span></span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a><span class="co">#p_data &lt;- datas#[,1]</span></span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom CDF function</span></span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>get_tolerance_interval <span class="ot">&lt;-</span> <span class="cf">function</span>(p_data, <span class="at">maxk=</span><span class="fu">max</span>(k_j)){</span>
+<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a>  h <span class="ot">&lt;-</span> <span class="fu">find_silver_bw</span>(p_data)</span>
+<span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#f.inv &lt;- inverse(function(i) kde_cdf(i, p_data, h),#kde_cdf(i, p_data, h),</span></span>
+<span id="cb78-11"><a href="#cb78-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                 lower=-100,upper=100)</span></span>
+<span id="cb78-12"><a href="#cb78-12" aria-hidden="true" tabindex="-1"></a>  f.inv <span class="ot">&lt;-</span> <span class="fu">inverse</span>(<span class="fu">kde_cdf_function</span>(p_data,h),<span class="at">lower=</span><span class="sc">-</span><span class="dv">100</span>,<span class="at">upper=</span><span class="dv">100</span>)</span>
+<span id="cb78-13"><a href="#cb78-13" aria-hidden="true" tabindex="-1"></a>  lower_bound <span class="ot">&lt;-</span> <span class="fu">f.inv</span>(<span class="dv">1</span> <span class="sc">-</span> maxk)</span>
+<span id="cb78-14"><a href="#cb78-14" aria-hidden="true" tabindex="-1"></a>  upper_bound <span class="ot">&lt;-</span> <span class="fu">f.inv</span>(maxk)</span>
+<span id="cb78-15"><a href="#cb78-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-16"><a href="#cb78-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#print(f.inv(1 - maxk))</span></span>
+<span id="cb78-17"><a href="#cb78-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(lower_bound, upper_bound))</span>
+<span id="cb78-18"><a href="#cb78-18" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="sim" class="level1">
+<h1>SIM</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co"># STEP 1</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"compositions"</span>)</span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fl">0.95</span></span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>n<span class="ot">&lt;-</span><span class="dv">500</span></span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a>MyVar <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>,<span class="fl">0.95</span>,<span class="fl">0.95</span>,</span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a><span class="fl">0.95</span>,<span class="dv">1</span>,<span class="fl">0.95</span>,</span>
+<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a><span class="fl">0.95</span>,<span class="fl">0.95</span>,<span class="dv">1</span>),<span class="at">byrow=</span><span class="cn">TRUE</span>,<span class="at">nrow=</span><span class="dv">3</span>)</span>
+<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a>MyMean <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>)</span>
+<span id="cb79-11"><a href="#cb79-11" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb79-12"><a href="#cb79-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-13"><a href="#cb79-13" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">7779</span>)</span>
+<span id="cb79-14"><a href="#cb79-14" aria-hidden="true" tabindex="-1"></a>datas <span class="ot">&lt;-</span> <span class="fu">rlnorm.rplus</span>(n,MyMean,MyVar)</span>
+<span id="cb79-15"><a href="#cb79-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-16"><a href="#cb79-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-17"><a href="#cb79-17" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(datas[,<span class="dv">1</span>], <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.4</span>), <span class="at">xlim =</span> <span class="fu">range</span>(datas), <span class="at">main =</span> <span class="st">"Overlaid Histograms"</span>, <span class="at">xlab =</span> <span class="st">"Values"</span>)</span>
+<span id="cb79-18"><a href="#cb79-18" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(datas[,<span class="dv">2</span>], <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="fl">0.4</span>), <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb79-19"><a href="#cb79-19" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(datas[,<span class="dv">3</span>], <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.4</span>), <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb79-20"><a href="#cb79-20" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>),</span>
+<span id="cb79-21"><a href="#cb79-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="fu">c</span>(<span class="fu">rgb</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.4</span>), <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="fl">0.4</span>), <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.4</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datas) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"p_1"</span>, <span class="st">"p_2"</span>, <span class="st">"p_3"</span>)</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">grid =</span> <span class="fu">rownames</span>(datas), datas)</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(datas) <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="cf">function</span>(i) <span class="fu">paste0</span>(<span class="st">"n_"</span>, <span class="fu">sprintf</span>(<span class="st">"%03d"</span>, i)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(datas[,<span class="dv">1</span>], <span class="at">main =</span> <span class="st">"1"</span>, <span class="at">xlab =</span> <span class="st">"Values"</span>, <span class="at">col =</span> <span class="st">"skyblue"</span>)</span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(datas[,<span class="dv">2</span>], <span class="at">main =</span> <span class="st">"2"</span>, <span class="at">xlab =</span> <span class="st">"Values"</span>, <span class="at">col =</span> <span class="st">"salmon"</span>)</span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(datas[,<span class="dv">3</span>], <span class="at">main =</span> <span class="st">"3"</span>, <span class="at">xlab =</span> <span class="st">"Values"</span>, <span class="at">col =</span> <span class="st">"lightgreen"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>k_j <span class="ot">&lt;-</span> <span class="fu">apply</span>(datas, <span class="dv">2</span>, get_upper_limit)</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>k_j</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      p_1       p_2       p_3 
+0.9672254 0.9669883 0.9666109 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>maxkj <span class="ot">&lt;-</span> <span class="fu">max</span>(k_j)</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(k_j)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9672254</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>tols <span class="ot">&lt;-</span> <span class="fu">apply</span>(datas, <span class="dv">2</span>, <span class="cf">function</span>(s) <span class="fu">get_tolerance_interval</span>(s,<span class="at">maxk=</span>maxkj))</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>tols</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             p_1         p_2         p_3
+[1,] -0.02632234 -0.05404223 -0.03109261
+[2,]  6.34726861  6.83613998  7.22415607</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>p_data <span class="ot">&lt;-</span> datas[,<span class="dv">1</span>]</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="fu">find_silver_bw</span>(p_data)</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a><span class="co">#f.inv &lt;- inverse(function(i) kde_cdf(i, p_data, h),#kde_cdf(i, p_data, h),</span></span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a><span class="co">#                 lower=-100,upper=100)</span></span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a>f.inv <span class="ot">&lt;-</span> <span class="fu">inverse</span>(<span class="fu">kde_cdf_function</span>(p_data,h),<span class="at">lower=</span><span class="sc">-</span><span class="dv">100</span>,<span class="at">upper=</span><span class="dv">100</span>)</span>
+<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a>lower_bound <span class="ot">&lt;-</span> <span class="fu">f.inv</span>(<span class="dv">1</span> <span class="sc">-</span> maxkj)</span>
+<span id="cb89-8"><a href="#cb89-8" aria-hidden="true" tabindex="-1"></a>upper_bound <span class="ot">&lt;-</span> <span class="fu">f.inv</span>(maxkj)</span>
+<span id="cb89-9"><a href="#cb89-9" aria-hidden="true" tabindex="-1"></a>lower_bound;upper_bound </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.02632234</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.347269</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>step3 <span class="ot">&lt;-</span> <span class="cf">function</span>(i){</span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">plnorm</span>(tols[<span class="dv">2</span>,i],MyMean[i],MyVar[i,i]) <span class="sc">-</span> <span class="fu">plnorm</span>(tols[<span class="dv">1</span>,i],MyMean[i],MyVar[i,i]))</span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>step4 <span class="ot">&lt;-</span> <span class="cf">function</span>(i){</span>
+<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(tols[<span class="dv">2</span>,i] <span class="sc">-</span> tols[<span class="dv">1</span>,i])</span>
+<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-9"><a href="#cb92-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-10"><a href="#cb92-10" aria-hidden="true" tabindex="-1"></a>I <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, step3)) <span class="sc">&gt;=</span> gamma</span>
+<span id="cb92-11"><a href="#cb92-11" aria-hidden="true" tabindex="-1"></a>I</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>Lj <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, step4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bonferoni</span></span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>bonferonni <span class="ot">&lt;-</span> <span class="cf">function</span>(p_data) {</span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(p_data) <span class="sc">&gt;=</span> <span class="dv">119</span>) {</span>
+<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a>    to <span class="ot">&lt;-</span> <span class="fu">nptol.int</span>(p_data, <span class="at">alpha =</span> alpha<span class="sc">/</span><span class="dv">3</span>, <span class="at">P =</span> gamma, <span class="at">side =</span> <span class="dv">2</span>, <span class="at">method =</span> <span class="st">"WILKS"</span>,</span>
+<span id="cb95-7"><a href="#cb95-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">upper =</span> <span class="cn">NULL</span>, <span class="at">lower =</span> <span class="cn">NULL</span>)</span>
+<span id="cb95-8"><a href="#cb95-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-9"><a href="#cb95-9" aria-hidden="true" tabindex="-1"></a>    lower_bound <span class="ot">&lt;-</span> to<span class="sc">$</span><span class="st">`</span><span class="at">2-sided.lower</span><span class="st">`</span></span>
+<span id="cb95-10"><a href="#cb95-10" aria-hidden="true" tabindex="-1"></a>    upper_bound <span class="ot">&lt;-</span> to<span class="sc">$</span><span class="st">`</span><span class="at">2-sided.upper</span><span class="st">`</span></span>
+<span id="cb95-11"><a href="#cb95-11" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb95-12"><a href="#cb95-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb95-13"><a href="#cb95-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb95-14"><a href="#cb95-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> {</span>
+<span id="cb95-15"><a href="#cb95-15" aria-hidden="true" tabindex="-1"></a>    lower_bound <span class="ot">&lt;-</span> <span class="fu">min</span>(p_data)</span>
+<span id="cb95-16"><a href="#cb95-16" aria-hidden="true" tabindex="-1"></a>    upper_bound <span class="ot">&lt;-</span> <span class="fu">max</span>(p_data)</span>
+<span id="cb95-17"><a href="#cb95-17" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb95-18"><a href="#cb95-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-19"><a href="#cb95-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(lower_bound, upper_bound))</span>
+<span id="cb95-20"><a href="#cb95-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">5000</span>, {</span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>  datas <span class="ot">&lt;-</span> <span class="fu">rlnorm.rplus</span>(n, MyMean, MyVar)</span>
+<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb96-4"><a href="#cb96-4" aria-hidden="true" tabindex="-1"></a> <span class="co"># library(MASS)</span></span>
+<span id="cb96-5"><a href="#cb96-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb96-6"><a href="#cb96-6" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Step 1: Generate multivariate normal samples</span></span>
+<span id="cb96-7"><a href="#cb96-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Y &lt;- mvrnorm(n = n, mu = MyMean, Sigma = MyVar)</span></span>
+<span id="cb96-8"><a href="#cb96-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb96-9"><a href="#cb96-9" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Step 2: Exponentiate to get multivariate lognormal samples</span></span>
+<span id="cb96-10"><a href="#cb96-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#datas &lt;- exp(Y)  </span></span>
+<span id="cb96-11"><a href="#cb96-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb96-12"><a href="#cb96-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb96-13"><a href="#cb96-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(datas) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"p_1"</span>, <span class="st">"p_2"</span>, <span class="st">"p_3"</span>)</span>
+<span id="cb96-14"><a href="#cb96-14" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">grid =</span> <span class="fu">rownames</span>(datas), datas)</span>
+<span id="cb96-15"><a href="#cb96-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(datas) <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="cf">function</span>(i) <span class="fu">paste0</span>(<span class="st">"n_"</span>, <span class="fu">sprintf</span>(<span class="st">"%03d"</span>, i)))</span>
+<span id="cb96-16"><a href="#cb96-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb96-17"><a href="#cb96-17" aria-hidden="true" tabindex="-1"></a>  k_j <span class="ot">&lt;-</span> <span class="fu">apply</span>(datas, <span class="dv">2</span>, get_upper_limit)</span>
+<span id="cb96-18"><a href="#cb96-18" aria-hidden="true" tabindex="-1"></a>  tols <span class="ot">&lt;-</span> <span class="fu">apply</span>(datas, <span class="dv">2</span>, <span class="cf">function</span>(s) <span class="fu">get_tolerance_interval</span>(s, <span class="at">maxk =</span> <span class="fu">max</span>(k_j)))</span>
+<span id="cb96-19"><a href="#cb96-19" aria-hidden="true" tabindex="-1"></a>  bonf <span class="ot">&lt;-</span> <span class="fu">apply</span>(datas, <span class="dv">2</span>, bonferonni)</span>
+<span id="cb96-20"><a href="#cb96-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb96-21"><a href="#cb96-21" aria-hidden="true" tabindex="-1"></a>  step3 <span class="ot">&lt;-</span> <span class="cf">function</span>(i){</span>
+<span id="cb96-22"><a href="#cb96-22" aria-hidden="true" tabindex="-1"></a>    vb <span class="ot">&lt;-</span> <span class="fu">plnorm</span>(tols[<span class="dv">2</span>, i], MyMean[i], MyVar[i, i]) <span class="sc">-</span> <span class="fu">plnorm</span>(tols[<span class="dv">1</span>, i], MyMean[i], MyVar[i, i])</span>
+<span id="cb96-23"><a href="#cb96-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">#print(vb)</span></span>
+<span id="cb96-24"><a href="#cb96-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(vb)</span>
+<span id="cb96-25"><a href="#cb96-25" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb96-26"><a href="#cb96-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb96-27"><a href="#cb96-27" aria-hidden="true" tabindex="-1"></a>  step4 <span class="ot">&lt;-</span> <span class="cf">function</span>(i){</span>
+<span id="cb96-28"><a href="#cb96-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(tols[<span class="dv">2</span>, i] <span class="sc">-</span> tols[<span class="dv">1</span>, i])</span>
+<span id="cb96-29"><a href="#cb96-29" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb96-30"><a href="#cb96-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-31"><a href="#cb96-31" aria-hidden="true" tabindex="-1"></a>  step3b <span class="ot">&lt;-</span> <span class="cf">function</span>(i){</span>
+<span id="cb96-32"><a href="#cb96-32" aria-hidden="true" tabindex="-1"></a>    vb <span class="ot">&lt;-</span> <span class="fu">plnorm</span>(bonf[<span class="dv">2</span>, i], MyMean[i], MyVar[i, i]) <span class="sc">-</span> <span class="fu">plnorm</span>(bonf[<span class="dv">1</span>, i], MyMean[i], MyVar[i, i])</span>
+<span id="cb96-33"><a href="#cb96-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">#print(vb)</span></span>
+<span id="cb96-34"><a href="#cb96-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(vb)</span>
+<span id="cb96-35"><a href="#cb96-35" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb96-36"><a href="#cb96-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb96-37"><a href="#cb96-37" aria-hidden="true" tabindex="-1"></a>  step4b <span class="ot">&lt;-</span> <span class="cf">function</span>(i){</span>
+<span id="cb96-38"><a href="#cb96-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(bonf[<span class="dv">2</span>, i] <span class="sc">-</span> bonf[<span class="dv">1</span>, i])</span>
+<span id="cb96-39"><a href="#cb96-39" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb96-40"><a href="#cb96-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-41"><a href="#cb96-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb96-42"><a href="#cb96-42" aria-hidden="true" tabindex="-1"></a>  <span class="co">#print(min(sapply(1:3, step3)))</span></span>
+<span id="cb96-43"><a href="#cb96-43" aria-hidden="true" tabindex="-1"></a>  I <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, step3)) <span class="sc">&gt;=</span> gamma</span>
+<span id="cb96-44"><a href="#cb96-44" aria-hidden="true" tabindex="-1"></a>  <span class="co">#print(I)</span></span>
+<span id="cb96-45"><a href="#cb96-45" aria-hidden="true" tabindex="-1"></a>  Lj <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, step4)</span>
+<span id="cb96-46"><a href="#cb96-46" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb96-47"><a href="#cb96-47" aria-hidden="true" tabindex="-1"></a>  Ib <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, step3b)) <span class="sc">&gt;=</span> gamma</span>
+<span id="cb96-48"><a href="#cb96-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">#print(I)</span></span>
+<span id="cb96-49"><a href="#cb96-49" aria-hidden="true" tabindex="-1"></a>  Ljb <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, step4b)</span>
+<span id="cb96-50"><a href="#cb96-50" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb96-51"><a href="#cb96-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">Lj =</span> Lj, <span class="at">I =</span> I, <span class="at">Ljb =</span> Ljb, <span class="at">Ib =</span> Ib)</span>
+<span id="cb96-52"><a href="#cb96-52" aria-hidden="true" tabindex="-1"></a>}, <span class="at">simplify =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb96-53"><a href="#cb96-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-54"><a href="#cb96-54" aria-hidden="true" tabindex="-1"></a><span class="co"># If you want to extract all I values and all Lj values in a matrix form:</span></span>
+<span id="cb96-55"><a href="#cb96-55" aria-hidden="true" tabindex="-1"></a>I_vals <span class="ot">&lt;-</span> <span class="fu">sapply</span>(results, <span class="cf">function</span>(res) res<span class="sc">$</span>I)</span>
+<span id="cb96-56"><a href="#cb96-56" aria-hidden="true" tabindex="-1"></a>Lj_vals <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">sapply</span>(results, <span class="cf">function</span>(res) res<span class="sc">$</span>Lj))</span>
+<span id="cb96-57"><a href="#cb96-57" aria-hidden="true" tabindex="-1"></a>Ib_vals <span class="ot">&lt;-</span> <span class="fu">sapply</span>(results, <span class="cf">function</span>(res) res<span class="sc">$</span>Ib)</span>
+<span id="cb96-58"><a href="#cb96-58" aria-hidden="true" tabindex="-1"></a>Ljb_vals <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">sapply</span>(results, <span class="cf">function</span>(res) res<span class="sc">$</span>Ljb))</span>
+<span id="cb96-59"><a href="#cb96-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-60"><a href="#cb96-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-61"><a href="#cb96-61" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(I_vals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9502</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colMeans</span>(Lj_vals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     p_1      p_2      p_3 
+6.431427 6.435920 6.439542 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(Ib_vals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9832</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colMeans</span>(Ljb_vals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     p_1      p_2      p_3 
+9.232833 9.206014 9.233567 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>mk <span class="ot">&lt;-</span> <span class="fu">get_upper_limit</span>(uninorm)</span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_tolerance_interval</span>(uninorm,mk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.2003739  4.9905292</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">log</span>(uninorm))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nptol.int</span>(uninorm, <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">P =</span> <span class="fl">0.95</span>, <span class="at">side =</span> <span class="dv">2</span>, <span class="at">method =</span> <span class="st">"WILKS"</span>,</span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">upper =</span> <span class="cn">NULL</span>, <span class="at">lower =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  alpha    P 2-sided.lower 2-sided.upper
+1  0.05 0.95     0.1768112      5.782058</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>((uninorm))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-43-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">kde_cdf</span>(datas[,<span class="dv">1</span>], datas[,<span class="dv">1</span>], h), <span class="at">probability =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Histogram of PIT-transformed values"</span>,</span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"PIT values"</span>)</span>
+<span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generated from a lognormal dist</span></span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(datas[,<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="co"># taking the log of a variate from lognormal dist makes it normally distributed</span></span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">log</span>(datas[,<span class="dv">1</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="https://matthewfeickert.github.io/Statistics-Notes/notebooks/Introductory/probability-integral-transform.html">Probability Integral Transform</a></p>
+</section>
+<section id="nonparametric-simultaneous-tolerance-intervals-for-small-dimensions-based-on-kernel-density-estimates" class="level1">
+<h1>Nonparametric simultaneous tolerance intervals for small dimensions based on kernel density estimates</h1>
+<section id="abstract" class="level2">
+<h2 class="anchored" data-anchor-id="abstract">Abstract</h2>
+<ul>
+<li>This study aims to contribute to the existing knowledge on the computation of STIs by developing procedures to compute nonparametric STIs with accurate coverage.</li>
+<li>The tolerance interval’s property of containing a specified proportion of sampled population values with high degree of confidence makes its computation meaningful.</li>
+<li>Whenever there are several populations, it may be of interest to perform simultaneous inference. For this reason, this study proposes methods to construct simultaneous tolerance intervals (STIs).</li>
+<li>Furthermore, since in many cases of practical applications the underlying distribution is unknown, the proposed STIs are derived under a nonparametric setting.</li>
+<li>The proposed procedures and algorithms are then assessed through performance metrics, such as estimated coverage probabilities and expected lengths.</li>
+<li>The performance of the proposed methodology is also compared with the Bonferroni correction approach.</li>
+<li>The proposed methods show accurate results, with coverage probabilities close to the nominal level.</li>
+<li>The nonparametric STIs computed using the proposed methods are generally better than the ones obtained through a Bonferroni-corrected approach.</li>
+<li>A real-life application on the assessment of liver function is presented to illustrate the use of the proposed method.</li>
+</ul>
+</section>
+<section id="definitions" class="level2">
+<h2 class="anchored" data-anchor-id="definitions">Definitions</h2>
+<ul>
+<li><p><strong>Tolerance intervals</strong></p>
+<ul>
+<li><p>an interval that contains at least a specified proportion <span class="math inline">\(\gamma\)</span> of the population, with a specified degree of confidence, <span class="math inline">\(100 \left( 1 - \alpha\right)\%\)</span></p></li>
+<li><p>Let <span class="math inline">\(\mathcal{X} = \left\{ X_1, X_2, \dots, X_n \right\}\)</span> be a random sample from univariate distribution <span class="math inline">\(F(\cdot)\)</span> and suppose <span class="math inline">\(X \sim F(\cdot)\)</span>, where <span class="math inline">\(X\)</span> is independent of the random sample, then a subset of <span class="math inline">\(\mathbb{R}\)</span>, say <span class="math inline">\(T = T (\mathcal{X})\)</span>, computed from the random sample, is a <span class="math inline">\(\gamma\)</span>-content <span class="math inline">\(100 \left( 1 - \alpha\right)\%\)</span>-confidence tolerance interval for <span class="math inline">\(X\)</span> if it satisfies the ff: (The probability (over all possible samples <span class="math inline">\(\mathcal{X}\)</span>) that the tolerance interval <span class="math inline">\(T\)</span> constructed from the sample will capture at least a proportion <span class="math inline">\(\gamma\)</span> of the population is equal to <span class="math inline">\(1-\alpha\)</span>)</p></li>
+<li><p><em>If I keep collecting samples and building intervals over and over, then 95% of the time, those intervals will contain at least 90% of the population.</em> - That’s a (<span class="math inline">\(\gamma\)</span>, <span class="math inline">\(1-\alpha\)</span>) tolerance interval.</p></li>
+</ul>
+<p><span class="math display">\[
+P_{\mathcal{X}} \left\{ P_X \left( X \in T \mid \mathcal{X} \right) \geq \gamma \right\} = 1 - \alpha
+\]</span></p>
+<ul>
+<li><p>set <span class="math inline">\(T\)</span> could be of the form:</p>
+<ul>
+<li><span class="math inline">\(\left( L(\mathcal{X}), U(\mathcal{X}) \right)\)</span> for a two-sided tolerance interval</li>
+<li><span class="math inline">\(\left(-\infty, U(\mathcal{X}) \right)\)</span> for a one-sided upper tolerance interval</li>
+<li><span class="math inline">\(\left( L(\mathcal{X}), +\infty) \right)\)</span> for a one-sided lower tolerance interval</li>
+<li><span class="math inline">\(U(\mathcal{X})\)</span> and <span class="math inline">\(L(\mathcal{X})\)</span>: upper and lower tolerance limits</li>
+</ul></li>
+<li><p>sample use case: deriving appropriate process capability limits (<span class="math inline">\(U(\mathcal{X})\)</span> and <span class="math inline">\(L(\mathcal{X})\)</span>) for a manufactured product (<span class="math inline">\(X\)</span>), so that with a given level of confidence (<span class="math inline">\(1 - \alpha\)</span>), they contain the capability measurements of at least a specified proportion of units (<span class="math inline">\(\gamma\)</span>) from the sampled manufacturing process (ie, gusto mo may confidence ka na yung tolerance interval mo, contains <span class="math inline">\(\gamma\)</span> proportion nung samples)</p></li>
+</ul></li>
+<li><p><strong>Simultaneous inference</strong></p>
+<ul>
+<li>Whenever there are several populations, it is of interest to construct simultaneous statistical intervals from the sample data.</li>
+<li>Having several simultaneous interval estimates that are naïvely constructed only increases the likelihood that at least one of such inferential statements does not hold true.</li>
+<li>For this reason, this study considers integrating the criteria for simultaneous inference in computing statistical tolerance intervals so that the resulting coverage probabilities are close to the nominal confidence level.</li>
+</ul></li>
+<li><p><strong>Current studies</strong></p>
+<ul>
+<li>The STIs that are available in literature rely on the assumption of normality. However, in many applications, this assumption is unwarranted. For instance, Wright and Royston (1999) point out that positive skewness is common among laboratory measurements, which are the bases for the construction of reference intervals. Thus, there is a need to establish STIs through nonparametric means.</li>
+<li>While approaches to compute nonparametric tolerance regions are available in some existing studies [see, for instance Young and Mathew (2020) and Lucagbo (2021)], these studies do not use the criterion for simultaneous inference.</li>
+</ul></li>
+<li><p><strong>Nonparametric tolerance intervals</strong></p>
+<ul>
+<li><p>Suppose <span class="math inline">\(X_{(1)}, X_{(2)}, \dots, X_{(n)}\)</span> are order statistics of a random sample from a population with a univariate continuous distribution function <span class="math inline">\(F(x)\)</span>.</p></li>
+<li><p>Wilk’s approach: 2 sided interval</p>
+<ul>
+<li>sets values <span class="math inline">\(L(\mathcal{X}) = X_{(r)}\)</span> and <span class="math inline">\(U(\mathcal{X}) = X_{(s)}\)</span> where <span class="math inline">\(r &lt; s\)</span>, as the limits of the <span class="math inline">\(\gamma\)</span>-content <span class="math inline">\(100 \left( 1 - \alpha\right)\%\)</span>-confidence tolerance interval <span class="math inline">\(\left( L(\mathcal{X}), U(\mathcal{X}) \right)\)</span></li>
+<li>The values of <span class="math inline">\(r\)</span> and <span class="math inline">\(s\)</span> are chosen to satisfy <span class="math inline">\(1 \le r \le s \le n\)</span> and <span class="math inline">\(s-r=m\)</span> where <span class="math inline">\(m\)</span> is the smallest value for which <span class="math inline">\(P(Y \le m-1) \ge 1-\alpha\)</span>, and <span class="math inline">\(Y \sim \text{Binomial}(n, \gamma)\)</span>. It is customary to take the value of <span class="math inline">\(s\)</span> to be equal to <span class="math inline">\(n-r+1\)</span>, as suggested by Wilks et.al. so that</li>
+<li>the nonparametric interval is given by <span class="math inline">\((X_{(r)}, X_{(n-r+1)})\)</span></li>
+</ul></li>
+<li><p>Wilk’s approach: 1 sided interval: Lower tolerance limit</p>
+<ul>
+<li>sets <span class="math inline">\(L(\mathcal{X}) = X_{(r)}\)</span> as the lower limit of the <span class="math inline">\(\gamma\)</span>-content <span class="math inline">\(100 \left( 1 - \alpha\right)\%\)</span>-confidence tolerance interval.</li>
+<li>The value of <span class="math inline">\(r\)</span> is taken to be the largest integer for which <span class="math inline">\(P(Y \ge r \mid n, 1- \gamma) \ge 1 - \alpha\)</span> where <span class="math inline">\(Y \sim \text{Binomial}(n, 1-\gamma)\)</span>.</li>
+<li>The non parametric one-sided lower tolerance interval is given by <span class="math inline">\((X_{(r)}, \infty)\)</span></li>
+</ul></li>
+<li><p>Wilk’s approach: 1 sided interval: Upper tolerance limit</p>
+<ul>
+<li>sets <span class="math inline">\(U(\mathcal{X}) = X_{S}\)</span>, where it can be shown that</li>
+<li><span class="math inline">\(s=n-r+1\)</span> and <span class="math inline">\(r\)</span> is the value derived for the lower tolerance limit.</li>
+<li>The nonparametric one-sided upper tolerance interval is given by <span class="math inline">\((-\infty, X_{(n-r+1)})\)</span></li>
+</ul></li>
+<li><p>There is a minimum sample size requirement in computing the nonparametric tolerance intervals. This depends on the values of <span class="math inline">\(\gamma\)</span> and <span class="math inline">\(1-\alpha\)</span></p></li>
+<li><p>The coverage probabilities associated with nonparametric tolerance intervals are known to be conservative.</p></li>
+<li><p>Although in this study we shall only be using Wilks’ approach, we mention that recently some developments aimed at improving coverage probabilities of nonparametric tolerance intervals have been available in literature. For</p></li>
+</ul></li>
+<li><p><strong>Kernel density estimation</strong></p>
+<ul>
+<li><p>The methodologies proposed in this study involve estimating the Cumulative Distribution Function (CDF) through kernel density estimation (KDE), which is a generalization of density estimation through histograms.</p></li>
+<li><p>A weight function in histogram construction is simply replaced by another function, called the kernel function, denoted by <span class="math inline">\(K(\cdot)\)</span>, which satisfies the ff conditions: <span class="math inline">\(K(\cdot) \ge 0\)</span> and <span class="math inline">\(\int^{\infty}_{-\infty} K(x) dx = 1\)</span></p></li>
+<li><p>This function is often taken as a symmetric density function, such as a standard normal density function.</p></li>
+<li><p>KDE, as a nonparametric statistical tool, estimates the unknown Probability Density Function (PDF) or CDF.</p></li>
+<li><p>KDE Methodology</p>
+<ul>
+<li>Suppose that <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> is a random sample from some unknown PDF <span class="math inline">\(f(x)\)</span> and CDF <span class="math inline">\(F(x)\)</span>. Then, KDE estimates the PDF as <span class="math inline">\(\hat{f}(x) = \frac{1}{n} \sum^n_{i=1} \frac{1}{h} K \left( \frac{x-X_i}{h} \right)\)</span> where</li>
+<li><span class="math inline">\(h\)</span> is the bandwidth that acts as a smoothing parameter. Here, larger values of <span class="math inline">\(h\)</span> result in smoother density estimates. As it gets smaller, the density gets rougher. Optimal choices for <span class="math inline">\(h\)</span> include Silverman’s rule of thumb given by: <span class="math inline">\(h = 0.9 n^{-\frac{1}{5}} min \left\{ S, \frac{IQR}{1.34}\right\}\)</span> where <span class="math inline">\(S\)</span> is the standard deviation of the sample data and IQR is its interquartile range.</li>
+<li>Common choices for <span class="math inline">\(K(\cdot)\)</span> include Gaussian kernel and the Epanichikov kernel.</li>
+<li>This study uses the Gaussian kernel and estimtes the CDF by plugging the PDF of the standard normal distribution into <span class="math inline">\(K(\cdot)\)</span> and integrating the resulting quantity, giving <span class="math inline">\(\hat{F}(x)=\frac{1}{n} \sum^n_{i=1} \Phi \left( \frac{x-X_i}{h} \right)\)</span> where <span class="math inline">\(\hat{F}(x)\)</span> is the estimate of <span class="math inline">\(F(x)\)</span> and <span class="math inline">\(\Phi\)</span> is the CDF of the standard normal distribution.</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="methodology" class="level2">
+<h2 class="anchored" data-anchor-id="methodology">Methodology</h2>
+<section id="data-layout-statistical-criterion" class="level3">
+<h3 class="anchored" data-anchor-id="data-layout-statistical-criterion">Data layout &amp; statistical criterion</h3>
+<p>Here discusses the data to be used in computing STIs and the criterion to be followed.</p>
+<p><strong>Data</strong>: random sample <span class="math inline">\(\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n\)</span> of multivariate measurements with dimension <span class="math inline">\(p\)</span>, coming from an unknown continuous distributions, say <span class="math inline">\(F_X(\cdot)\)</span>. Each <span class="math inline">\(\mathbf{X}_i = \left( X_{i1}, X_{i2}, \dots, X_{ip}\right)'\)</span> is a <span class="math inline">\((p \times 1)\)</span> column vector of measurements taken from the <span class="math inline">\(i\)</span>th subject, <span class="math inline">\(i = 1, 2, \dots, n\)</span></p>
+<section id="sided-stis" class="level4">
+<h4 class="anchored" data-anchor-id="sided-stis">2 sided STIs</h4>
+<p><strong>Objective</strong>: We want to construct two-sided STIs for each component of <span class="math inline">\(\mathbf{X} = (X_1, X_2, \dots, X_p)'\)</span>. That is, we want to find a region of the form <span class="math inline">\((c_1, d_1) \times (c_2, d_2) \times \dots \times (c_p, d_p)\)</span> where <span class="math inline">\(c_j\)</span> and <span class="math inline">\(d_j\)</span>, <span class="math inline">\(j = 1, 2, \dots, p\)</span>, are functions of the random sample <span class="math inline">\(\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n\)</span> such that</p>
+<p><span class="math display">\[
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ P_{X_j} \left(c_j &lt; X_j &lt;d_j \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma, \forall j = 1, 2, \dots, p \right\} = 1 - \alpha
+\]</span></p>
+<p>The quantities <span class="math inline">\(\gamma\)</span> and <span class="math inline">\(\left( 1-\alpha\right)\)</span> are between 0 and 1 and are referred to as the <strong>content probability</strong> and <strong>confidence level</strong>.</p>
+<p><strong>Criterion</strong>: With a confidence level of <span class="math inline">\(100(1-\alpha)\%\)</span>, each marginal interval <span class="math inline">\((c_j, d_j), j = 1, 2, \dots, p\)</span>, should have a content of at least <span class="math inline">\(\gamma\)</span>.</p>
+</section>
+<section id="one-sided-sti" class="level4">
+<h4 class="anchored" data-anchor-id="one-sided-sti">One sided STI</h4>
+<p><strong>Objective</strong>: We want to construct 1-sided STIs.</p>
+<p>These only have either lower limits only or upper limits only. That is, we want to find a region of the forms</p>
+<p><span class="math display">\[
+(c_1, \infty) \times (c_2, \infty) \times \dots, (c_p, \infty)
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+(-\infty, d_1) \times (-\infty, d_2) \times \dots (-\infty, d_p)
+\]</span></p>
+<p>where <span class="math inline">\(c_j\)</span> and <span class="math inline">\(d_j\)</span>, <span class="math inline">\(j=1, 2, \dots p\)</span>, are still functions of the random sample <span class="math inline">\(\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n\)</span>, such that</p>
+<p><span class="math display">\[
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ P_{X_j} \left(X_j &gt; c_j \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma, \forall j = 1, 2, \dots, p \right\} = 1 - \alpha
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ P_{X_j} \left(X_j &lt; d_j \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma, \forall j = 1, 2, \dots, p \right\} = 1 - \alpha
+\]</span></p>
+<p><strong>Idea</strong>:The process of obtaining simultaneous tolerance limits for the random vector <span class="math inline">\(X = \left( X_1, X_2, \dots, X_p \right)\)</span> with <span class="math inline">\(p\)</span>-variate distribution <span class="math inline">\(F_X(\cdot)\)</span> can also be thought of as constructing simultaneous tolerance limits for the <span class="math inline">\(p\)</span> populations represented by the <span class="math inline">\(p\)</span> components of <span class="math inline">\(\mathbf{X}\)</span>.</p>
+<p><strong>Notes</strong>: Methodologies here make no assumptions about the correlation structure of <span class="math inline">\(\mathbf{X}\)</span> and so procedures also apply to case where <span class="math inline">\(X_1, X_2, \dots, X_p\)</span> are independent.</p>
+</section>
+</section>
+<section id="method-a-nonparametric-two-sided-stis" class="level3">
+<h3 class="anchored" data-anchor-id="method-a-nonparametric-two-sided-stis">Method A: nonparametric two-sided STIs</h3>
+<p>Reference: Lucagbo (2021), who develops nonparametric rectangular tolerance regions. The main idea of the proposed methods is to transform each component in <span class="math inline">\(\mathbf{X}\)</span>.</p>
+<p>Let <span class="math inline">\(F_j(\cdot)\)</span> be the CDF of the continuous random variable <span class="math inline">\(X_j\)</span>, the <span class="math inline">\(j\)</span>th component of <span class="math inline">\(\mathbf{X}\)</span>. Moreover, let <span class="math inline">\(k \equiv k(\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n)\)</span> and <span class="math inline">\(k' \equiv k'(\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n)\)</span> be some functions of the random sample. The <span class="math inline">\(\gamma\)</span>-content, <span class="math inline">\(100(1-\alpha)\%\)</span> confidence two-sided STIs for <span class="math inline">\(\mathbf{X}\)</span> are set to be of the following form:</p>
+<p><span class="math display">\[
+\prod^p_{j=1} \left( F^{-1}_j (k'), F^{-1}_j(k) \right)
+\]</span></p>
+<p>For each <span class="math inline">\(j = 1, 2, \dots, p\)</span>, the end points of the <span class="math inline">\(j\)</span>th interval are expressed as quantiles of <span class="math inline">\(X_j\)</span>. And aligned with the criterion, the values of <span class="math inline">\(k\)</span> and <span class="math inline">\(k'\)</span> are computed to satisfy the following condition:</p>
+<p><span class="math display">\[
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ P_{X_j} \left(F_j^{-1} \left(k'\right) &lt; X_j &lt; F_j^{-1} \left(k\right) \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma, \forall j = 1, 2, \dots, p \right\} = 1 - \alpha
+\]</span></p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ P_{X_j} \left( k' &lt; F \left( X_j \right) &lt; k \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma, \forall j = 1, 2, \dots, p \right\} = 1 - \alpha
+\]</span></p>
+<p>Note that <span class="math inline">\(F_j(X_j), j = 1, 2, \dots, p\)</span> are identically distributed as <span class="math inline">\(U(0, 1)\)</span> random variables. Hence, the choice of common <span class="math inline">\(k\)</span> and <span class="math inline">\(k'\)</span> for the <span class="math inline">\(p\)</span> components.</p>
+<p>Moreover, using the symmetry property of the uniform distribution, we can choose <span class="math inline">\(k'\)</span> as <span class="math inline">\(1-k\)</span> (ex: Since <span class="math inline">\(k' &lt; k\)</span>, let k = 0.7. Since dist is uniform, its max is 1. Hence, <span class="math inline">\(k' = 1 - k = 1-0.7 = 0.3 \rightarrow k'=0.3 &lt; k=0.7\)</span>). Thus, the criterion can be written as</p>
+<p><span class="math display">\[
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ P_{X_j} \left( 1-k &lt; F_j \left( X_j \right) &lt; k \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma, \forall j = 1, 2, \dots, p \right\} = 1 - \alpha
+\\
+\Rightarrow
+\\
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ \min\limits_{1 \le j \le p} P_{X_j} \left( 1-k &lt; F_j \left( X_j \right) &lt; k \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma \right\} = 1 - \alpha \
+\\\text{take the min prob across j for w/c the prob that at least proportion gamma is within the interval}
+\\
+\text{this is mostly correct/acceptable prob for all j than taking the max one}
+\]</span></p>
+<p>Since the CDF <span class="math inline">\(F_j(\cdot), j = 1, 2, \dots p\)</span> are unknown, we estimate them marginally via KDE, through the procedure in <a href="#definitions">definitions section</a></p>
+<p><span class="math display">\[
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ \min\limits_{1 \le j \le p} P_{X_j} \left( 1-k &lt; \hat{F}_j \left( X_j \right) &lt; k \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma \right\} = 1 - \alpha
+\]</span></p>
+<p>is also equivalent to</p>
+<p><span class="math display">\[
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ \min\limits_{1 \le j \le p} P_{X_j} \left( \max \left\{ \hat{F}_j(X_j) , 1 - \hat{F}_j(X_j)\right\} \left( X_j \right) &lt; k \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma \right\} = 1 - \alpha
+\]</span></p>
+<p>Explanation:</p>
+<p><span class="math display">\[
+1-k &lt; \hat{F}_j \left( X_j \right) &lt; k
+\\
+\equiv
+\\
+1-k &lt; \hat{F}_j\left( X_j \right) \ \text{and} \  \hat{F}_j \left( X_j \right) &lt; k
+\\
+\equiv
+\\
+1-\hat{F}_j\left( X_j \right) &lt; k \ \text{and} \  \hat{F}_j \left( X_j \right) &lt; k
+\\
+\text{this shows that both 1-F and F are less than k and is mathematically equal to saying}
+\\
+\max \left\{ \hat{F}_j(X_j) , 1 - \hat{F}_j(X_j)\right\} &lt; k
+\]</span></p>
+<p>Define <span class="math inline">\(Y_j = \max \left\{ \hat{F}_j(X_j) , 1 - \hat{F}_j(X_j)\right\}\)</span> and disregard the “minimum” condition for now.</p>
+<p>Notice <span class="math inline">\(k\)</span> is consistent with the definition of upper tolerance limit of the random variable <span class="math inline">\(Y_j\)</span> (see: <a href="#one-sided-sti">1-sided STI</a>). So, if we focus only on one component <span class="math inline">\(Y_j\)</span>, we could estimate <span class="math inline">\(k\)</span> by the upper tolerance limit of <span class="math inline">\(Y_j\)</span> to be computed from the data using <a href="#definitions">this procedure</a> (nonparametric tolerance intervals) by computing the nonparametric upper tolerance limit based on <span class="math inline">\(Y_{1j}, Y_{2j}, \dots, Y_{nj}\)</span>, where <span class="math inline">\(Y_{ij} = \max \left\{ \hat{F}_j(X_{ij}) , 1 - \hat{F}_j(X_{ij})\right\}, i=1,2,\dots,n\)</span>.</p>
+<p>Since <span class="math inline">\(p&gt;1\)</span> and to account for the “minimum” condition (This means that the weakest (i.e., smallest) probability across all <span class="math inline">\(p\)</span> dimensions should still meet the threshold <span class="math inline">\(\gamma\)</span>), we obtain an estimate of <span class="math inline">\(k\)</span>, say <span class="math inline">\(\hat{k}\)</span>, by taking the maximum of the marginal upper tolerance limits of the <span class="math inline">\(Y_j\)</span>s.</p>
+<p><span class="math display">\[
+\hat{k} = \max \left\{ k_1, k_1, \dots, k_p\right\}
+\]</span></p>
+<p>where <span class="math inline">\(k_j\)</span> is a marginal upper tolerance limit for the probability condition in dimension <span class="math inline">\(j\)</span>.</p>
+<p>Using this conservative estimate <span class="math inline">\(\hat{k}\)</span> ensures that the minimum of the inner probabilities as shown below is at least <span class="math inline">\(\gamma\)</span>; i.e., in at least <span class="math inline">\((1-\alpha)\)</span> fraction of all datasets, the weakest probability among all <span class="math inline">\(p\)</span> dimensions meets of exceeds <span class="math inline">\(\gamma\)</span></p>
+<p><span class="math display">\[
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ \min\limits_{1 \le j \le p} P_{X_j} \left( \max \left\{ \hat{F}_j(X_j) , 1 - \hat{F}_j(X_j)\right\}  &lt; \hat{k} \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma \right\} = 1 - \alpha
+\]</span></p>
+<p>Now, going back to the original form:</p>
+<p><span class="math display">\[
+P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ P_{X_j} \left(F_j^{-1} (1-\hat{k}) &lt; X_j &lt; F_j^{-1} (\hat{k}) \mid \mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \right) \ge \gamma, \forall j = 1, 2, \dots, p \right\} = 1 - \alpha
+\]</span></p>
+<p>We say, the <span class="math inline">\(\gamma\)</span>-content, <span class="math inline">\(100(1-\alpha)\%\)</span> confidence two sided STIs for the data are given by</p>
+<p><span class="math display">\[
+\prod^p_{j=1}\left( c_j, d_j \right) = \prod^p_{j=1}\left( \hat{F}_j^{-1}(1-\hat{k}), \hat{F}_j^{-1}(\hat{k}) \right)
+\]</span></p>
+<hr>
+<p><strong>Algorithm: Nonparametric two-sided STIs</strong></p>
+<ol type="1">
+<li><p>Data are given by <span class="math inline">\(\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \overset{iid}{\sim}F_{\mathbf{X}}(\mathbf{x})\)</span> where <span class="math inline">\(\mathbf{X}_i = \left( X_{i1}, X_{i2}, \dots, X_{ip}\right)'\)</span> is a <span class="math inline">\((p \times 1)\)</span> vector of measurements taken from the <span class="math inline">\(i\)</span>th subject, <span class="math inline">\(i = 1, 2, \dots, n\)</span>. Also <span class="math inline">\(F_{\mathbf{X}}(\mathbf{x})\)</span> is some unknown (continuous) distribution, where <span class="math inline">\(F_j(x)\)</span> is the unknown distribution of the <span class="math inline">\(j\)</span>th component</p></li>
+<li><p>For each <span class="math inline">\(j = 1, 2, \dots, p\)</span>, obtain the estimate <span class="math inline">\(\hat{F}_j(x)\)</span> via KDE using <span class="math inline">\(X_{1j}, X_{2j}, \dots, X_{nj}\)</span>.</p></li>
+<li><p>Compute <span class="math inline">\(U_{ij} = \hat{F}_j(X_{ij}), i = 1, 2, \dots, n\)</span> and <span class="math inline">\(j = 1, 2, \dots, p\)</span></p></li>
+<li><p>Compute <span class="math inline">\(Y_{ij} = \max \left\{ U_{ij}, 1-U_{ij} \right\}, i = 1, 2, \dots, n\)</span> and <span class="math inline">\(j = 1, 2, \dots, p\)</span></p></li>
+<li><p>For each <span class="math inline">\(j=1, 2, \dots, p\)</span>, compute the <span class="math inline">\(\gamma\)</span>-content, <span class="math inline">\(100(1-\alpha)\%\)</span>-confidence nonparametric upper tolerance limit based on <span class="math inline">\(Y_{1j}, Y_{2j}, \dots, Y_{nj}\)</span> using the methodology <a href="#definitions">here</a> (nonparametric tolerance intervals). Call this <span class="math inline">\(k_j, j = 1, 2, \dots, p\)</span></p></li>
+<li><p>Get the maximum of the <span class="math inline">\(k_j\)</span>s. Call this <span class="math inline">\(\hat{k} = \max\{k_1, k_2, \dots, k_p\}\)</span></p></li>
+<li><p>For each <span class="math inline">\(j=1, 2, \dots, p\)</span>, compute <span class="math inline">\(c_j =\hat{F}_j^{-1}(1-\hat{k})\)</span> and <span class="math inline">\(d_j = \hat{F}_j^{-1}(\hat{k})\)</span></p></li>
+<li><p>The <span class="math inline">\(\gamma\)</span>-content, <span class="math inline">\(100(1-\alpha)\%\)</span>-confidence nonparametric two-sided STIs are given by <span class="math inline">\((c_j, d_j), j =1, 2, \dots, p\)</span></p></li>
+</ol>
+<p>common <span class="math inline">\(\hat{k}\)</span> is to be used across all estimated distributions <span class="math inline">\(\hat{F}_j\)</span></p>
+</section>
+<section id="simulation-a-nonparametric-two-sided-stis" class="level3">
+<h3 class="anchored" data-anchor-id="simulation-a-nonparametric-two-sided-stis">Simulation A: nonparametric two-sided STIs</h3>
+<p>This is aimed to evaluate the performance of the proposed methodology.</p>
+<ul>
+<li>To reflect the potential skewness of the observations, the data are generated from a multivariate lognormal distribution with mean vector <span class="math inline">\(\mathbf{0}\)</span> and covariance matrix <span class="math inline">\(\Sigma\)</span> in logarithmic scale.</li>
+<li>DGP will be done using “compositions” R package.</li>
+<li>The confidence level and content are set at <span class="math inline">\(1-\alpha=0.95\)</span> and <span class="math inline">\(\gamma = 0.95\)</span>.</li>
+<li>We use the sample sizes <span class="math inline">\(n =100,n=300\)</span>, and <span class="math inline">\(n=500\)</span> for the simulations.</li>
+<li>The covariance matrix <span class="math inline">\(\Sigma\)</span> is also varied to represent different correlation structures. We run simulations for the values of <span class="math inline">\(\Sigma\)</span> of the form <span class="math inline">\((1-\rho)\mathbf{I}_p + \rho1_p1_p'\)</span>. Here <span class="math inline">\(\mathbf{I}_p\)</span> is the <span class="math inline">\((p \times p)\)</span> identity matrix and <span class="math inline">\(1_p\)</span> is a <span class="math inline">\((p \times 1)\)</span> column vector of 1s. This choice of <span class="math inline">\(\Sigma\)</span> is a correlation matrix that assumes an exchangeable correlation structure. We run simulations for <span class="math inline">\(p=2\)</span> and <span class="math inline">\(p=3\)</span> for the ff covariance matrices:</li>
+</ul>
+<p><span class="math display">\[
+\Sigma_1 = 0.05\mathbf{I}_p + 0.95\ 1_p1'_p =
+\begin{bmatrix}
+1 &amp; 0.95 &amp; \ldots &amp; 0.95\\
+0.95 &amp; 1 &amp; \ldots &amp; 0.95\\
+0.95 &amp; 0.95 &amp; \ddots &amp; 0.95\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+0.95 &amp; 0.95 &amp; \ldots &amp; 1\\
+\end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[
+\Sigma_2 = 0.5\mathbf{I}_p + 0.5\ 1_p1'_p =
+\begin{bmatrix}
+1 &amp; 0.5 &amp; \ldots &amp; 0.5\\
+0.5 &amp; 1 &amp; \ldots &amp; 0.5\\
+0.5 &amp; 0.5 &amp; \ddots &amp; 0.5\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+0.5 &amp; 0.5 &amp; \ldots &amp; 1\\
+\end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[
+\Sigma_3 = 0.8\mathbf{I}_p + 0.2\ 1_p1'_p =
+\begin{bmatrix}
+1 &amp; 0.2 &amp; \ldots &amp; 0.2\\
+0.2 &amp; 1 &amp; \ldots &amp; 0.2\\
+0.2 &amp; 0.2 &amp; \ddots &amp; 0.2\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+0.2 &amp; 0.2 &amp; \ldots &amp; 1\\
+\end{bmatrix}
+\]</span></p>
+<p>In addition, we also run simulations for the following non-exchangeable structures <span class="math inline">\(\Sigma\)</span>:</p>
+<p><span class="math display">\[
+\Sigma_4=
+\begin{bmatrix}
+1 &amp; -0.95 &amp; -0.95 \\
+-0.95 &amp; 1 &amp; 0.95 \\
+-0.95 &amp; 0.95 &amp; 1
+\end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[
+\Sigma_5=
+\begin{bmatrix}
+1 &amp; -0.5 &amp; -0.5 \\
+-0.5 &amp; 1 &amp; 0.5 \\
+-0.5 &amp; 0.5 &amp; 1
+\end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[
+\Sigma_6=
+\begin{bmatrix}
+1 &amp; -0.2 &amp; -0.2 \\
+-0.2 &amp; 1 &amp; 0.2 \\
+-0.2 &amp; 0.2 &amp; 1
+\end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[
+\Sigma_7=
+\begin{bmatrix}
+1 &amp; 0.9 &amp; 0.5 \\
+0.9 &amp; 1 &amp; 0.1 \\
+0.5 &amp; 0.1 &amp; 1
+\end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[
+\Sigma_8=
+\begin{bmatrix}
+1 &amp; 0.5 &amp; 0.5 \\
+0.5 &amp; 1 &amp; 0.95 \\
+0.5 &amp; 0.95 &amp; 1
+\end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[
+\Sigma_9=
+\begin{bmatrix}
+1 &amp; 0.2 &amp; 0.2 \\
+0.2 &amp; 1 &amp; 0.95 \\
+0.2 &amp; 0.95 &amp; 1
+\end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[
+\Sigma_{10}=
+\begin{bmatrix}
+1 &amp; -0.5 &amp; -0.5 \\
+-0.5 &amp; 1 &amp; 0.95 \\
+-0.5 &amp; 0.95 &amp; 1
+\end{bmatrix}
+\]</span></p>
+<p>The choices for the covariance matrices <span class="math inline">\(\Sigma_1\)</span> to <span class="math inline">\(\Sigma_{10}\)</span> are made so that they include as wide variety as possible of the correlation values in terms of both size and direction.</p>
+<p>Aside: An exchangeable variance-covariance matrix is a structured covariance matrix where all off-diagonal elements are equal, meaning that each pair of variables has the same covariance.</p>
+<p><strong>Univariate case</strong></p>
+<p>Furthermore, although this study is primarily concerned with multivariate measurements, we shall also investigate the performance of the KDE-based method in the univariate case and compare it with the performance of the standard approach to compute nonparametric tolerance intervals, which is that of Wilks (1941).</p>
+<ul>
+<li>For the univariate case, we generate the simulated samples from the univariate lognormal distribution with log-scale mean 0.</li>
+<li>The log-scale variances used are <span class="math inline">\(\sigma^2 = 0.95, \sigma^2=0.5\)</span>, and <span class="math inline">\(\sigma^2 = 0.20\)</span>.</li>
+</ul>
+<p>Note that since the proposed methods apply mainly to the multivariate case, in the univariate care we refrain from saying “proposed method”, and instead say “KDE-based method” even though the univariate case is a special case of the multivariate case.</p>
+<p>The Gaussian kernel is used in obtaining the KDE. Moreover, the bandwidth <span class="math inline">\(h\)</span> used in the simulations is Silverman’s rule of thumb, which is the preferred bandwidth for the Gaussian kernel. Some numerical simulations (not reported here) have also been performed using a different bandwidth choice and the results are very similar.</p>
+<p>In Step 7 of Algorithm A, the inverse of the estimated distribution functions are calculated using the <code>GoFKernel</code> R package. In addition, nonparametric tolerance limits described are implemented in R through the <code>tolerance</code> R package. To estimate the coverage probability, this study uses <span class="math inline">\(M=5000\)</span> simulated samples in running Monte Carlo simulations.</p>
+</section>
+<section id="simulation-a-performance-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="simulation-a-performance-evaluation">Simulation A: Performance Evaluation</h3>
+<ol type="1">
+<li>Look at the estimated coverage probabilities. The desired or nominal confidence level is 0.95.</li>
+</ol>
+<p>For method A, also compute the expected lengths of the toleerance intervals for each component.</p>
+<p><strong>Algorithm: Performance evaluation of the Nonparametric two-sided STIs obtained from Algo A through estimated coverage probability and expected lengths</strong></p>
+<ol type="1">
+<li><p>Generate the random sample <span class="math inline">\(\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n\)</span> from the multivariate lognormal distribution with log-scale mean <span class="math inline">\(\boldsymbol{\mu}\)</span> and given log-scale covariance matrix <span class="math inline">\(\Sigma\)</span>. Let <span class="math inline">\(\mu_j\)</span> be the <span class="math inline">\(j\)</span>th element of <span class="math inline">\(\boldsymbol{\mu}\)</span> and <span class="math inline">\(\sigma^2_j\)</span> be the <span class="math inline">\(j\)</span>th diagonal element of <span class="math inline">\(\Sigma\)</span>.</p></li>
+<li><p>Compute the 2-sided tolerance limits <span class="math inline">\(c_j\)</span> and <span class="math inline">\(d_j\)</span>, <span class="math inline">\(j = 1, 2, \dots, p\)</span> using the procedure in Algo A.</p></li>
+<li><p>Compute <span class="math inline">\(\min_{1 \leq j \leq p} \left\{ \Phi \left( \log d_j; \mu_j, \sigma^2_j\right) - \Phi \left( \log c_j; \mu_j, \sigma^2_j\right) \right\}\)</span> where <span class="math inline">\(\Phi \left( x; \mu_j, \sigma^2_j\right)\)</span> denotes the CDF of the <span class="math inline">\(N \left( \mu_j, \sigma_j^2 \right)\)</span></p></li>
+</ol>
+</section>
+</section>
+<section id="basics-1" class="level2">
+<h2 class="anchored" data-anchor-id="basics-1">Basics</h2>
+<section id="tolerance-intervals" class="level3">
+<h3 class="anchored" data-anchor-id="tolerance-intervals">Tolerance intervals</h3>
+<p><strong>Parametric and univariate</strong></p>
+<p>Given a sample size <span class="math inline">\(n\)</span>, sample mean <span class="math inline">\(\bar{x}\)</span>, and sample standard deviation <span class="math inline">\(s\)</span>, the two-sided normal tolerance interval is:</p>
+<p><span class="math display">\[
+\bar{x} \pm k \cdot s
+\]</span></p>
+<p>where <span class="math inline">\(k\)</span> is a factor based on:</p>
+<p><span class="math inline">\(n\)</span>, confidence level, <span class="math inline">\((1-\alpha)\)</span>, and population converage <span class="math inline">\(\gamma\)</span></p>
+<p>Assumptions:</p>
+<ul>
+<li>normally distributed data</li>
+<li>random sampling</li>
+<li>if unknown mean and variance: We estimate both the mean and the standard deviation from the data. Why it matters: That’s what distinguishes this from a theoretical tolerance interval based on known parameters. It affects the derivation of <span class="math inline">\(\mathcal{k}\)</span></li>
+<li>moderate sample size: What it means: While larger n is better, a sample of 20 is acceptable for parametric TIs, especially if the distribution is normal. Why it matters: Small samples lead to more variability in s, making the TI wider or less reliable.</li>
+</ul>
+<p><strong>Example</strong></p>
+<p>Case for unknown <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>: Estimate the mean <span class="math inline">\(\bar{x}\)</span> and standard deviation, <span class="math inline">\(\sigma\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set.seed(777)</span></span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a><span class="co">#v = rnorm(20, mean = 10, sd = 0.25)</span></span>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(mdat<span class="sc">$</span>y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Q-Q plot</span></span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(mdat<span class="sc">$</span>y)</span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(mdat<span class="sc">$</span>y, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-47-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(mdat<span class="sc">$</span>y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  mdat$y
+W = 0.97084, p-value = 0.6663</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="co">#W: the test statistic</span></span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="co">#p-value &gt; 0.05 → data is likely normally distributed</span></span>
+<span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a><span class="co">#p-value ≤ 0.05 → data likely not normally distributed</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Aside:</p>
+<p>In R, to find the smallest value <span class="math inline">\(m\)</span> such that <span class="math inline">\(P(Y \le m-1) \ge 1-\alpha\)</span> for a binomial distribution <span class="math inline">\(Y \sim \text{Binomial}(n, \gamma)\)</span>, you can use the cumulative distribution function (CDF) for the Binomial distribution, which is available in the <code>pbinom()</code> function.</p>
+<p>The condition <span class="math inline">\(P(Y \le m-1) \ge 1-\alpha\)</span> suggests that you are looking for the quantile <span class="math inline">\(m\)</span> such that the cumulative probability is at least <span class="math inline">\(1-\alpha\)</span>.</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
