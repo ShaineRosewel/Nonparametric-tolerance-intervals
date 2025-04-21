@@ -1,7 +1,3 @@
-# Finish What You Started
-
-A repo to motivate me to work on my degree pls.
-
 ## Nonparametric simultaneous tolerance intervals
 
 ### To do:
