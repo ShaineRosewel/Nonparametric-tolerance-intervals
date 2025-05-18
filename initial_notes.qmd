@@ -144,9 +144,9 @@ Manually deriving the endpoints:
 
 **Wilk's approach: 2 sided interval**
 
-    -   sets values $L(\mathcal{X}) = X_{(r)}$ and $U(\mathcal{X}) = X_{(s)}$ where $r < s$, as the limits of the $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval $\left( L(\mathcal{X}), U(\mathcal{X}) \right)$
-    -   The values of $r$ and $s$ are chosen to satisfy $1 \le r \le s \le n$ and $s-r=m$ where $m$ is the smallest value for which $P(Y \le m-1) \ge 1-\alpha$, and $Y \sim \text{Binomial}(n, \gamma)$. It is customary to take the value of $s$ to be equal to $n-r+1$, as suggested by Wilks et.al. so that
-    -   the nonparametric interval is given by $(X_{(r)}, X_{(n-r+1)})$
+-   sets values $L(\mathcal{X}) = X_{(r)}$ and $U(\mathcal{X}) = X_{(s)}$ where $r < s$, as the limits of the $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval $\left( L(\mathcal{X}), U(\mathcal{X}) \right)$
+-   The values of $r$ and $s$ are chosen to satisfy $1 \le r \le s \le n$ and $s-r=m$ where $m$ is the smallest value for which $P(Y \le m-1) \ge 1-\alpha$, and $Y \sim \text{Binomial}(n, \gamma)$. It is customary to take the value of $s$ to be equal to $n-r+1$, as suggested by Wilks et.al. so that
+-   the nonparametric interval is given by $(X_{(r)}, X_{(n-r+1)})$
 
 ```{r}
 # 1 <= r < s < N = 25
