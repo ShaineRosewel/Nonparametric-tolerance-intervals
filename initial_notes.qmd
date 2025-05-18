@@ -6,7 +6,7 @@ format:
     toc-location: left
 ---
 
-## Questions {.tabset}
+## Questions
 
 -   two-sided interval
     -   What interval will contain $p$ percent of the population measurements?\
@@ -20,7 +20,7 @@ The $k$ factors are determined so that the intervals cover at least a proportion
 
 The value of $p$ is also referred to as the coverage factor.
 
-## Univariate Tolerance Intervals (Two-sided) {.tabset}
+## Univariate Tolerance Intervals (Two-sided)
 
 ### Tolerance factor assuming normal distribution
 
@@ -62,7 +62,7 @@ K2 = K.factor(n=N, f=nu, alpha=1-g, P=p, side=2, method="HE2", m=1000)
 K2
 ```
 
-### Example {.tabset}
+### Example
 
 Suppose that we take a sample of $N=25$ silicon wafers from a lot and measure their thickness in order to find tolerance limits within which a proportion $p = 0.90$ of the wafers in the lot fall with confidence $\alpha = 0.99$. Since the standard deviation, $s$, is computed from the sample of 25 wafers, the df are $\nu = N - 1$
 
@@ -306,7 +306,7 @@ f.inv(.2)
 qbeta(p=0.2, shape1=2, shape2=3)
 ```
 
-## Kernel density estimation {.tabset}
+## Kernel density estimation
 
 [Reference 1](https://medium.com/analytics-vidhya/kernel-density-estimation-kernel-construction-and-bandwidth-optimization-using-maximum-b1dfce127073) [Plotting KDE](https://rpubs.com/mcocam12/kdf_byhand)
 
