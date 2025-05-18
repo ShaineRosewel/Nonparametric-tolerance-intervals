@@ -544,7 +544,7 @@ get_tolerance_interval <- function(p_data, maxk=max(k_j)){
 }
 ```
 
-# SIM
+## SIM
 
 ```{r}
 
@@ -741,7 +741,7 @@ hist(log(datas[,1]))
 
 [Probability Integral Transform](https://matthewfeickert.github.io/Statistics-Notes/notebooks/Introductory/probability-integral-transform.html)
 
-# Nonparametric simultaneous tolerance intervals for small dimensions based on kernel density estimates
+## Nonparametric simultaneous tolerance intervals for small dimensions based on kernel density estimates
 
 ## Abstract
 
