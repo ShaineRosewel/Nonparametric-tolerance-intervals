@@ -81,12 +81,16 @@ colnames(mdat) = c("cr", "wafer", "mo", "day", "h", "min", "op",
 head(mdat)
 ```
 
+```{r}
+library(tolerance)
+```
+
+
 #### Parametric approach
 
 **Through `tolerance` package**
 
 ```{r}
-library(tolerance)
 pout = normtol.int(mdat$y, 
                    alpha=0.01, # chosen such that 1-alpha is the conf level
                    P=.90, # proportion of the pop to be covered by this TI

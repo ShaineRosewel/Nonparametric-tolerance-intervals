@@ -268,15 +268,17 @@ P_{\mathcal{X}} \left\{ P_X \left( X \in T \mid \mathcal{X} \right) \geq \gamma 
 6 51939   137  3  28 17  33  1  43  2362 23.352 97.014 0.036  5</code></pre>
 </div>
 </div>
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<p><strong>Through <code>tolerance</code> package</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tolerance)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>tolerance package, version 3.0.0, Released 2024-04-18
 This package is based upon work supported by the Chan Zuckerberg Initiative: Essential Open Source Software for Science (Grant No. 2020-255193).</code></pre>
 </div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p><strong>Through <code>tolerance</code> package</strong></p>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pout <span class="ot">=</span> <span class="fu">normtol.int</span>(mdat<span class="sc">$</span>y, </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">alpha=</span><span class="fl">0.01</span>, <span class="co"># chosen such that 1-alpha is the conf level</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">P=</span>.<span class="dv">90</span>, <span class="co"># proportion of the pop to be covered by this TI</span></span>
@@ -338,7 +340,7 @@ This package is based upon work supported by the Chan Zuckerberg Initiative: Ess
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -395,7 +397,7 @@ This package is based upon work supported by the Chan Zuckerberg Initiative: Ess
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -412,7 +414,7 @@ This package is based upon work supported by the Chan Zuckerberg Initiative: Ess
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -470,7 +472,7 @@ This package is based upon work supported by the Chan Zuckerberg Initiative: Ess
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -485,7 +487,7 @@ This package is based upon work supported by the Chan Zuckerberg Initiative: Ess
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -652,7 +654,7 @@ Attaching package: 'dplyr'</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -701,7 +703,7 @@ Attaching package: 'dplyr'</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -802,7 +804,7 @@ Attaching package: 'MASS'</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -812,7 +814,7 @@ Attaching package: 'MASS'</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-25-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-26-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -825,7 +827,7 @@ Attaching package: 'MASS'</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -833,7 +835,7 @@ Attaching package: 'MASS'</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-26-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-27-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -929,7 +931,7 @@ Attaching package: 'MASS'</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -945,7 +947,7 @@ Attaching package: 'MASS'</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1119,7 +1121,7 @@ Attaching package: 'MASS'</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1133,7 +1135,7 @@ Attaching package: 'MASS'</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-40-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-41-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1146,7 +1148,7 @@ Attaching package: 'MASS'</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1157,7 +1159,7 @@ Attaching package: 'MASS'</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1168,7 +1170,7 @@ Attaching package: 'MASS'</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1492,7 +1494,7 @@ P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ P_{X_j} \left(F_j^{-
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1502,7 +1504,7 @@ P_{\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n} \left\{ P_{X_j} \left(F_j^{-
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-44-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-45-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
