@@ -7,52 +7,98 @@ format:
 
 ## Tolerance Intervals
 
-- an interval that contains at least a specified proportion $\gamma$ of the population, with a specified degree of confidence, $100 \left( 1 - \alpha\right)\%$
-- Let $\mathcal{X} = \left\{ X_1, X_2, \dots, X_n \right\}$ be a random sample from univariate distribution $F(\cdot)$ and suppose $X \sim F(\cdot)$, where $X$ is independent of the random sample, then a subset of $\mathbb{R}$, say $T = T (\mathcal{X})$, computed from the random sample, is a $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval for $X$ if it satisfies the ff: (The probability (over all possible samples $\mathcal{X}$) that the tolerance interval $T$ constructed from the sample will capture at least a proportion $\gamma$ of the population is equal to $1-\alpha$)
-- *If I keep collecting samples and building intervals over and over, then 95% of the time, those intervals will contain at least 90% of the population.* - That's a ($\gamma$, $1-\alpha$) tolerance interval.
+-   an interval that contains at least a specified proportion $\gamma$ of the population, with a specified degree of confidence, $100 \left( 1 - \alpha\right)\%$
+-   Let $\mathcal{X} = \left\{ X_1, X_2, \dots, X_n \right\}$ be a random sample from univariate distribution $F(\cdot)$ and suppose $X \sim F(\cdot)$, where $X$ is independent of the random sample, then a subset of $\mathbb{R}$, say $T = T (\mathcal{X})$, computed from the random sample, is a $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval for $X$ if it satisfies the ff: (The probability (over all possible samples $\mathcal{X}$) that the tolerance interval $T$ constructed from the sample will capture at least a proportion $\gamma$ of the population is equal to $1-\alpha$)
+-   *If I keep collecting samples and building intervals over and over, then 95% of the time, those intervals will contain at least 90% of the population.* - That's a ($\gamma$, $1-\alpha$) tolerance interval.
 
 $$
 P_{\mathcal{X}} \left\{ P_X \left( X \in T \mid \mathcal{X} \right) \geq \gamma \right\} = 1 - \alpha
 $$
 
-- set $T$ could be of the form:
-  - $\left( L(\mathcal{X}), U(\mathcal{X}) \right)$ for a two-sided tolerance interval
-  - $\left(-\infty, U(\mathcal{X}) \right)$ for a one-sided upper tolerance interval
-  - $\left( L(\mathcal{X}), +\infty) \right)$ for a one-sided lower tolerance interval
-  - $U(\mathcal{X})$ and $L(\mathcal{X})$: upper and lower tolerance limits
-- sample use case: deriving appropriate process capability limits ($U(\mathcal{X})$ and $L(\mathcal{X})$) for a manufactured product ($X$), so that with a given level of confidence ($1 - \alpha$), they contain the capability measurements of at least a specified proportion of units ($\gamma$) from the sampled manufacturing process (ie, gusto mo may confidence ka na yung tolerance interval mo, contains $\gamma$ proportion nung samples)
-- two-sided interval
-  - What interval will contain $p$ percent of the population measurements?\
-  - Lower tolerance limit: $Y_L = \hat{Y} - k_2s$
-  - Upper tolerance limit: $Y_L = \hat{Y} + k_2s$
-- one-sided intervals
-  - What interval guarantees that $p$ percent of population measurements will not fall below a lower limit? Lower tolerance limit: $Y_L = \hat{Y} - k_1s$
-  - What interval guarantees that $p$ percent of population measurements will not exceed an upper limit? Lower tolerance limit: $Y_U = \hat{Y} + k_1s$
-    
+-   set $T$ could be of the form:
+    -   $\left( L(\mathcal{X}), U(\mathcal{X}) \right)$ for a two-sided tolerance interval
+    -   $\left(-\infty, U(\mathcal{X}) \right)$ for a one-sided upper tolerance interval
+    -   $\left( L(\mathcal{X}), +\infty) \right)$ for a one-sided lower tolerance interval
+    -   $U(\mathcal{X})$ and $L(\mathcal{X})$: upper and lower tolerance limits
+-   sample use case: deriving appropriate process capability limits ($U(\mathcal{X})$ and $L(\mathcal{X})$) for a manufactured product ($X$), so that with a given level of confidence ($1 - \alpha$), they contain the capability measurements of at least a specified proportion of units ($\gamma$) from the sampled manufacturing process (ie, gusto mo may confidence ka na yung tolerance interval mo, contains $\gamma$ proportion nung samples)
+-   two-sided interval
+    -   What interval will contain $p$ percent of the population measurements?\
+    -   Lower tolerance limit: $Y_L = \hat{Y} - k_2s$
+    -   Upper tolerance limit: $Y_L = \hat{Y} + k_2s$
+-   one-sided intervals
+    -   What interval guarantees that $p$ percent of population measurements will not fall below a lower limit? Lower tolerance limit: $Y_L = \hat{Y} - k_1s$
+    -   What interval guarantees that $p$ percent of population measurements will not exceed an upper limit? Lower tolerance limit: $Y_U = \hat{Y} + k_1s$
+
+## Parametric Tolerance Intervals
+
+-   Use the method for a parametric distribution if you can safely assume that your sample comes from a population that follows that distribution.
+-   If your data follow a parametric distribution, then a method that uses that distribution is more precise and economical than the nonparametric method. A method that uses a distribution achieves smaller margins of error with fewer observations, as long as the chosen distribution is appropriate for your data.
+
+[Minitab](https://support.minitab.com/en-us/minitab/help-and-how-to/quality-and-process-improvement/quality-tools/how-to/tolerance-intervals-nonnormal-distribution/interpret-the-results/all-statistics-and-graphs/tolerance-intervals/#parametric-distribution-method)
+
+## Nonparametric Tolerance Intervals
+
+-   Suppose $X_{(1)}, X_{(2)}, \dots, X_{(n)}$ are order statistics of a random sample from a population with a univariate continuous distribution function $F(x)$.
+-   Wilk's approach: 2 sided interval
+    -   sets values $L(\mathcal{X}) = X_{(r)}$ and $U(\mathcal{X}) = X_{(s)}$ where $r < s$, as the limits of the $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval $\left( L(\mathcal{X}), U(\mathcal{X}) \right)$
+    -   The values of $r$ and $s$ are chosen to satisfy $1 \le r \le s \le n$ and $s-r=m$ where $m$ is the smallest value for which $P(Y \le m-1) \ge 1-\alpha$, and $Y \sim \text{Binomial}(n, \gamma)$. It is customary to take the value of $s$ to be equal to $n-r+1$, as suggested by Wilks et.al. so that
+    -   the nonparametric interval is given by $(X_{(r)}, X_{(n-r+1)})$
+-   Wilk's approach: 1 sided interval: Lower tolerance limit
+    -   sets $L(\mathcal{X}) = X_{(r)}$ as the lower limit of the $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval.
+    -   The value of $r$ is taken to be the largest integer for which $P(Y \ge r \mid n, 1- \gamma) \ge 1 - \alpha$ where $Y \sim \text{Binomial}(n, 1-\gamma)$.
+    -   The non parametric one-sided lower tolerance interval is given by $(X_{(r)}, \infty)$
+-   Wilk's approach: 1 sided interval: Upper tolerance limit
+    -   sets $U(\mathcal{X}) = X_{S}$, where it can be shown that
+    -   $s=n-r+1$ and $r$ is the value derived for the lower tolerance limit.
+    -   The nonparametric one-sided upper tolerance interval is given by $(-\infty, X_{(n-r+1)})$
+-   There is a minimum sample size requirement in computing the nonparametric tolerance intervals. This depends on the values of $\gamma$ and $1-\alpha$
+-   The coverage probabilities associated with nonparametric tolerance intervals are known to be conservative.
+-   Although in this study we shall only be using Wilks' approach, we mention that recently some developments aimed at improving coverage probabilities of nonparametric tolerance intervals have been available in literature.
+
+## Example
+
+Suppose that we take a sample of $N=25$ silicon wafers from a lot and measure their thickness in order to find tolerance limits within which a proportion $p = 0.90$ of the wafers in the lot fall with confidence $\alpha = 0.99$. Since the standard deviation, $s$, is computed from the sample of 25 wafers, the df are $\nu = N - 1$
+
+::: panel-tabset
+#### The data
+
+```{r}
+## "Direct" calculation of a tolerance interval.
+
+## Read data and name variables.
+
+# URL of the dataset
+#url <- "https://www.itl.nist.gov/div898/handbook/datasets/MPC62.DAT"
+
+# Download the file (you can specify a path where you want to save it)
+# download.file(url, destfile = "MPC62.DAT")
+
+# Load the dataset into R
+mdat = read.table("MPC62.DAT",header=FALSE, skip=50)
+colnames(mdat) = c("cr", "wafer", "mo", "day", "h", "min", "op", 
+                 "hum", "probe", "temp", "y", "sw", "df")
+
+head(mdat)
+```
+
+#### Parametric approach
+
 The $k$ factors are determined so that the intervals cover at least a proportion $p$ of the population with confidence $\alpha$.
 
 The value of $p$ is also referred to as the coverage factor.
 
-## Univariate Tolerance Intervals (Two-sided)
-
-### Parametric
-
-Tolerance factor assuming normal distribution
+Univariate Tolerance Intervals (Two-sided) assuming normal distribution
 
 This is the approximate value for $k_2$ from Howe, 1969.
 
 $$
 \sqrt{
-
 \nu \left(1+ \frac{1}{N} \right) \times \frac {z_{\left( \frac{1+p}{2}\right)}^2}
 {\chi^2_{1-\alpha, \nu}}
-
 }
 $$
 
 ```{r}
-## Compute the approximate and exact k2 factor.
-
 ## Compute the approximate k2 factor for a two-sided tolerance interval. 
 ## For this example, the standard deviation is computed from the sample,
 ## so the degrees of freedom are nu = N - 1.
@@ -77,34 +123,6 @@ K2 = K.factor(n=N, f=nu, alpha=1-g, P=p, side=2, method="HE2", m=1000)
 K2
 ```
 
-### Example
-
-Suppose that we take a sample of $N=25$ silicon wafers from a lot and measure their thickness in order to find tolerance limits within which a proportion $p = 0.90$ of the wafers in the lot fall with confidence $\alpha = 0.99$. Since the standard deviation, $s$, is computed from the sample of 25 wafers, the df are $\nu = N - 1$
-
-::: {.panel-tabset}
-#### The data
-
-```{r}
-## "Direct" calculation of a tolerance interval.
-
-## Read data and name variables.
-
-# URL of the dataset
-#url <- "https://www.itl.nist.gov/div898/handbook/datasets/MPC62.DAT"
-
-# Download the file (you can specify a path where you want to save it)
-# download.file(url, destfile = "MPC62.DAT")
-
-# Load the dataset into R
-mdat = read.table("MPC62.DAT",header=FALSE, skip=50)
-colnames(mdat) = c("cr", "wafer", "mo", "day", "h", "min", "op", 
-                 "hum", "probe", "temp", "y", "sw", "df")
-
-head(mdat)
-```
-
-#### Parametric approach
-
 **`tolerance` package - parametric**
 
 ```{r}
@@ -120,6 +138,8 @@ pout
 ```
 
 Highlighting the endpoints from `pout`:
+
+In this example, you can be 99% confident that at least 90% of all thickness measurements are between approximately `r pout$'2-sided.lower'` and `r pout$'2-sided.upper'`.
 
 ```{r}
 pout$`2-sided.lower`; pout$`2-sided.upper`
@@ -154,16 +174,15 @@ npout
 
 Highlighting the endpoints from `npout`:
 
+You can be 99% confident that at least 90% of all thickness measurements are between approximately `r npout$'2-sided.lower'` and `r npout$'2-sided.upper'`.
+
 ```{r}
 npout$`2-sided.lower`; npout$`2-sided.upper`
 ```
 
 Manually deriving the endpoints:
 
-**Wilk's approach: 2 sided interval**
-  - sets values $L(\mathcal{X}) = X_{(r)}$ and $U(\mathcal{X}) = X_{(s)}$ where $r < s$, as the limits of the $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval $\left( L(\mathcal{X}), U(\mathcal{X}) \right)$
-  - The values of $r$ and $s$ are chosen to satisfy $1 \le r \le s \le n$ and $s-r=m$ where $m$ is the smallest value for which $P(Y \le m-1) \ge 1-\alpha$, and $Y \sim \text{Binomial}(n, \gamma)$. It is customary to take the value of $s$ to be equal to $n-r+1$, as suggested by Wilks et.al. so that
-  - the nonparametric interval is given by $(X_{(r)}, X_{(n-r+1)})$
+**Wilk's approach: 2 sided interval** - sets values $L(\mathcal{X}) = X_{(r)}$ and $U(\mathcal{X}) = X_{(s)}$ where $r < s$, as the limits of the $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval $\left( L(\mathcal{X}), U(\mathcal{X}) \right)$ - The values of $r$ and $s$ are chosen to satisfy $1 \le r \le s \le n$ and $s-r=m$ where $m$ is the smallest value for which $P(Y \le m-1) \ge 1-\alpha$, and $Y \sim \text{Binomial}(n, \gamma)$. It is customary to take the value of $s$ to be equal to $n-r+1$, as suggested by Wilks et.al. so that - the nonparametric interval is given by $(X_{(r)}, X_{(n-r+1)})$
 
 ```{r}
 # 1 <= r < s < N = 25
@@ -187,12 +206,13 @@ s = m+r
 sort(mdat$y)[ceiling(r)]; sort(mdat$y)[floor(n-r+1)]
 ```
 
-
 ```{r}
 plottol(npout, mdat$y, plot.type = "both", side = "two", x.lab = "X")
 ```
 
-#### Aside
+:::
+
+### Aside
 
 ```{r}
 set.seed(5)
@@ -321,8 +341,6 @@ f.inv <- inverse(f,lower=0,upper=1)
 f.inv(.2)
 qbeta(p=0.2, shape1=2, shape2=3)
 ```
-
-:::
 
 ## Kernel density estimation
 
@@ -785,34 +803,6 @@ hist(log(datas[,1]))
 
     -   The STIs that are available in literature rely on the assumption of normality. However, in many applications, this assumption is unwarranted. For instance, Wright and Royston (1999) point out that positive skewness is common among laboratory measurements, which are the bases for the construction of reference intervals. Thus, there is a need to establish STIs through nonparametric means.
     -   While approaches to compute nonparametric tolerance regions are available in some existing studies \[see, for instance Young and Mathew (2020) and Lucagbo (2021)\], these studies do not use the criterion for simultaneous inference.
-
--   **Nonparametric tolerance intervals**
-
-    -   Suppose $X_{(1)}, X_{(2)}, \dots, X_{(n)}$ are order statistics of a random sample from a population with a univariate continuous distribution function $F(x)$.
-
-    -   Wilk's approach: 2 sided interval
-
-        -   sets values $L(\mathcal{X}) = X_{(r)}$ and $U(\mathcal{X}) = X_{(s)}$ where $r < s$, as the limits of the $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval $\left( L(\mathcal{X}), U(\mathcal{X}) \right)$
-        -   The values of $r$ and $s$ are chosen to satisfy $1 \le r \le s \le n$ and $s-r=m$ where $m$ is the smallest value for which $P(Y \le m-1) \ge 1-\alpha$, and $Y \sim \text{Binomial}(n, \gamma)$. It is customary to take the value of $s$ to be equal to $n-r+1$, as suggested by Wilks et.al. so that
-        -   the nonparametric interval is given by $(X_{(r)}, X_{(n-r+1)})$
-
-    -   Wilk's approach: 1 sided interval: Lower tolerance limit
-
-        -   sets $L(\mathcal{X}) = X_{(r)}$ as the lower limit of the $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval.
-        -   The value of $r$ is taken to be the largest integer for which $P(Y \ge r \mid n, 1- \gamma) \ge 1 - \alpha$ where $Y \sim \text{Binomial}(n, 1-\gamma)$.
-        -   The non parametric one-sided lower tolerance interval is given by $(X_{(r)}, \infty)$
-
-    -   Wilk's approach: 1 sided interval: Upper tolerance limit
-
-        -   sets $U(\mathcal{X}) = X_{S}$, where it can be shown that
-        -   $s=n-r+1$ and $r$ is the value derived for the lower tolerance limit.
-        -   The nonparametric one-sided upper tolerance interval is given by $(-\infty, X_{(n-r+1)})$
-
-    -   There is a minimum sample size requirement in computing the nonparametric tolerance intervals. This depends on the values of $\gamma$ and $1-\alpha$
-
-    -   The coverage probabilities associated with nonparametric tolerance intervals are known to be conservative.
-
-    -   Although in this study we shall only be using Wilks' approach, we mention that recently some developments aimed at improving coverage probabilities of nonparametric tolerance intervals have been available in literature. For
 
 -   **Kernel density estimation**
 

@@ -146,10 +146,11 @@ window.Quarto = {
    
   <ul>
   <li><a href="#tolerance-intervals" id="toc-tolerance-intervals" class="nav-link active" data-scroll-target="#tolerance-intervals">Tolerance Intervals</a></li>
-  <li><a href="#univariate-tolerance-intervals-two-sided" id="toc-univariate-tolerance-intervals-two-sided" class="nav-link" data-scroll-target="#univariate-tolerance-intervals-two-sided">Univariate Tolerance Intervals (Two-sided)</a>
+  <li><a href="#parametric-tolerance-intervals" id="toc-parametric-tolerance-intervals" class="nav-link" data-scroll-target="#parametric-tolerance-intervals">Parametric Tolerance Intervals</a></li>
+  <li><a href="#nonparametric-tolerance-intervals" id="toc-nonparametric-tolerance-intervals" class="nav-link" data-scroll-target="#nonparametric-tolerance-intervals">Nonparametric Tolerance Intervals</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a>
   <ul class="collapse">
-  <li><a href="#tolerance-factor-assuming-normal-distribution" id="toc-tolerance-factor-assuming-normal-distribution" class="nav-link" data-scroll-target="#tolerance-factor-assuming-normal-distribution">Tolerance factor assuming normal distribution</a></li>
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  <li><a href="#aside" id="toc-aside" class="nav-link" data-scroll-target="#aside">Aside</a></li>
   </ul></li>
   <li><a href="#kernel-density-estimation" id="toc-kernel-density-estimation" class="nav-link" data-scroll-target="#kernel-density-estimation">Kernel density estimation</a>
   <ul class="collapse">
@@ -188,6 +189,22 @@ window.Quarto = {
 <section id="tolerance-intervals" class="level2">
 <h2 class="anchored" data-anchor-id="tolerance-intervals">Tolerance Intervals</h2>
 <ul>
+<li>an interval that contains at least a specified proportion <span class="math inline">\(\gamma\)</span> of the population, with a specified degree of confidence, <span class="math inline">\(100 \left( 1 - \alpha\right)\%\)</span></li>
+<li>Let <span class="math inline">\(\mathcal{X} = \left\{ X_1, X_2, \dots, X_n \right\}\)</span> be a random sample from univariate distribution <span class="math inline">\(F(\cdot)\)</span> and suppose <span class="math inline">\(X \sim F(\cdot)\)</span>, where <span class="math inline">\(X\)</span> is independent of the random sample, then a subset of <span class="math inline">\(\mathbb{R}\)</span>, say <span class="math inline">\(T = T (\mathcal{X})\)</span>, computed from the random sample, is a <span class="math inline">\(\gamma\)</span>-content <span class="math inline">\(100 \left( 1 - \alpha\right)\%\)</span>-confidence tolerance interval for <span class="math inline">\(X\)</span> if it satisfies the ff: (The probability (over all possible samples <span class="math inline">\(\mathcal{X}\)</span>) that the tolerance interval <span class="math inline">\(T\)</span> constructed from the sample will capture at least a proportion <span class="math inline">\(\gamma\)</span> of the population is equal to <span class="math inline">\(1-\alpha\)</span>)</li>
+<li><em>If I keep collecting samples and building intervals over and over, then 95% of the time, those intervals will contain at least 90% of the population.</em> - That’s a (<span class="math inline">\(\gamma\)</span>, <span class="math inline">\(1-\alpha\)</span>) tolerance interval.</li>
+</ul>
+<p><span class="math display">\[
+P_{\mathcal{X}} \left\{ P_X \left( X \in T \mid \mathcal{X} \right) \geq \gamma \right\} = 1 - \alpha
+\]</span></p>
+<ul>
+<li>set <span class="math inline">\(T\)</span> could be of the form:
+<ul>
+<li><span class="math inline">\(\left( L(\mathcal{X}), U(\mathcal{X}) \right)\)</span> for a two-sided tolerance interval</li>
+<li><span class="math inline">\(\left(-\infty, U(\mathcal{X}) \right)\)</span> for a one-sided upper tolerance interval</li>
+<li><span class="math inline">\(\left( L(\mathcal{X}), +\infty) \right)\)</span> for a one-sided lower tolerance interval</li>
+<li><span class="math inline">\(U(\mathcal{X})\)</span> and <span class="math inline">\(L(\mathcal{X})\)</span>: upper and lower tolerance limits</li>
+</ul></li>
+<li>sample use case: deriving appropriate process capability limits (<span class="math inline">\(U(\mathcal{X})\)</span> and <span class="math inline">\(L(\mathcal{X})\)</span>) for a manufactured product (<span class="math inline">\(X\)</span>), so that with a given level of confidence (<span class="math inline">\(1 - \alpha\)</span>), they contain the capability measurements of at least a specified proportion of units (<span class="math inline">\(\gamma\)</span>) from the sampled manufacturing process (ie, gusto mo may confidence ka na yung tolerance interval mo, contains <span class="math inline">\(\gamma\)</span> proportion nung samples)</li>
 <li>two-sided interval
 <ul>
 <li>What interval will contain <span class="math inline">\(p\)</span> percent of the population measurements?<br>
@@ -197,78 +214,70 @@ window.Quarto = {
 </ul></li>
 <li>one-sided intervals
 <ul>
-<li>What interval guarantees that <span class="math inline">\(p\)</span> percent of population measurements will not fall below a lower limit? - Lower tolerance limit: <span class="math inline">\(Y_L = \hat{Y} - k_1s\)</span></li>
-<li>What interval guarantees that <span class="math inline">\(p\)</span> percent of population measurements will not exceed an upper limit - Lower tolerance limit: <span class="math inline">\(Y_U = \hat{Y} + k_1s\)</span></li>
+<li>What interval guarantees that <span class="math inline">\(p\)</span> percent of population measurements will not fall below a lower limit? Lower tolerance limit: <span class="math inline">\(Y_L = \hat{Y} - k_1s\)</span></li>
+<li>What interval guarantees that <span class="math inline">\(p\)</span> percent of population measurements will not exceed an upper limit? Lower tolerance limit: <span class="math inline">\(Y_U = \hat{Y} + k_1s\)</span></li>
 </ul></li>
 </ul>
-<p>The <span class="math inline">\(k\)</span> factors are determined so that the intervals cover at least a proportion <span class="math inline">\(p\)</span> of the population with confidence <span class="math inline">\(\alpha\)</span>.</p>
-<p>The value of <span class="math inline">\(p\)</span> is also referred to as the coverage factor.</p>
 </section>
-<section id="univariate-tolerance-intervals-two-sided" class="level2">
-<h2 class="anchored" data-anchor-id="univariate-tolerance-intervals-two-sided">Univariate Tolerance Intervals (Two-sided)</h2>
-<section id="tolerance-factor-assuming-normal-distribution" class="level3">
-<h3 class="anchored" data-anchor-id="tolerance-factor-assuming-normal-distribution">Tolerance factor assuming normal distribution</h3>
-<p>This is the approximate value for <span class="math inline">\(k_2\)</span> from Howe, 1969.</p>
-<p>$$ $$</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the approximate and exact k2 factor.</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the approximate k2 factor for a two-sided tolerance interval. </span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="do">## For this example, the standard deviation is computed from the sample,</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">## so the degrees of freedom are nu = N - 1.</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>N <span class="ot">=</span> <span class="dv">25</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>nu <span class="ot">=</span> N <span class="sc">-</span> <span class="dv">1</span> <span class="co"># df used to estimate the sd</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="fl">0.90</span> <span class="co"># proportion</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>g <span class="ot">=</span> <span class="fl">0.99</span> <span class="co"># alpha</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>z2 <span class="ot">=</span> (<span class="fu">qnorm</span>((<span class="dv">1</span><span class="sc">+</span>p)<span class="sc">/</span><span class="dv">2</span>))<span class="sc">**</span><span class="dv">2</span> <span class="co"># z critical values of the normal distribution</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>c2 <span class="ot">=</span> <span class="fu">qchisq</span>(<span class="dv">1</span><span class="sc">-</span>g,nu) <span class="co"># chi X lower critical values of the chi-square distribution</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>k2 <span class="ot">=</span> <span class="fu">sqrt</span>(nu<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>N)<span class="sc">*</span>z2<span class="sc">/</span>c2)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>k2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.494063</code></pre>
-</div>
-</div>
-<p><strong>2-sided tolerance factor thru <code>tolerance</code> package</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the exact k2 factor for a two-sided tolerance interval using </span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">## the K.factor function in the tolerance library</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">## "HE2" is a second method due to Howe, which performs similarly to the Weissberg-Beatty method, but is computationally simpler</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tolerance)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>tolerance package, version 3.0.0, Released 2024-04-18
-This package is based upon work supported by the Chan Zuckerberg Initiative: Essential Open Source Software for Science (Grant No. 2020-255193).</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>K2 <span class="ot">=</span> <span class="fu">K.factor</span>(<span class="at">n=</span>N, <span class="at">f=</span>nu, <span class="at">alpha=</span><span class="dv">1</span><span class="sc">-</span>g, <span class="at">P=</span>p, <span class="at">side=</span><span class="dv">2</span>, <span class="at">method=</span><span class="st">"HE2"</span>, <span class="at">m=</span><span class="dv">1000</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>K2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.494063</code></pre>
-</div>
-</div>
+<section id="parametric-tolerance-intervals" class="level2">
+<h2 class="anchored" data-anchor-id="parametric-tolerance-intervals">Parametric Tolerance Intervals</h2>
+<ul>
+<li>Use the method for a parametric distribution if you can safely assume that your sample comes from a population that follows that distribution.</li>
+<li>If your data follow a parametric distribution, then a method that uses that distribution is more precise and economical than the nonparametric method. A method that uses a distribution achieves smaller margins of error with fewer observations, as long as the chosen distribution is appropriate for your data.</li>
+</ul>
+<p><a href="https://support.minitab.com/en-us/minitab/help-and-how-to/quality-and-process-improvement/quality-tools/how-to/tolerance-intervals-nonnormal-distribution/interpret-the-results/all-statistics-and-graphs/tolerance-intervals/#parametric-distribution-method">Minitab</a></p>
 </section>
-<section id="example" class="level3">
-<h3 class="anchored" data-anchor-id="example">Example</h3>
+<section id="nonparametric-tolerance-intervals" class="level2">
+<h2 class="anchored" data-anchor-id="nonparametric-tolerance-intervals">Nonparametric Tolerance Intervals</h2>
+<ul>
+<li>Suppose <span class="math inline">\(X_{(1)}, X_{(2)}, \dots, X_{(n)}\)</span> are order statistics of a random sample from a population with a univariate continuous distribution function <span class="math inline">\(F(x)\)</span>.</li>
+<li>Wilk’s approach: 2 sided interval
+<ul>
+<li>sets values <span class="math inline">\(L(\mathcal{X}) = X_{(r)}\)</span> and <span class="math inline">\(U(\mathcal{X}) = X_{(s)}\)</span> where <span class="math inline">\(r &lt; s\)</span>, as the limits of the <span class="math inline">\(\gamma\)</span>-content <span class="math inline">\(100 \left( 1 - \alpha\right)\%\)</span>-confidence tolerance interval <span class="math inline">\(\left( L(\mathcal{X}), U(\mathcal{X}) \right)\)</span></li>
+<li>The values of <span class="math inline">\(r\)</span> and <span class="math inline">\(s\)</span> are chosen to satisfy <span class="math inline">\(1 \le r \le s \le n\)</span> and <span class="math inline">\(s-r=m\)</span> where <span class="math inline">\(m\)</span> is the smallest value for which <span class="math inline">\(P(Y \le m-1) \ge 1-\alpha\)</span>, and <span class="math inline">\(Y \sim \text{Binomial}(n, \gamma)\)</span>. It is customary to take the value of <span class="math inline">\(s\)</span> to be equal to <span class="math inline">\(n-r+1\)</span>, as suggested by Wilks et.al. so that</li>
+<li>the nonparametric interval is given by <span class="math inline">\((X_{(r)}, X_{(n-r+1)})\)</span></li>
+</ul></li>
+<li>Wilk’s approach: 1 sided interval: Lower tolerance limit
+<ul>
+<li>sets <span class="math inline">\(L(\mathcal{X}) = X_{(r)}\)</span> as the lower limit of the <span class="math inline">\(\gamma\)</span>-content <span class="math inline">\(100 \left( 1 - \alpha\right)\%\)</span>-confidence tolerance interval.</li>
+<li>The value of <span class="math inline">\(r\)</span> is taken to be the largest integer for which <span class="math inline">\(P(Y \ge r \mid n, 1- \gamma) \ge 1 - \alpha\)</span> where <span class="math inline">\(Y \sim \text{Binomial}(n, 1-\gamma)\)</span>.</li>
+<li>The non parametric one-sided lower tolerance interval is given by <span class="math inline">\((X_{(r)}, \infty)\)</span></li>
+</ul></li>
+<li>Wilk’s approach: 1 sided interval: Upper tolerance limit
+<ul>
+<li>sets <span class="math inline">\(U(\mathcal{X}) = X_{S}\)</span>, where it can be shown that</li>
+<li><span class="math inline">\(s=n-r+1\)</span> and <span class="math inline">\(r\)</span> is the value derived for the lower tolerance limit.</li>
+<li>The nonparametric one-sided upper tolerance interval is given by <span class="math inline">\((-\infty, X_{(n-r+1)})\)</span></li>
+</ul></li>
+<li>There is a minimum sample size requirement in computing the nonparametric tolerance intervals. This depends on the values of <span class="math inline">\(\gamma\)</span> and <span class="math inline">\(1-\alpha\)</span></li>
+<li>The coverage probabilities associated with nonparametric tolerance intervals are known to be conservative.</li>
+<li>Although in this study we shall only be using Wilks’ approach, we mention that recently some developments aimed at improving coverage probabilities of nonparametric tolerance intervals have been available in literature.</li>
+</ul>
+</section>
+<section id="example" class="level2">
+<h2 class="anchored" data-anchor-id="example">Example</h2>
 <p>Suppose that we take a sample of <span class="math inline">\(N=25\)</span> silicon wafers from a lot and measure their thickness in order to find tolerance limits within which a proportion <span class="math inline">\(p = 0.90\)</span> of the wafers in the lot fall with confidence <span class="math inline">\(\alpha = 0.99\)</span>. Since the standard deviation, <span class="math inline">\(s\)</span>, is computed from the sample of 25 wafers, the df are <span class="math inline">\(\nu = N - 1\)</span></p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">The data</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Parametric approach</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Nonparametric approach</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Aside</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">The data</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Parametric approach</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Nonparametric approach</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## "Direct" calculation of a tolerance interval.</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Read data and name variables.</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># URL of the dataset</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#url &lt;- "https://www.itl.nist.gov/div898/handbook/datasets/MPC62.DAT"</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the file (you can specify a path where you want to save it)</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># download.file(url, destfile = "MPC62.DAT")</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the dataset into R</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>mdat <span class="ot">=</span> <span class="fu">read.table</span>(<span class="st">"MPC62.DAT"</span>,<span class="at">header=</span><span class="cn">FALSE</span>, <span class="at">skip=</span><span class="dv">50</span>)</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mdat) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"cr"</span>, <span class="st">"wafer"</span>, <span class="st">"mo"</span>, <span class="st">"day"</span>, <span class="st">"h"</span>, <span class="st">"min"</span>, <span class="st">"op"</span>, </span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"hum"</span>, <span class="st">"probe"</span>, <span class="st">"temp"</span>, <span class="st">"y"</span>, <span class="st">"sw"</span>, <span class="st">"df"</span>)</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mdat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## "Direct" calculation of a tolerance interval.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Read data and name variables.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># URL of the dataset</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#url &lt;- "https://www.itl.nist.gov/div898/handbook/datasets/MPC62.DAT"</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the file (you can specify a path where you want to save it)</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># download.file(url, destfile = "MPC62.DAT")</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the dataset into R</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>mdat <span class="ot">=</span> <span class="fu">read.table</span>(<span class="st">"MPC62.DAT"</span>,<span class="at">header=</span><span class="cn">FALSE</span>, <span class="at">skip=</span><span class="dv">50</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mdat) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"cr"</span>, <span class="st">"wafer"</span>, <span class="st">"mo"</span>, <span class="st">"day"</span>, <span class="st">"h"</span>, <span class="st">"min"</span>, <span class="st">"op"</span>, </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"hum"</span>, <span class="st">"probe"</span>, <span class="st">"temp"</span>, <span class="st">"y"</span>, <span class="st">"sw"</span>, <span class="st">"df"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mdat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     cr wafer mo day  h min op hum probe   temp      y    sw df
 1 51939   137  3  24 18   1  1  42  2362 23.003 97.070 0.085  5
@@ -281,6 +290,48 @@ This package is based upon work supported by the Chan Zuckerberg Initiative: Ess
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>The <span class="math inline">\(k\)</span> factors are determined so that the intervals cover at least a proportion <span class="math inline">\(p\)</span> of the population with confidence <span class="math inline">\(\alpha\)</span>.</p>
+<p>The value of <span class="math inline">\(p\)</span> is also referred to as the coverage factor.</p>
+<p>Univariate Tolerance Intervals (Two-sided) assuming normal distribution</p>
+<p>This is the approximate value for <span class="math inline">\(k_2\)</span> from Howe, 1969.</p>
+<p><span class="math display">\[
+\sqrt{
+\nu \left(1+ \frac{1}{N} \right) \times \frac {z_{\left( \frac{1+p}{2}\right)}^2}
+{\chi^2_{1-\alpha, \nu}}
+}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the approximate k2 factor for a two-sided tolerance interval. </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">## For this example, the standard deviation is computed from the sample,</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">## so the degrees of freedom are nu = N - 1.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>N <span class="ot">=</span> <span class="dv">25</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>nu <span class="ot">=</span> N <span class="sc">-</span> <span class="dv">1</span> <span class="co"># df used to estimate the sd</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="fl">0.90</span> <span class="co"># proportion</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>g <span class="ot">=</span> <span class="fl">0.99</span> <span class="co"># alpha</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>z2 <span class="ot">=</span> (<span class="fu">qnorm</span>((<span class="dv">1</span><span class="sc">+</span>p)<span class="sc">/</span><span class="dv">2</span>))<span class="sc">**</span><span class="dv">2</span> <span class="co"># z critical values of the normal distribution</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>c2 <span class="ot">=</span> <span class="fu">qchisq</span>(<span class="dv">1</span><span class="sc">-</span>g,nu) <span class="co"># chi X lower critical values of the chi-square distribution</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>k2 <span class="ot">=</span> <span class="fu">sqrt</span>(nu<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>N)<span class="sc">*</span>z2<span class="sc">/</span>c2)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>k2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.494063</code></pre>
+</div>
+</div>
+<p><strong>2-sided tolerance factor thru <code>tolerance</code> package</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute the exact k2 factor for a two-sided tolerance interval using </span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">## the K.factor function in the tolerance library</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="do">## "HE2" is a second method due to Howe, which performs similarly to the Weissberg-Beatty method, but is computationally simpler</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tolerance)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>tolerance package, version 3.0.0, Released 2024-04-18
+This package is based upon work supported by the Chan Zuckerberg Initiative: Essential Open Source Software for Science (Grant No. 2020-255193).</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>K2 <span class="ot">=</span> <span class="fu">K.factor</span>(<span class="at">n=</span>N, <span class="at">f=</span>nu, <span class="at">alpha=</span><span class="dv">1</span><span class="sc">-</span>g, <span class="at">P=</span>p, <span class="at">side=</span><span class="dv">2</span>, <span class="at">method=</span><span class="st">"HE2"</span>, <span class="at">m=</span><span class="dv">1000</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>K2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.494063</code></pre>
+</div>
+</div>
 <p><strong><code>tolerance</code> package - parametric</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tolerance)</span>
@@ -298,6 +349,7 @@ This package is based upon work supported by the Chan Zuckerberg Initiative: Ess
 </div>
 </div>
 <p>Highlighting the endpoints from <code>pout</code>:</p>
+<p>In this example, you can be 99% confident that at least 90% of all thickness measurements are between approximately 97.0030038 and 97.1366762.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>pout<span class="sc">$</span><span class="st">`</span><span class="at">2-sided.lower</span><span class="st">`</span>; pout<span class="sc">$</span><span class="st">`</span><span class="at">2-sided.upper</span><span class="st">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -346,6 +398,7 @@ This package is based upon work supported by the Chan Zuckerberg Initiative: Ess
 </div>
 </div>
 <p>Highlighting the endpoints from <code>npout</code>:</p>
+<p>You can be 99% confident that at least 90% of all thickness measurements are between approximately 97.014 and 97.114.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>npout<span class="sc">$</span><span class="st">`</span><span class="at">2-sided.lower</span><span class="st">`</span>; npout<span class="sc">$</span><span class="st">`</span><span class="at">2-sided.upper</span><span class="st">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -395,7 +448,10 @@ This package is based upon work supported by the Chan Zuckerberg Initiative: Ess
 </div>
 </div>
 </div>
-<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+</div>
+</div>
+<section id="aside" class="level3">
+<h3 class="anchored" data-anchor-id="aside">Aside</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5</span>)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>simulated <span class="ot">&lt;-</span> <span class="fu">rlnorm</span>(<span class="dv">1000</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
@@ -560,9 +616,6 @@ Copyright M. P. Wand 1997-2009</code></pre>
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qbeta</span>(<span class="at">p=</span><span class="fl">0.2</span>, <span class="at">shape1=</span><span class="dv">2</span>, <span class="at">shape2=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2123171</code></pre>
-</div>
-</div>
-</div>
 </div>
 </div>
 </section>
@@ -1187,25 +1240,6 @@ Attaching package: 'MASS'</code></pre>
 <section id="definitions" class="level2">
 <h2 class="anchored" data-anchor-id="definitions">Definitions</h2>
 <ul>
-<li><p><strong>Tolerance intervals</strong></p>
-<ul>
-<li><p>an interval that contains at least a specified proportion <span class="math inline">\(\gamma\)</span> of the population, with a specified degree of confidence, <span class="math inline">\(100 \left( 1 - \alpha\right)\%\)</span></p></li>
-<li><p>Let <span class="math inline">\(\mathcal{X} = \left\{ X_1, X_2, \dots, X_n \right\}\)</span> be a random sample from univariate distribution <span class="math inline">\(F(\cdot)\)</span> and suppose <span class="math inline">\(X \sim F(\cdot)\)</span>, where <span class="math inline">\(X\)</span> is independent of the random sample, then a subset of <span class="math inline">\(\mathbb{R}\)</span>, say <span class="math inline">\(T = T (\mathcal{X})\)</span>, computed from the random sample, is a <span class="math inline">\(\gamma\)</span>-content <span class="math inline">\(100 \left( 1 - \alpha\right)\%\)</span>-confidence tolerance interval for <span class="math inline">\(X\)</span> if it satisfies the ff: (The probability (over all possible samples <span class="math inline">\(\mathcal{X}\)</span>) that the tolerance interval <span class="math inline">\(T\)</span> constructed from the sample will capture at least a proportion <span class="math inline">\(\gamma\)</span> of the population is equal to <span class="math inline">\(1-\alpha\)</span>)</p></li>
-<li><p><em>If I keep collecting samples and building intervals over and over, then 95% of the time, those intervals will contain at least 90% of the population.</em> - That’s a (<span class="math inline">\(\gamma\)</span>, <span class="math inline">\(1-\alpha\)</span>) tolerance interval.</p></li>
-</ul>
-<p><span class="math display">\[
-P_{\mathcal{X}} \left\{ P_X \left( X \in T \mid \mathcal{X} \right) \geq \gamma \right\} = 1 - \alpha
-\]</span></p>
-<ul>
-<li><p>set <span class="math inline">\(T\)</span> could be of the form:</p>
-<ul>
-<li><span class="math inline">\(\left( L(\mathcal{X}), U(\mathcal{X}) \right)\)</span> for a two-sided tolerance interval</li>
-<li><span class="math inline">\(\left(-\infty, U(\mathcal{X}) \right)\)</span> for a one-sided upper tolerance interval</li>
-<li><span class="math inline">\(\left( L(\mathcal{X}), +\infty) \right)\)</span> for a one-sided lower tolerance interval</li>
-<li><span class="math inline">\(U(\mathcal{X})\)</span> and <span class="math inline">\(L(\mathcal{X})\)</span>: upper and lower tolerance limits</li>
-</ul></li>
-<li><p>sample use case: deriving appropriate process capability limits (<span class="math inline">\(U(\mathcal{X})\)</span> and <span class="math inline">\(L(\mathcal{X})\)</span>) for a manufactured product (<span class="math inline">\(X\)</span>), so that with a given level of confidence (<span class="math inline">\(1 - \alpha\)</span>), they contain the capability measurements of at least a specified proportion of units (<span class="math inline">\(\gamma\)</span>) from the sampled manufacturing process (ie, gusto mo may confidence ka na yung tolerance interval mo, contains <span class="math inline">\(\gamma\)</span> proportion nung samples)</p></li>
-</ul></li>
 <li><p><strong>Simultaneous inference</strong></p>
 <ul>
 <li>Whenever there are several populations, it is of interest to construct simultaneous statistical intervals from the sample data.</li>
@@ -1216,31 +1250,6 @@ P_{\mathcal{X}} \left\{ P_X \left( X \in T \mid \mathcal{X} \right) \geq \gamma 
 <ul>
 <li>The STIs that are available in literature rely on the assumption of normality. However, in many applications, this assumption is unwarranted. For instance, Wright and Royston (1999) point out that positive skewness is common among laboratory measurements, which are the bases for the construction of reference intervals. Thus, there is a need to establish STIs through nonparametric means.</li>
 <li>While approaches to compute nonparametric tolerance regions are available in some existing studies [see, for instance Young and Mathew (2020) and Lucagbo (2021)], these studies do not use the criterion for simultaneous inference.</li>
-</ul></li>
-<li><p><strong>Nonparametric tolerance intervals</strong></p>
-<ul>
-<li><p>Suppose <span class="math inline">\(X_{(1)}, X_{(2)}, \dots, X_{(n)}\)</span> are order statistics of a random sample from a population with a univariate continuous distribution function <span class="math inline">\(F(x)\)</span>.</p></li>
-<li><p>Wilk’s approach: 2 sided interval</p>
-<ul>
-<li>sets values <span class="math inline">\(L(\mathcal{X}) = X_{(r)}\)</span> and <span class="math inline">\(U(\mathcal{X}) = X_{(s)}\)</span> where <span class="math inline">\(r &lt; s\)</span>, as the limits of the <span class="math inline">\(\gamma\)</span>-content <span class="math inline">\(100 \left( 1 - \alpha\right)\%\)</span>-confidence tolerance interval <span class="math inline">\(\left( L(\mathcal{X}), U(\mathcal{X}) \right)\)</span></li>
-<li>The values of <span class="math inline">\(r\)</span> and <span class="math inline">\(s\)</span> are chosen to satisfy <span class="math inline">\(1 \le r \le s \le n\)</span> and <span class="math inline">\(s-r=m\)</span> where <span class="math inline">\(m\)</span> is the smallest value for which <span class="math inline">\(P(Y \le m-1) \ge 1-\alpha\)</span>, and <span class="math inline">\(Y \sim \text{Binomial}(n, \gamma)\)</span>. It is customary to take the value of <span class="math inline">\(s\)</span> to be equal to <span class="math inline">\(n-r+1\)</span>, as suggested by Wilks et.al. so that</li>
-<li>the nonparametric interval is given by <span class="math inline">\((X_{(r)}, X_{(n-r+1)})\)</span></li>
-</ul></li>
-<li><p>Wilk’s approach: 1 sided interval: Lower tolerance limit</p>
-<ul>
-<li>sets <span class="math inline">\(L(\mathcal{X}) = X_{(r)}\)</span> as the lower limit of the <span class="math inline">\(\gamma\)</span>-content <span class="math inline">\(100 \left( 1 - \alpha\right)\%\)</span>-confidence tolerance interval.</li>
-<li>The value of <span class="math inline">\(r\)</span> is taken to be the largest integer for which <span class="math inline">\(P(Y \ge r \mid n, 1- \gamma) \ge 1 - \alpha\)</span> where <span class="math inline">\(Y \sim \text{Binomial}(n, 1-\gamma)\)</span>.</li>
-<li>The non parametric one-sided lower tolerance interval is given by <span class="math inline">\((X_{(r)}, \infty)\)</span></li>
-</ul></li>
-<li><p>Wilk’s approach: 1 sided interval: Upper tolerance limit</p>
-<ul>
-<li>sets <span class="math inline">\(U(\mathcal{X}) = X_{S}\)</span>, where it can be shown that</li>
-<li><span class="math inline">\(s=n-r+1\)</span> and <span class="math inline">\(r\)</span> is the value derived for the lower tolerance limit.</li>
-<li>The nonparametric one-sided upper tolerance interval is given by <span class="math inline">\((-\infty, X_{(n-r+1)})\)</span></li>
-</ul></li>
-<li><p>There is a minimum sample size requirement in computing the nonparametric tolerance intervals. This depends on the values of <span class="math inline">\(\gamma\)</span> and <span class="math inline">\(1-\alpha\)</span></p></li>
-<li><p>The coverage probabilities associated with nonparametric tolerance intervals are known to be conservative.</p></li>
-<li><p>Although in this study we shall only be using Wilks’ approach, we mention that recently some developments aimed at improving coverage probabilities of nonparametric tolerance intervals have been available in literature. For</p></li>
 </ul></li>
 <li><p><strong>Kernel density estimation</strong></p>
 <ul>
