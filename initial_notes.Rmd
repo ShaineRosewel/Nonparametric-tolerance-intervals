@@ -1,21 +1,36 @@
 ---
-title: ""
+title: "Nonparametric Tolerance Intervals"""
 output: rmarkdown::github_document
 ---
 
-# Basics {.tabset}
+## Questions {.tabset}
 
-**Questions answered by tolerance intervals**\  
-Question (1) leads to a two-sided interval; questions (2) and (3) lead to one-sided intervals.  
-- What interval will contain percent of the population measurements?  
-- What interval guarantees that percent of population measurements will not fall below a lower limit?  
-- What interval guarantees that percent of population measurements will not exceed an upper limit?  
+-   two-sided interval
+    -   What interval will contain $p$ percent of the population measurements?\
+    - Lower tolerance limit: $Y_L = \hat{Y} - k_2s$
+    - Upper tolerance limit: $Y_L = \hat{Y} + k_2s$
+-   one-sided intervals
+    -   What interval guarantees that $p$ percent of population measurements will not fall below a lower limit? - Lower tolerance limit: $Y_L = \hat{Y} - k_1s$
+    -   What interval guarantees that $p$ percent of population measurements will not exceed an upper limit - Lower tolerance limit: $Y_U = \hat{Y} + k_1s$
+    
+The $k$ factors are determined so that the intervals cover at least a proportion $p$ of the population with confidence $\alpha$.
 
-## Univariate Tolerance Intervals {.tabset}
+The value of $p$ is also referred to as the coverage factor.
 
-### Tolerance factor
+## Univariate Tolerance Intervals (Two-sided) {.tabset}
 
-**2-sided - manual calculation**  
+### Tolerance factor assuming normal distribution
+
+This is the approximate value for $k_2$ from Howe, 1969.
+
+$$
+\sqrt{
+
+\nu \left(1+ \frac{1}{N} \right) \times \frac {z_{\left( \frac{1+p}{2}\right)}^2}
+{\chi^2_{1-\alpha, \nu}}
+
+}
+$$
 
 ```{r}
 ## Compute the approximate and exact k2 factor.
@@ -24,28 +39,31 @@ Question (1) leads to a two-sided interval; questions (2) and (3) lead to one-si
 ## For this example, the standard deviation is computed from the sample,
 ## so the degrees of freedom are nu = N - 1.
 N = 25
-nu = N - 1
+nu = N - 1 # df used to estimate the sd
 p = 0.90 # proportion
 g = 0.99 # alpha
-z2 = (qnorm((1+p)/2))**2
-c2 = qchisq(1-g,nu)
+z2 = (qnorm((1+p)/2))**2 # z critical values of the normal distribution
+c2 = qchisq(1-g,nu) # chi X lower critical values of the chi-square distribution
 k2 = sqrt(nu*(1 + 1/N)*z2/c2)
 k2
 ```
 
-**2-sided tolerance factor thru `tolerance` package**  
+**2-sided tolerance factor thru `tolerance` package**
 
 ```{r}
 ## Compute the exact k2 factor for a two-sided tolerance interval using 
 ## the K.factor function in the tolerance library
+## "HE2" is a second method due to Howe, which performs similarly to the Weissberg-Beatty method, but is computationally simpler
 library(tolerance)
-K2 = K.factor(n=N, f=nu, alpha=1-g, P=p, side=2, method="EXACT", m=100)
+K2 = K.factor(n=N, f=nu, alpha=1-g, P=p, side=2, method="HE2", m=1000)
 K2
 ```
 
-### Example {.tabset}  
+### Example {.tabset}
 
-#### The data  
+Suppose that we take a sample of $N=25$ silicon wafers from a lot and measure their thickness in order to find tolerance limits within which a proportion $p = 0.90$ of the wafers in the lot fall with confidence $\alpha = 0.99$. Since the standard deviation, $s$, is computed from the sample of 25 wafers, the df are $\nu = N - 1$
+
+#### The data
 
 ```{r}
 ## "Direct" calculation of a tolerance interval.
@@ -56,53 +74,85 @@ K2
 #url <- "https://www.itl.nist.gov/div898/handbook/datasets/MPC62.DAT"
 
 # Download the file (you can specify a path where you want to save it)
-#download.file(url, destfile = "MPC62.DAT")
+# download.file(url, destfile = "MPC62.DAT")
 
 # Load the dataset into R
 mdat = read.table("MPC62.DAT",header=FALSE, skip=50)
 colnames(mdat) = c("cr", "wafer", "mo", "day", "h", "min", "op", 
                  "hum", "probe", "temp", "y", "sw", "df")
+
+head(mdat)
 ```
 
-#### Parametric  
+#### Parametric approach
 
-**`tolerance` package - parametric**  
+**`tolerance` package - parametric**
 
 ```{r}
-## Attach tolerance library and call function.
 library(tolerance)
-pout=normtol.int(mdat$y, alpha=0.01, P=.90, side=2, method = "EXACT",m=100)
+pout = normtol.int(mdat$y, 
+                   alpha=0.01, # The level chosen such that 1-alpha is the confidence level.
+                   P=.90, # The proportion of the population to be covered by this tolerance interval.
+                   side=2, # 1-sided or 2-sided tolerance interval
+                   method = "HE2", # method for calculating the k-factors
+                   m=100 # maximum number of subintervals to be used in the integrate function; larger more accurate
+                   )
 pout
 ```
 
-**Manually calculated tolerance factor - parametric**  
+Highlighting the endpoints from `pout`:
+
+```{r}
+pout$`2-sided.lower`; pout$`2-sided.upper`
+```
+
+Manually deriving the endpoints:
 
 ```{r}
 pout$x.bar-K2*sd(mdat$y); pout$x.bar+K2*sd(mdat$y)
 ```
 
-#### Nonparametric  
+```{r}
+plottol(pout, mdat$y, plot.type = "both", side = "two", x.lab = "X")
+```
 
-**`tolerance` package - nonparametric**  
+[Ref](https://www.itl.nist.gov/div898/handbook/prc/section2/prc263.htm)
+
+#### Nonparametric approach
+
+**`tolerance` package - nonparametric**
 
 ```{r}
-npout = nptol.int(mdat$y, alpha = 0.01, P = 0.90, side = 2, method = "WILKS",
-                  upper = NULL, lower = NULL)
+npout = nptol.int(mdat$y,
+                  alpha = 0.01, 
+                  P = 0.90, 
+                  side = 2, 
+                  method = "WILKS",
+                  upper = NULL, 
+                  lower = NULL)
 npout
 ```
 
+Highlighting the endpoints from `npout`:
+
 ```{r}
-npout
+npout$`2-sided.lower`; npout$`2-sided.upper`
 ```
 
-**Manually calculated tolerance factor - nonparametric**  
+Manually deriving the endpoints:
+
+**Wilk's approach: 2 sided interval**
+
+    -   sets values $L(\mathcal{X}) = X_{(r)}$ and $U(\mathcal{X}) = X_{(s)}$ where $r < s$, as the limits of the $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval $\left( L(\mathcal{X}), U(\mathcal{X}) \right)$
+    -   The values of $r$ and $s$ are chosen to satisfy $1 \le r \le s \le n$ and $s-r=m$ where $m$ is the smallest value for which $P(Y \le m-1) \ge 1-\alpha$, and $Y \sim \text{Binomial}(n, \gamma)$. It is customary to take the value of $s$ to be equal to $n-r+1$, as suggested by Wilks et.al. so that
+    -   the nonparametric interval is given by $(X_{(r)}, X_{(n-r+1)})$
 
 ```{r}
-#1 <= r < s < 25
+# 1 <= r < s < N = 25
 
 
-#let s = n−r+1
-# n-r+1-r = m 
+# let s = n−r+1
+# s - r = (n-r+1) - r = m 
 # (n-m+1)/2 = r
 
 # Parameters
@@ -111,43 +161,24 @@ gamma <- 0.90 # Probability of success in each trial
 alpha <- 0.01 # Significance level (1 - confidence level)
 
 # Find the smallest m such that P(Y <= m-1) >= 1 - alpha
+# ie find the smallest value of m such that the cumulative probability just reaches or exceeds the confidence level 1-alpha
 m <- qbinom(1 - alpha, size = n, prob = gamma)
-
 
 r = (n-m+1)/2
 s = m+r
-```
-
-```{r}
 sort(mdat$y)[ceiling(r)]; sort(mdat$y)[floor(n-r+1)]
 ```
 
-#### Plots
-
-```{r}
-plottol(pout, mdat$y, plot.type = "both", side = "two", x.lab = "X")
-```
 
 ```{r}
 plottol(npout, mdat$y, plot.type = "both", side = "two", x.lab = "X")
 ```
 
--   Wilk's approach: 2 sided interval
-
-    -   sets values $L(\mathcal{X}) = X_{(r)}$ and $U(\mathcal{X}) = X_{(s)}$ where $r < s$, as the limits of the $\gamma$-content $100 \left( 1 - \alpha\right)\%$-confidence tolerance interval $\left( L(\mathcal{X}), U(\mathcal{X}) \right)$
-    -   The values of $r$ and $s$ are chosen to satisfy $1 \le r \le s \le n$ and $s-r=m$ where $m$ is the smallest value for which $P(Y \le m-1) \ge 1-\alpha$, and $Y \sim \text{Binomial}(n, \gamma)$. It is customary to take the value of $s$ to be equal to $n-r+1$, as suggested by Wilks et.al. so that
-    -   the nonparametric interval is given by $(X_{(r)}, X_{(n-r+1)})$
-
-[Ref](https://www.itl.nist.gov/div898/handbook/prc/section2/prc263.htm)
-
-
 #### Aside
-
 
 ```{r}
 set.seed(5)
 simulated <- rlnorm(1000, 0, 1)
-
 hist(simulated)
 ```
 
@@ -259,19 +290,12 @@ pnorm(log(f.inv(p)),0,1) - pnorm(log(f.inv(1-p)),0,1)
 plnorm(f.inv(p),0,1) - plnorm(f.inv(1-p),0,1)
 ```
 
-
 ```{r}
 f.inv <- inverse(function(i)kde_cdf(i, simulated,find_silver_bw(simulated)),lower=-1000,upper=1000)
   
 p <- 0.97
 f.inv(p); qnorm(p)
 ```
-
-
-
-
-
-
 
 ```{r}
 f <- function(x) pbeta(x, shape1=2, shape2=3)
@@ -280,13 +304,11 @@ f.inv(.2)
 qbeta(p=0.2, shape1=2, shape2=3)
 ```
 
-
-## Kernel density estimation {.tabset}  
+## Kernel density estimation {.tabset}
 
 [Reference 1](https://medium.com/analytics-vidhya/kernel-density-estimation-kernel-construction-and-bandwidth-optimization-using-maximum-b1dfce127073) [Plotting KDE](https://rpubs.com/mcocam12/kdf_byhand)
 
 Kernel - Kernel functions are used to estimate density of random variables and as weighing function in non-parametric regression.
-
 
 ```{r}
 x_data <- sort(c(65, 75, 67, 79, 81, 91))
@@ -303,9 +325,7 @@ max_val <- 120#max(x_data)+round(h)
 x <- seq(from = min_val, to = max_val, by = 1) # grid
 ```
 
-### manual  
-
-
+### manual
 
 ```{r}
 # Estimate PDF
@@ -316,9 +336,6 @@ estimated_density <- kde_manual(x, x_data, h)
 # Estimate CDF
 estimated_cdf <- kde_cdf(x, x_data, h)
 ```
-
-
-
 
 ```{r}
 library(dplyr)
@@ -368,8 +385,7 @@ max_val <- 120#max(x_data)+round(h)
 x <- seq(from = min_val, to = max_val, by = 1) # grid
 ```
 
-### manual  
-
+### manual
 
 ```{r}
 
@@ -397,10 +413,6 @@ c(1, 2, 3), lwd = 2)
     #   col = c("blue", "red"), lty = c(1, 2), lwd = 2)
 ```
 
-
-
-
-
 ```{r}
 f <- function(x) pnorm(x, mean = 0, sd = 1)
 f.inv <- inverse(f,lower=-100,upper=100)
@@ -409,20 +421,16 @@ f.inv(.2)
 
 ## DGP
 
-
-
 ```{r}
 set.seed(1029)
 uninorm <- rlnorm(100,0,1)
 ```
-
 
 ```{r}
 npout = nptol.int(uninorm, alpha = 0.05, P = 0.95, side = 2, method = "WILKS",
                   upper = NULL, lower = NULL)
 npout
 ```
-
 
 ```{r}
 # STEP 1
@@ -475,8 +483,6 @@ plot(x, estimated_density, type = "l", lwd = 2,
 hist(estimated_density)
 ```
 
-
-
 ```{r}
 get_upper_limit <- function(p_data){
   h <- find_silver_bw(p_data)
@@ -501,8 +507,6 @@ get_upper_limit <- function(p_data){
 get_upper_limit(datas[,1])
 ```
 
-
-
 ```{r}
 # step 5
 k_j <- apply(datas, 2, get_upper_limit)
@@ -512,13 +516,11 @@ k_j <- apply(datas, 2, get_upper_limit)
 k_j
 ```
 
-
-
-
 ```{r}
 # step 6
 max(k_j)
 ```
+
 ```{r}
 # step 7
 
@@ -539,8 +541,6 @@ get_tolerance_interval <- function(p_data, maxk=max(k_j)){
   return(c(lower_bound, upper_bound))
 }
 ```
-
-
 
 # SIM
 
@@ -572,7 +572,6 @@ mat <- cbind(grid = rownames(datas), datas)
 rownames(datas) <- sapply(1:n, function(i) paste0("n_", sprintf("%03d", i)))
 ```
 
-
 ```{r}
 par(mfrow = c(1, 3))
 hist(datas[,1], main = "1", xlab = "Values", col = "skyblue")
@@ -588,6 +587,7 @@ k_j
 maxkj <- max(k_j)
 max(k_j)
 ```
+
 ```{r}
 tols <- apply(datas, 2, function(s) get_tolerance_interval(s,maxk=maxkj))
 tols
@@ -642,7 +642,6 @@ bonferonni <- function(p_data) {
   return(c(lower_bound, upper_bound))
 }
 ```
-
 
 ```{r}
 results <- replicate(5000, {
@@ -711,8 +710,6 @@ mean(Ib_vals)
 colMeans(Ljb_vals)
 ```
 
-
-
 ```{r}
 mk <- get_upper_limit(uninorm)
 get_tolerance_interval(uninorm,mk)
@@ -723,7 +720,6 @@ nptol.int(uninorm, alpha = 0.05, P = 0.95, side = 2, method = "WILKS",
 hist((uninorm))
 ```
 
-
 ```{r}
 hist(kde_cdf(datas[,1], datas[,1], h), probability = TRUE, 
      main = "Histogram of PIT-transformed values",
@@ -731,45 +727,17 @@ hist(kde_cdf(datas[,1], datas[,1], h), probability = TRUE,
 abline(h = 1, col = "red", lwd = 2) 
 ```
 
-
-
-
-
-
-
-
-
-
 ```{r}
 # generated from a lognormal dist
 hist(datas[,1])
 ```
-
-
 
 ```{r}
 # taking the log of a variate from lognormal dist makes it normally distributed
 hist(log(datas[,1]))
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 [Probability Integral Transform](https://matthewfeickert.github.io/Statistics-Notes/notebooks/Introductory/probability-integral-transform.html)
-
 
 # Nonparametric simultaneous tolerance intervals for small dimensions based on kernel density estimates
 
@@ -817,7 +785,7 @@ hist(log(datas[,1]))
 -   **Current studies**
 
     -   The STIs that are available in literature rely on the assumption of normality. However, in many applications, this assumption is unwarranted. For instance, Wright and Royston (1999) point out that positive skewness is common among laboratory measurements, which are the bases for the construction of reference intervals. Thus, there is a need to establish STIs through nonparametric means.
-    -   While approaches to compute nonparametric tolerance regions are available in some existing studies [see, for instance Young and Mathew (2020) and Lucagbo (2021)], these studies do not use the criterion for simultaneous inference.
+    -   While approaches to compute nonparametric tolerance regions are available in some existing studies \[see, for instance Young and Mathew (2020) and Lucagbo (2021)\], these studies do not use the criterion for simultaneous inference.
 
 -   **Nonparametric tolerance intervals**
 
@@ -1173,9 +1141,6 @@ For method A, also compute the expected lengths of the toleerance intervals for 
 2.  Compute the 2-sided tolerance limits $c_j$ and $d_j$, $j = 1, 2, \dots, p$ using the procedure in Algo A.
 
 3.  Compute $\min_{1 \leq j \leq p} \left\{ \Phi \left( \log d_j; \mu_j, \sigma^2_j\right) - \Phi \left( \log c_j; \mu_j, \sigma^2_j\right) \right\}$ where $\Phi \left( x; \mu_j, \sigma^2_j\right)$ denotes the CDF of the $N \left( \mu_j, \sigma_j^2 \right)$
-
-
-
 
 ## Basics
 
