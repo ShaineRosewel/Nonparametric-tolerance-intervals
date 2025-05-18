@@ -1,9 +1,9 @@
 ---
 title: "Nonparametric Tolerance Intervals"
-format: 
+format:
   html:
     toc: true
-    code-fold: true
+    toc-location: left
 ---
 
 ## Questions {.tabset}
