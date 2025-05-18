@@ -1,5 +1,4 @@
 ---
-title: "Nonparametric Tolerance Intervals"
 format:
   html:
     toc: true
