@@ -196,6 +196,47 @@ plottol(npout, mdat$y, plot.type = "both", side = "two", x.lab = "X")
 
 ### Aside
 
+
+#### Lognormal & normal distribution
+
+If $X \sim \mathcal{N}(\mu, \sigma^2)$, then $X$ is normally distributed.
+
+If $Y \sim \{Lognormal}(\mu, \sigma^2)$, then $\log Y \sim \mathcal{N}(\mu, \sigma^2)$
+
+This means a **lognormal random variable** is one whose logarithm is normally distributed.
+
+
+If you assume the data itself is normal (`norm`): The raw data $X \sim \mathcal{N}(\mu, \sigma^2)$.
+
+If you assume the log of the data is normal (`lnorm`): You are modeling $\log(X) \sim \mathcal{N}(\mu, \sigma^2)$ so $X \sim \text{Lognormal}(\mu, \sigma^2)$
+
+Mean is zero in the log scale: This implies
+
+$$
+\log(Y) \sim \mathcal{N}(0, \sigma^2)
+$$
+
+which is equivalent to
+
+$$
+Y \sim \text{Lognormal}(\mu, \sigma^2)
+$$
+
+This also tells that **the mean of $Y$ is not 0**. In fact, 
+$$
+\mathbb{E}[Y] =  e^{\mu+\sigma^2/2}
+$$
+
+So if $\mu = 0$ then,
+
+$$
+\mathbb{E}[Y] =  e^{\sigma^2/2} > 1
+$$
+
+
+
+
+
 ```{r}
 set.seed(5)
 simulated <- rlnorm(1000, 0, 1)
@@ -678,7 +719,7 @@ In Step 7 of Algorithm A, the inverse of the estimated distribution functions ar
 
 1.  Look at the estimated coverage probabilities. The desired or nominal confidence level is 0.95.
 
-For method A, also compute the expected lengths of the toleerance intervals for each component.
+For method A, also compute the expected lengths of the tolerance intervals for each component.
 
 **Algorithm: Performance evaluation of the Nonparametric two-sided STIs obtained from Algo A through estimated coverage probability and expected lengths**
 
@@ -884,9 +925,9 @@ MyVar <- matrix(c(
 MyMean <- c(0,0,0)
 p <- 3
 
-library("MASS")
+#library("MASS")
 set.seed(1724532)
-datas <- rlnorm.rplus(n,MyMean,MyVar)
+datas <- rnorm.rplus(n,MyMean,MyVar)
 #datas <- mvrnorm(n,MyMean,MyVar, tol = 1e-06, empirical = FALSE)
 colnames(datas) <- c("p_1", "p_2", "p_3")
 mat <- cbind(grid = rownames(datas), datas)
@@ -930,8 +971,12 @@ get_upper_limit <- function(p_data){
   #transformed_data <- transform_data(p_data, estimated_cdf, x)
   
 
-  U_mat <- kde_cdf(p_data, p_data, h)
+  #U_mat <- kde_cdf(p_data, p_data, h)
   #U_mat <- sapply(p_data, function(i) kde_cdf(i, p_data, h))
+  
+  
+  cdf_j <- kde_cdf_function(p_data, h)
+  U_mat <- sapply(p_data, cdf_j)
   
   # Step 4: Compute Y_ij = max{U_ij, 1 - U_ij}
   Y_mat <- pmax(U_mat, 1 - U_mat)
@@ -966,19 +1011,20 @@ max(k_j)
 #p_data <- datas#[,1]
 
 # Custom CDF function
-
+library("GoFKernel")
 kde_cdf_function <- function(datapoints, bandwidth) {
   function(x) mean(pnorm((x - datapoints) / bandwidth))
 }
 
 get_tolerance_interval <- function(p_data, maxk=max(k_j)){
   h <- find_silver_bw(p_data)
+  cdf_fun <- kde_cdf_function(p_data,h)
 
   #f.inv <- inverse(function(i) kde_cdf(i, p_data, h),#kde_cdf(i, p_data, h),
   #                 lower=-100,upper=100)
-  f.inv <- inverse(kde_cdf_function(p_data,h),lower=-100,upper=100)
-  lower_bound <- f.inv(1 - maxk)
-  upper_bound <- f.inv(maxk)
+  inv_cdf <- inverse(cdf_fun,lower=min(p_data) - 3 * h,upper=max(p_data) + 3 * h)
+  lower_bound <- inv_cdf(1 - maxk)
+  upper_bound <- inv_cdf(maxk)
 
 
   #print(f.inv(1 - maxk))
@@ -992,9 +1038,10 @@ get_tolerance_interval <- function(p_data, maxk=max(k_j)){
 
 # STEP 1
 library("compositions")
+library("MASS")
 gamma <- 0.95
 alpha <- 0.05
-n<-300
+n <- 500
 MyVar <- matrix(c(
 1,0.95,0.95,
 0.95,1,0.95,
@@ -1003,36 +1050,50 @@ MyMean <- c(0,0,0)
 p <- 3
 
 set.seed(7778)
-datas <- rlnorm.rplus(n,MyMean,MyVar)
+
+# STEP 1: Generate the random sample X1,X2,:::,Xn from the multivariate lognormal distribution
+set.seed(123) # for reproducibility
+log_data <- mvrnorm(n = n, mu = MyMean, Sigma = MyVar)
+
+# Convert to lognormal data by exponentiation
+datas <- exp(log_data)
+
+# Optional: Treat the data as compositional (e.g., close parts to sum to 1)
+# For example, using acomp() from compositions package
+#comp_data <- acomp(lognormal_data)
+```
 
 
-hist(datas[,1], col = rgb(1, 0, 0, 0.4), xlim = range(datas), main = "Overlaid Histograms", xlab = "Values")
-hist(datas[,2], col = rgb(0, 1, 0, 0.4), add = TRUE)
-hist(datas[,3], col = rgb(0, 0, 1, 0.4), add = TRUE)
+
+```{r}
+X<-datas
+hist(X[,1], col = rgb(1, 0, 0, 0.4), xlim = range(datas), main = "Overlaid Histograms", xlab = "Values")
+hist(X[,2], col = rgb(0, 1, 0, 0.4), add = TRUE)
+hist(X[,3], col = rgb(0, 0, 1, 0.4), add = TRUE)
 legend("topright", legend = c("1", "2", "3"),
        fill = c(rgb(1, 0, 0, 0.4), rgb(0, 1, 0, 0.4), rgb(0, 0, 1, 0.4)))
-colnames(datas) <- c("p_1", "p_2", "p_3")
-mat <- cbind(grid = rownames(datas), datas)
-rownames(datas) <- sapply(1:n, function(i) paste0("n_", sprintf("%03d", i)))
+colnames(X) <- c("p_1", "p_2", "p_3")
+mat <- cbind(grid = rownames(X), X)
+rownames(X) <- sapply(1:n, function(i) paste0("n_", sprintf("%03d", i)))
 ```
 
 ```{r}
 par(mfrow = c(1, 3))
-hist(log(datas[,1]), main = "1", xlab = "LOG Values", col = "skyblue")
-hist(log(datas[,2]), main = "2", xlab = "LOG Values", col = "salmon")
-hist(log(datas[,3]), main = "3", xlab = "LOG Values", col = "lightgreen")
+hist((X[,1]), main = "1", xlab = "LOG Values", col = "skyblue")
+hist((X[,2]), main = "2", xlab = "LOG Values", col = "salmon")
+hist((X[,3]), main = "3", xlab = "LOG Values", col = "lightgreen")
 par(mfrow = c(1, 1))
 ```
 
 ```{r}
-k_j <- apply(datas, 2, get_upper_limit)
+k_j <- apply(X, 2, get_upper_limit)
 k_j
 maxkj <- max(k_j)
 max(k_j)
 ```
 
 ```{r}
-tols <- apply(datas, 2, function(s) get_tolerance_interval(s,maxk=maxkj))
+tols <- apply(X, 2, function(s) get_tolerance_interval(s,maxk=maxkj))
 tols
 ```
 
@@ -1052,6 +1113,9 @@ f.inv <- inverse(kde_cdf_function(p_data,h),lower=-100,upper=100)
 lower_bound <- f.inv(1 - maxkj)
 upper_bound <- f.inv(maxkj)
 lower_bound;upper_bound 
+
+
+
 ```
 
 ```{r}
@@ -1064,19 +1128,15 @@ step4 <- function(i){
 }
 
 
-I <- min(sapply(1:3, step3)) >= gamma
+I <- min(sapply(1:3, step3)) #>= gamma
 I
-Lj <- sapply(1:3, step4)
+#Lj <- sapply(1:3, step4)
 ```
 
 
 
 
 
-
-```{r}
-Lj
-```
 
 
 ```{r}
@@ -1102,75 +1162,225 @@ bonferonni <- function(p_data) {
 }
 ```
 
+
+
 ```{r}
-results <- replicate(5000, {
-  datas <- rlnorm.rplus(n, MyMean, MyVar)
-  
- # library(MASS)
-  
-  ## Step 1: Generate multivariate normal samples
-  #Y <- mvrnorm(n = n, mu = MyMean, Sigma = MyVar)
-  
-  ## Step 2: Exponentiate to get multivariate lognormal samples
-  #datas <- exp(Y)  
-  
-  
-  colnames(datas) <- c("p_1", "p_2", "p_3")
-  mat <- cbind(grid = rownames(datas), datas)
-  rownames(datas) <- sapply(1:n, function(i) paste0("n_", sprintf("%03d", i)))
-  
-  k_j <- apply(datas, 2, get_upper_limit)
-  tols <- apply(datas, 2, function(s) get_tolerance_interval(s, maxk = max(k_j)))
-  bonf <- apply(datas, 2, bonferonni)
+run_simulation <- function(n, MyMean, MyVar, gamma = 0.90, n_sim = 5000) {
+  results <- replicate(n_sim, {
+    log_data <- MASS::mvrnorm(n = n, mu = MyMean, Sigma = MyVar)
+    datas <- exp(log_data)
+    colnames(datas) <- paste0("p_", seq_along(MyMean))
+    rownames(datas) <- sprintf("n_%03d", seq_len(n))
+    
+    k_j <- apply(datas, 2, get_upper_limit)
+    tols <- apply(datas, 2, function(s) get_tolerance_interval(s, maxk = max(k_j)))
+    bonf <- apply(datas, 2, bonferonni)
 
-  
-  step3 <- function(i){
-    #vb <- plnorm(tols[2, i], MyMean[i], MyVar[i, i]) - plnorm(tols[1, i], MyMean[i], MyVar[i, i])
-    vb <- plnorm((tols[2, i]), mean = MyMean[i], sd = sqrt(MyVar[i, i])) - 
-      plnorm((tols[1, i]), mean = MyMean[i], sd = sqrt(MyVar[i, i]))
-    #print(vb)
-    return(vb)
-  }
-  
-  step4 <- function(i){
-    return(tols[2, i] - tols[1, i])
-  }
+    step3 <- function(i){
+      plnorm(tols[2, i], mean = MyMean[i], sd = sqrt(MyVar[i, i])) -
+        plnorm(tols[1, i], mean = MyMean[i], sd = sqrt(MyVar[i, i]))
+    }
+    
+    step4 <- function(i){
+      tols[2, i] - tols[1, i]
+    }
 
-  step3b <- function(i){
-    #vb <- plnorm(bonf[2, i], MyMean[i], MyVar[i, i]) - plnorm(bonf[1, i], MyMean[i], MyVar[i, i])
-    vb <- plnorm((bonf[2, i]), mean = MyMean[i], sd = sqrt(MyVar[i, i])) - 
-      plnorm((bonf[1, i]), mean = MyMean[i], sd = sqrt(MyVar[i, i]))
-    #print(vb)
-    return(vb)
-  }
-  
-  step4b <- function(i){
-    return(bonf[2, i] - bonf[1, i])
-  }
+    step3b <- function(i){
+      plnorm(bonf[2, i], mean = MyMean[i], sd = sqrt(MyVar[i, i])) -
+        plnorm(bonf[1, i], mean = MyMean[i], sd = sqrt(MyVar[i, i]))
+    }
+    
+    step4b <- function(i){
+      bonf[2, i] - bonf[1, i]
+    }
 
-  
-  #print(min(sapply(1:3, step3)))
-  I <- min(sapply(1:3, step3)) >= gamma
-  Lj <- sapply(1:3, step4)
-  
-  Ib <- min(sapply(1:3, step3b)) >= gamma
-  Ljb <- sapply(1:3, step4b)
-  
-  list(Lj = Lj, I = I, Ljb = Ljb, Ib = Ib)
-}, simplify = FALSE)
+    I <- min(sapply(seq_along(MyMean), step3)) >= gamma
+    Lj <- sapply(seq_along(MyMean), step4)
+    
+    Ib <- min(sapply(seq_along(MyMean), step3b)) >= gamma
+    Ljb <- sapply(seq_along(MyMean), step4b)
 
-# If you want to extract all I values and all Lj values in a matrix form:
-I_vals <- sapply(results, function(res) res$I)
-Lj_vals <- t(sapply(results, function(res) res$Lj))
-Ib_vals <- sapply(results, function(res) res$Ib)
-Ljb_vals <- t(sapply(results, function(res) res$Ljb))
+    list(Lj = Lj, I = I, Ljb = Ljb, Ib = Ib)
+  }, simplify = FALSE)
 
+  # Collect and summarize results
+  I_vals <- sapply(results, function(res) res$I)
+  Lj_vals <- t(sapply(results, function(res) res$Lj))
+  Ib_vals <- sapply(results, function(res) res$Ib)
+  Ljb_vals <- t(sapply(results, function(res) res$Ljb))
 
-mean(I_vals)
-colMeans(Lj_vals)
-mean(Ib_vals)
-colMeans(Ljb_vals)
+  list(
+    mean_I = mean(I_vals),
+    colMeans_Lj = colMeans(Lj_vals),
+    mean_Ib = mean(Ib_vals),
+    colMeans_Ljb = colMeans(Ljb_vals),
+    raw_results = results # optional if you want full access later
+  )
+}
+
 ```
+
+
+
+```{r}
+
+p <- 3  # or any integer
+
+# Sigma_2 = 0.5 * I_p + 0.5 * 1_p 1_p'
+Sigma_2 <- 0.5 * diag(p) + 0.5 * matrix(1, p, p)
+
+# Sigma_3 = 0.8 * I_p + 0.2 * 1_p 1_p'
+Sigma_3 <- 0.8 * diag(p) + 0.2 * matrix(1, p, p)
+
+
+# Sigma_4
+Sigma_4 <- matrix(c(
+  1,   -0.95, -0.95,
+ -0.95, 1,     0.95,
+ -0.95, 0.95,  1
+), nrow = 3, byrow = TRUE)
+
+# Sigma_5
+Sigma_5 <- matrix(c(
+  1,  -0.5, -0.5,
+ -0.5,  1,   0.5,
+ -0.5,  0.5, 1
+), nrow = 3, byrow = TRUE)
+
+# Sigma_6
+Sigma_6 <- matrix(c(
+  1,  -0.2, -0.2,
+ -0.2,  1,   0.2,
+ -0.2,  0.2, 1
+), nrow = 3, byrow = TRUE)
+
+# Sigma_7
+Sigma_7 <- matrix(c(
+  1,   0.9,  0.5,
+  0.9, 1,    0.1,
+  0.5, 0.1,  1
+), nrow = 3, byrow = TRUE)
+
+# Sigma_8
+Sigma_8 <- matrix(c(
+  1,   0.5,  0.5,
+  0.5, 1,    0.95,
+  0.5, 0.95, 1
+), nrow = 3, byrow = TRUE)
+
+# Sigma_9
+Sigma_9 <- matrix(c(
+  1,   0.2,  0.2,
+  0.2, 1,    0.95,
+  0.2, 0.95, 1
+), nrow = 3, byrow = TRUE)
+
+# Sigma_10
+Sigma_10 <- matrix(c(
+  1,   -0.5, -0.5,
+ -0.5,  1,    0.95,
+ -0.5,  0.95, 1
+), nrow = 3, byrow = TRUE)
+
+```
+
+
+```{r}
+# library(foreach)
+# library(doParallel)
+# # Detect available cores and register parallel backend
+# n_cores <- parallel::detectCores() - 1
+# cl <- makeCluster(n_cores)
+# registerDoParallel(cl)
+
+```
+
+
+```{r}
+get_sigma_matrices <- function(p = 3) {
+  list(
+    Sigma_1 = matrix(c(
+      1,0.95,0.95,
+      0.95,1,0.95,
+      0.95,0.95,1),byrow=TRUE,nrow=3),
+    Sigma_2  = 0.5 * diag(p) + 0.5 * matrix(1, p, p),
+    Sigma_3  = 0.8 * diag(p) + 0.2 * matrix(1, p, p),
+    Sigma_4  = matrix(c(1, -0.95, -0.95, -0.95, 1, 0.95, -0.95, 0.95, 1), 3, 3, byrow=TRUE),
+    Sigma_5  = matrix(c(1, -0.5, -0.5, -0.5, 1, 0.5, -0.5, 0.5, 1), 3, 3, byrow=TRUE),
+    Sigma_6  = matrix(c(1, -0.2, -0.2, -0.2, 1, 0.2, -0.2, 0.2, 1), 3, 3, byrow=TRUE),
+    Sigma_7  = matrix(c(1, 0.9, 0.5, 0.9, 1, 0.1, 0.5, 0.1, 1), 3, 3, byrow=TRUE),
+    Sigma_8  = matrix(c(1, 0.5, 0.5, 0.5, 1, 0.95, 0.5, 0.95, 1), 3, 3, byrow=TRUE),
+    Sigma_9  = matrix(c(1, 0.2, 0.2, 0.2, 1, 0.95, 0.2, 0.95, 1), 3, 3, byrow=TRUE),
+    Sigma_10 = matrix(c(1, -0.5, -0.5, -0.5, 1, 0.95, -0.5, 0.95, 1), 3, 3, byrow=TRUE)
+  )
+}
+
+```
+
+
+
+```{r}
+# MyMean <- rep(0, 3)
+# gamma <- 0.95
+# sigma_list <- get_sigma_matrices()
+# n_values <- c(100, 300, 500)
+# 
+# results_df <- foreach(n = n_values, .combine = rbind, .packages = c("MASS", "GoFKernel", "tolerance")) %:%
+#   foreach(sigma_name = names(sigma_list), .combine = rbind) %dopar% {
+#     MyVar <- sigma_list[[sigma_name]]
+#     res <- run_simulation(n, MyMean, MyVar, gamma, n_sim = 5000)
+# 
+#     # Create data.frames for proposed and bonferroni methods
+#     proposed_row <- data.frame(
+#       n = n,
+#       gamma = gamma,
+#       sigma = sigma_name,
+#       method = "proposed",
+#       mean_I = res$mean_I,
+#       Lj_1 = res$colMeans_Lj[1],
+#       Lj_2 = res$colMeans_Lj[2],
+#       Lj_3 = res$colMeans_Lj[3]
+#     )
+# 
+#     bonf_row <- data.frame(
+#       n = n,
+#       gamma = gamma,
+#       sigma = sigma_name,
+#       method = "bonferroni",
+#       mean_I = res$mean_Ib,
+#       Lj_1 = res$colMeans_Ljb[1],
+#       Lj_2 = res$colMeans_Ljb[2],
+#       Lj_3 = res$colMeans_Ljb[3]
+#     )
+# 
+#     rbind(proposed_row, bonf_row)
+#   }
+
+#stopCluster(cl)
+```
+
+
+```{r}
+load("results_df.RData")
+results_df
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```{r}
 mk <- get_upper_limit(uninorm)
