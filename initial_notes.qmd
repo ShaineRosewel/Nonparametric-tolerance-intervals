@@ -218,7 +218,7 @@ plottol(npout, mdat$y, plot.type = "both", side = "two", x.lab = "X")
 
 $X \sim \mathcal{N}(\mu, \sigma^2)$ means $X$ is normally distributed.
 
-$Y \sim \{Lognormal}(\mu, \sigma^2)$ means $\log Y \sim \mathcal{N}(\mu, \sigma^2)$
+$Y \sim \text{Lognormal}(\mu, \sigma^2)$ means $\log Y \sim \mathcal{N}(\mu, \sigma^2)$
 
 A **lognormal random variable** is one whose logarithm is normally distributed.
 
@@ -962,30 +962,9 @@ get_TI_info(cj_dj, MyMean, MyVar)
 
 
 
-### Simulation A: Full Simulation
+### Simulation A: Nonparametric two-sided STIs
 
 ```{r}
-# Bonferoni
-
-# bonferonni <- function(p_data) {
-#   
-#   if (length(p_data) >= 119) {
-#     to <- nptol.int(p_data, alpha = alpha/3, P = gamma, side = 2, method = "WILKS",
-#                   upper = NULL, lower = NULL)
-# 
-#     lower_bound <- to$`2-sided.lower`
-#     upper_bound <- to$`2-sided.upper`
-#       
-#   }
-#   
-#   else {
-#     lower_bound <- min(p_data)
-#     upper_bound <- max(p_data)
-#   }
-# 
-#   return(c(lower_bound, upper_bound))
-# }
-
 bonferonni <- function(p_data) {
   if (length(p_data) >= 119) {
     to <- nptol.int(p_data, alpha = alpha / 3, P = gamma, side = 2, method = "WILKS",
