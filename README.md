@@ -2,11 +2,12 @@
 
 ### To do:
 
-- [ ] Review lognormal and normal  
+- [x] Review lognormal and normal  
 - [ ] Rewrite the codes to make them readable
 - [ ] Write a separate source code (package, if possible)
-- [ ] Multivariate 2-sided intervals: Try reproducing for other means and variance covariance matrices (started)
-- [ ] Univariate 2-sided intervals: Try reproducing for other means and variance covariance matrices  
+- [x] Multivariate 2-sided intervals: Try reproducing for other means and variance covariance matrices
+- [ ] Multivariate 1-sided intervals: Try reproducing for other means and variance covariance matrices
+- [ ] Bootstrap calibration
   
 ### References:
 - [Nonparametric simultaneous tolerance intervals for small dimensions based on kernel density estimates](https://www.tandfonline.com/doi/full/10.1080/03610918.2025.2458573)
