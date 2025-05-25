@@ -77,7 +77,7 @@ Suppose that we take a sample of $N=25$ silicon wafers from a lot and measure th
 # download.file(url, destfile = "MPC62.DAT")
 
 # Load the dataset into R
-mdat = read.table("MPC62.DAT",header=FALSE, skip=50)
+mdat = read.table("rdata/MPC62.DAT",header=FALSE, skip=50)
 colnames(mdat) = c("cr", "wafer", "mo", "day", "h", "min", "op", 
                  "hum", "probe", "temp", "y", "sw", "df")
 
@@ -1155,7 +1155,7 @@ stopCluster(cl)
 #### p = 3 Two sided
 
 ```{r}
-load("results_df_p3.RData")
+load("rdata/results_df_p3.RData")
 
 print(results_df_p3, row.names = FALSE)
 ```
@@ -1163,7 +1163,7 @@ print(results_df_p3, row.names = FALSE)
 #### p = 2 Two sided
 
 ```{r}
-load("results_df_p2.RData")
+load("rdata/results_df_p2.RData")
 
 print(results_df_p2, row.names = FALSE)
 ```
