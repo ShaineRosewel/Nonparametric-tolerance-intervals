@@ -273,7 +273,7 @@ P_{\mathcal{X}} \left\{ P_X \left( X \in T \mid \mathcal{X} \right) \geq \gamma 
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># download.file(url, destfile = "MPC62.DAT")</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the dataset into R</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>mdat <span class="ot">=</span> <span class="fu">read.table</span>(<span class="st">"MPC62.DAT"</span>,<span class="at">header=</span><span class="cn">FALSE</span>, <span class="at">skip=</span><span class="dv">50</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>mdat <span class="ot">=</span> <span class="fu">read.table</span>(<span class="st">"rdata/MPC62.DAT"</span>,<span class="at">header=</span><span class="cn">FALSE</span>, <span class="at">skip=</span><span class="dv">50</span>)</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mdat) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"cr"</span>, <span class="st">"wafer"</span>, <span class="st">"mo"</span>, <span class="st">"day"</span>, <span class="st">"h"</span>, <span class="st">"min"</span>, <span class="st">"op"</span>, </span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"hum"</span>, <span class="st">"probe"</span>, <span class="st">"temp"</span>, <span class="st">"y"</span>, <span class="st">"sw"</span>, <span class="st">"df"</span>)</span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
@@ -1024,19 +1024,19 @@ Attaching package: 'MASS'</code></pre>
 <pre><code>$Fhat_X1
 function (x) 
 mean(pnorm((x - datapoints)/bandwidth))
-&lt;environment: 0x55cd745ec798&gt;
+&lt;environment: 0x55d7f2e0b858&gt;
 
 $Fhat_X2
 function (x) 
 mean(pnorm((x - datapoints)/bandwidth))
-&lt;bytecode: 0x55cd73e82838&gt;
-&lt;environment: 0x55cd743eab00&gt;
+&lt;bytecode: 0x55d7ff648ab8&gt;
+&lt;environment: 0x55d7ff1e5908&gt;
 
 $Fhat_X3
 function (x) 
 mean(pnorm((x - datapoints)/bandwidth))
-&lt;bytecode: 0x55cd73e82838&gt;
-&lt;environment: 0x55cd73e7ec28&gt;</code></pre>
+&lt;bytecode: 0x55d7ff648ab8&gt;
+&lt;environment: 0x55d7ff6a0688&gt;</code></pre>
 </div>
 </div>
 <ol start="3" type="1">
@@ -1475,7 +1475,7 @@ TI_length  Coverage
 <section id="p-3-two-sided" class="level4">
 <h4 class="anchored" data-anchor-id="p-3-two-sided">p = 3 Two sided</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"results_df_p3.RData"</span>)</span>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"rdata/results_df_p3.RData"</span>)</span>
 <span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results_df_p3, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1546,7 +1546,7 @@ TI_length  Coverage
 <section id="p-2-two-sided" class="level4">
 <h4 class="anchored" data-anchor-id="p-2-two-sided">p = 2 Two sided</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"results_df_p2.RData"</span>)</span>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"rdata/results_df_p2.RData"</span>)</span>
 <span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results_df_p2, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
