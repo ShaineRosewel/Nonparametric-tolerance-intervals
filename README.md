@@ -1,5 +1,7 @@
 ## Nonparametric simultaneous tolerance intervals
 
+This is related to [Nonparametric simultaneous tolerance intervals for small dimensions based on kernel density estimates](https://www.tandfonline.com/doi/full/10.1080/03610918.2025.2458573). Please visit the assiated [webpage](https://shainerosewel.github.io/Nonparametric-tolerance-intervals/initial_notes.html)
+
 ### To do:
 
 - [x] Review lognormal and normal  
