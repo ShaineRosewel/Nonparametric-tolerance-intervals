@@ -5,6 +5,8 @@ format:
     toc-location: left
 ---
 
+# Prerequisite Studies
+
 ## Tolerance Intervals
 
 -   an interval that contains at least a specified proportion $\gamma$ of the population, with a specified degree of confidence, $100 \left( 1 - \alpha\right)\%$
@@ -29,14 +31,14 @@ $$
     -   What interval guarantees that $p$ percent of population measurements will not fall below a lower limit? Lower tolerance limit: $Y_L = \hat{Y} - k_1s$
     -   What interval guarantees that $p$ percent of population measurements will not exceed an upper limit? Lower tolerance limit: $Y_U = \hat{Y} + k_1s$
 
-## Parametric Tolerance Intervals
+### Parametric Tolerance Intervals
 
--   Use the method for a parametric distribution if you can safely assume that your sample comes from a population that follows that distribution.
--   If your data follow a parametric distribution, then a method that uses that distribution is more precise and economical than the nonparametric method. A method that uses a distribution achieves smaller margins of error with fewer observations, as long as the chosen distribution is appropriate for your data.
+- Use the method for a parametric distribution if you can safely assume that your sample comes from a population that follows that distribution.
+- If your data follow a parametric distribution, then a method that uses that distribution is more precise and economical than the nonparametric method. A method that uses a distribution achieves smaller margins of error with fewer observations, as long as the chosen distribution is appropriate for your data.
 
 [Minitab](https://support.minitab.com/en-us/minitab/help-and-how-to/quality-and-process-improvement/quality-tools/how-to/tolerance-intervals-nonnormal-distribution/interpret-the-results/all-statistics-and-graphs/tolerance-intervals/#parametric-distribution-method)
 
-## Nonparametric Tolerance Intervals
+### Nonparametric Tolerance Intervals
 
 -   Suppose $X_{(1)}, X_{(2)}, \dots, X_{(n)}$ are order statistics of a random sample from a population with a univariate continuous distribution function $F(x)$.
 -   Wilk's approach: 2 sided interval
@@ -55,11 +57,12 @@ $$
 -   The coverage probabilities associated with nonparametric tolerance intervals are known to be conservative.
 -   Although in this study we shall only be using Wilks' approach, we mention that recently some developments aimed at improving coverage probabilities of nonparametric tolerance intervals have been available in literature.
 
-## Univariate Example
+### Univariate Example
 
-Suppose that we take a sample of $N=25$ silicon wafers from a lot and measure their thickness in order to find tolerance limits within which a proportion $p = 0.90$ of the wafers in the lot fall with confidence $\alpha = 0.99$. Since the standard deviation, $s$, is computed from the sample of 25 wafers, the df are $\nu = N - 1$
+Suppose that we take a sample of $N=25$ silicon wafers from a lot and measure their thickness in order to find tolerance limits within which a proportion $p = 0.90$ of the wafers in the lot fall with confidence $\alpha = 0.99$. Since the standard deviation, $s$, is computed from the sample of 25 wafers, the degree of freedom is $\nu = N - 1$
 
 ::: panel-tabset
+
 #### The data
 
 ```{r}
@@ -142,6 +145,22 @@ pout$x.bar-K2*sd(mdat$y); pout$x.bar+K2*sd(mdat$y)
 plottol(pout, mdat$y, plot.type = "both", side = "two", x.lab = "X")
 ```
 
+**Parametric and univariate**
+
+Given a sample size $n$, sample mean $\bar{x}$, and sample standard deviation $s$, the two-sided normal tolerance interval is:
+
+$$
+\bar{x} \pm k \cdot s
+$$
+
+where $k$ is a factor based on:
+
+$n$, confidence level, $(1-\alpha)$, and population coverage $\gamma$
+
+In R, to find the smallest value $m$ such that $P(Y \le m-1) \ge 1-\alpha$ for a binomial distribution $Y \sim \text{Binomial}(n, \gamma)$, you can use the cumulative distribution function (CDF) for the Binomial distribution, which is available in the `pbinom()` function.
+
+The condition $P(Y \le m-1) \ge 1-\alpha$ suggests that you are looking for the quantile $m$ such that the cumulative probability is at least $1-\alpha$.
+
 [Ref](https://www.itl.nist.gov/div898/handbook/prc/section2/prc263.htm)
 
 #### Nonparametric approach
@@ -194,54 +213,52 @@ plottol(npout, mdat$y, plot.type = "both", side = "two", x.lab = "X")
 ```
 :::
 
-### Aside
 
+## Lognormal & normal distribution
 
-#### Lognormal & normal distribution
+$X \sim \mathcal{N}(\mu, \sigma^2)$ means $X$ is normally distributed.
 
-If $X \sim \mathcal{N}(\mu, \sigma^2)$, then $X$ is normally distributed.
+$Y \sim \{Lognormal}(\mu, \sigma^2)$ means $\log Y \sim \mathcal{N}(\mu, \sigma^2)$
 
-If $Y \sim \{Lognormal}(\mu, \sigma^2)$, then $\log Y \sim \mathcal{N}(\mu, \sigma^2)$
-
-This means a **lognormal random variable** is one whose logarithm is normally distributed.
+A **lognormal random variable** is one whose logarithm is normally distributed.
 
 
 If you assume the data itself is normal (`norm`): The raw data $X \sim \mathcal{N}(\mu, \sigma^2)$.
 
 If you assume the log of the data is normal (`lnorm`): You are modeling $\log(X) \sim \mathcal{N}(\mu, \sigma^2)$ so $X \sim \text{Lognormal}(\mu, \sigma^2)$
 
-Mean is zero in the log scale: This implies
+Mean is zero in the log scale means $\log(Y) \sim \mathcal{N}(0, \sigma^2)$ which is equivalent to $Y \sim \text{Lognormal}(\mu, \sigma^2)$
 
-$$
-\log(Y) \sim \mathcal{N}(0, \sigma^2)
-$$
+This also tells that **the mean of $Y$ is not 0**. In fact, $\mathbb{E}[Y] =  e^{\mu+\sigma^2/2}$ so if $\mu = 0$ then, $\mathbb{E}[Y] =  e^{\sigma^2/2} > 1$
 
-which is equivalent to
+```{r}
+set.seed(5)
+log_x <- rnorm(1000, 0, 1)
+set.seed(5)
+lnorm_x <- rlnorm(1000, 0, 1)
 
-$$
-Y \sim \text{Lognormal}(\mu, \sigma^2)
-$$
+par(mfrow = c(1, 2))
+hist(log_x, main = "Histogram: log(x)", xlab = "log(x)")
 
-This also tells that **the mean of $Y$ is not 0**. In fact, 
-$$
-\mathbb{E}[Y] =  e^{\mu+\sigma^2/2}
-$$
+hist(exp(log_x), main = "exp(log_x) & lnorm_x", xlab = "exp(log_x) & lnorm(x)",
+     col = rgb(1, 0, 0, 0.5), xlim = range(c(exp(log_x), lnorm_x)), breaks = 30)
 
-So if $\mu = 0$ then,
+# Overlay histogram of lnorm_x
+hist(lnorm_x, col = rgb(0, 0, 1, 0.3), add = TRUE, breaks = 30)
 
-$$
-\mathbb{E}[Y] =  e^{\sigma^2/2} > 1
-$$
-
-
+# Add a legend
+legend("topright", legend = c("log_y", "lnorm_x"),
+       fill = c(rgb(1, 0, 0, 0.5), rgb(0, 0, 1, 0.2)))
+```
 
 
 
 ```{r}
-set.seed(5)
-simulated <- rlnorm(1000, 0, 1)
-hist(simulated)
+sum(exp(log_x)==lnorm_x)
 ```
+
+
+## Kernel Density Estimation
 
 ```{r}
 find_silver_bw <- function(sample){
@@ -263,7 +280,6 @@ gaussian_kernel <- function(bandwidth, grid, datapoint) {
 }
 
 
-# fcn to estimate 
 kde_manual <- function(grid, datapoints, bandwidth) {
   n <- length(datapoints)
   sapply(grid, function(grid_val) {
@@ -287,106 +303,173 @@ kde_cdf <- function(grid, datapoints, bandwidth) {
 }
 ```
 
+[Reference 1](https://medium.com/analytics-vidhya/kernel-density-estimation-kernel-construction-and-bandwidth-optimization-using-maximum-b1dfce127073) [Plotting KDE](https://rpubs.com/mcocam12/kdf_byhand)
+
+Kernel - Kernel functions are used to estimate density of random variables and as weighing function in non-parametric regression.
+
 ```{r}
-estimated_cdf_sim <- kde_cdf(get_grid(simulated), simulated, find_silver_bw(simulated))
+x_data <- sort(c(65, 75, 67, 79, 81, 91))
+x_data_sd <- sd(x_data)
+x_data_iqr <- IQR(x_data)
+x_data_n <- length(x_data)
+h_silver <- 0.9*x_data_n^(-1/5)*min(c(x_data_sd, x_data_iqr/1.34))
 
 
-plot(get_grid(simulated), estimated_cdf_sim, type = "l", lwd = 2, col = "blue",
+xi <- 65#x_data[1]
+h <- 5.5 #h_silver
+min_val <- 40#min(x_data)-round(h)
+max_val <- 120#max(x_data)+round(h)
+x <- seq(from = min_val, to = max_val, by = 1) # grid
+
+# Estimate PDF
+outmat <- t(kde_manual_presum(x, x_data, h))
+estimated_density <- kde_manual(x, x_data, h)
+
+# Estimate CDF
+estimated_cdf <- kde_cdf(x, x_data, h)
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+rownames(outmat) <- x
+colnames(outmat) <- x_data
+mat <- cbind(grid = rownames(outmat), outmat)
+rownames(outmat) <- 1:nrow(outmat)
+
+df_long <- as.data.frame(mat,as.numeric) %>%
+  pivot_longer(cols = colnames(outmat), names_to = "sample", values_to = "k")
+
+df_long$grid <- as.numeric(df_long$grid)
+df_long$sample <- as.factor(df_long$sample)
+df_long$k <- as.numeric(df_long$k)
+df_long <- df_long %>% mutate(norm_kern = k/6)
+comp <- df_long %>% group_by(grid) %>% summarize(composite=sum(k)/x_data_n)
+ggplot() +
+  geom_line(data = df_long, aes(x = grid, y = norm_kern, color = sample, group = sample), alpha = 0.75) +
+  geom_line(data = comp, aes(x = grid, y = composite), alpha = 0.5) +
+  xlim(min_val, max_val) +
+  geom_vline(xintercept = c(65, 67, 75, 79, 81, 91), linetype = "dotted", size = 0.2) +
+  theme_minimal() +
+  ggtitle("Kernels at different data points")
+```
+
+
+```{r}
+x_data <- sort(c(65, 75, 67, 79, 81, 91))
+x_data_sd <- sd(x_data)
+x_data_iqr <- IQR(x_data)
+x_data_n <- length(x_data)
+h_silver <- 0.9*x_data_n^(-1/5)*min(c(x_data_sd, x_data_iqr/1.34))
+
+xi <- 65#x_data[1]
+h <- h_silver
+min_val <- 40#min(x_data)-round(h)
+max_val <- 120#max(x_data)+round(h)
+x <- seq(from = min_val, to = max_val, by = 1) # grid
+
+# Approximate CDF using left Riemann sums
+dx <- diff(x)            # Spacing between x points (assumes equally spaced)
+dx <- c(dx, tail(dx, 1))      # Pad to same length
+
+cdf_from_pdf <- cumsum(comp[['composite']] * dx)
+
+plot(x, cdf_from_pdf, type = "l", lwd = 2, col = "blue",
      xlab = "x", ylab = "Estimated CDF",
      main = "Estimated CDFs Comparison")
+
+lines(x, estimated_cdf, lwd = 2, col = "red", lty = 2)
+
+lines(x, ecdf(x_data)(x), col = "darkgreen", lwd = 2, lty = 3)
+legend("bottomright", 
+       legend = c("Numerical Integration", "Kernel CDF (pnorm)", "Empirical CDF"),
+       col = c("blue", "red", "darkgreen"), 
+       lty = c(1, 2, 3), 
+       lwd = 2)
 ```
+
 
 ```{r}
-estimated_pdf_sim <- kde_manual(get_grid(simulated), simulated, find_silver_bw(simulated))
+exp_log_x <- exp(log_x)
+h <- find_silver_bw(exp_log_x)
+estimated_cdf_sim <- kde_cdf(get_grid(exp_log_x), exp_log_x, h)
+estimated_pdf_sim <- kde_manual(get_grid(exp_log_x), exp_log_x, h)
+get_grid_exp_log_x <- get_grid(exp_log_x)
 
-
-plot(get_grid(simulated), estimated_pdf_sim, type = "l", lwd = 2, col = "blue",
-     xlab = "x", ylab = "Estimated PDF",
-     main = "Estimated CDFs Comparison")
+par(mfrow = c(1, 3))
+hist(exp(log_x), main = "Histogram: exp(log_x)", xlab = "exp(log_x)",
+     col = rgb(1, 0, 0, 0.5), xlim = range(c(exp(log_x), lnorm_x)), breaks = 30)
+plot(get_grid_exp_log_x, estimated_cdf_sim, type = "l", lwd = 1, col = "red",
+     xlab = "exp(log_x)", ylab = "KDE-Estimated CDF",
+     main = "Estimated CDF")
+plot(get_grid_exp_log_x, estimated_pdf_sim, type = "l", lwd = 1, col = "red",
+     xlab = "exp(log_x)", ylab = "KDE-Estimated PDF",
+     main = "Estimated PDF")
 ```
+
 
 ```{r}
 library("GoFKernel")
-kde_cdf_value <- function(x, datapoints, bandwidth) {
-  mean(pnorm((x - datapoints) / bandwidth))
-}
-
-kde_cdf_inverse <- function(probabilities, datapoints, bandwidth, lower = -10, upper = 10) {
-  sapply(probabilities, function(p) {
-    root_func <- function(x) kde_cdf_value(x, datapoints, bandwidth) - p
-    uniroot(root_func, lower = lower, upper = upper)$root
-  })
-}
+# kde_cdf_value <- function(x, datapoints, bandwidth) {
+#   mean(pnorm((x - datapoints) / bandwidth))
+# }
 
 kde_cdf_function <- function(datapoints, bandwidth) {
   function(x) mean(pnorm((x - datapoints) / bandwidth))
 }
 
 
+# kde_cdf_inverse <- function(probabilities, datapoints, bandwidth, lower = -10, upper = 10) {
+#   sapply(probabilities, function(p) {
+#     root_func <- function(x) kde_cdf_value(x, datapoints, bandwidth) - p
+#     uniroot(root_func, lower = lower, upper = upper)$root
+#   })
+# }
 
+kde_cdf_function <- function(datapoints, bandwidth) {
+  function(x) mean(pnorm((x - datapoints) / bandwidth))
+}
 
-# =================
-
-U_mat <- kde_cdf(simulated, simulated, find_silver_bw(simulated))
-#U_mat <- sapply(p_data, function(i) kde_cdf(i, p_data, h))
-
-# Step 4: Compute Y_ij = max{U_ij, 1 - U_ij}
-Y_mat <- pmax(U_mat, 1 - U_mat)
-
-#u<-data.frame(original = transformed_data, complement = 1 - transformed_data)
-#y1 <- apply(u, 1, max)
-npout = nptol.int(Y_mat, alpha = alpha, P = gamma, side = 1, method = "WILKS",
-                upper = NULL, lower = NULL)
-p <- npout$`1-sided.upper`
-
-f.inv <- inverse(kde_cdf_function(simulated,find_silver_bw(simulated)),lower=-100,upper=100)
+get_upper_limit <- function(p_data){
+  h <- find_silver_bw(p_data)
   
-#f.inv(p);f.inv(1-p); qlnorm(1-p); exp(qnorm(1-p))
+  cdf_j <- kde_cdf_function(p_data, h)
+  U_mat <- sapply(p_data, cdf_j)
 
+  Y_mat <- pmax(U_mat, 1 - U_mat)
 
-pnorm(log(f.inv(p)),0,1) - pnorm(log(f.inv(1-p)),0,1)
-```
-
-  lower_bound <- f.inv(1 - maxk)
-  upper_bound <- f.inv(maxk)
+  npout = nptol.int(Y_mat, alpha = alpha, P = gamma, side = 1, method = "WILKS",
+                  upper = NULL, lower = NULL)
   
-```{r}
-plnorm(f.inv(p),0,1) - plnorm(f.inv(1-p),0,1)
+  return(npout$`1-sided.upper`)
+}
+
+get_tolerance_interval <- function(p_data, maxk=max(k_j)){
+  h <- find_silver_bw(p_data)
+  cdf_fun <- kde_cdf_function(p_data,h)
+
+  inv_cdf <- inverse(cdf_fun,lower=min(p_data) - 3 * h,upper=max(p_data) + 3 * h)
+  lower_bound <- inv_cdf(1 - maxk)
+  upper_bound <- inv_cdf(maxk)
+
+  return(c(lower_bound, upper_bound))
+}
 ```
 
-```{r}
-f.inv(1-p)
-```
+## Probability Integral Transform
 
 ```{r}
-p
+hist(kde_cdf(exp(log_x), exp(log_x), find_silver_bw(exp(log_x))), probability = TRUE, 
+     main = "Histogram of PIT-transformed values",
+     xlab = "PIT values")
+abline(h = 1, col = "red", lwd = 2) 
 ```
 
+[Probability Integral Transform](https://matthewfeickert.github.io/Statistics-Notes/notebooks/Introductory/probability-integral-transform.html)
 
+# Nonparametric simultaneous tolerance intervals for small dimensions based on kernel density estimates
 
-```{r}
-f.inv(p)
-```
-
-
-```{r}
-f.inv <- inverse(function(i)kde_cdf(i, simulated,find_silver_bw(simulated)),lower=-1000,upper=1000)
-  
-p <- 0.97
-f.inv(p); qnorm(p)
-```
-
-```{r}
-f <- function(x) pbeta(x, shape1=2, shape2=3)
-f.inv <- inverse(f,lower=0,upper=1)
-f.inv(.2)
-qbeta(p=0.2, shape1=2, shape2=3)
-```
-
-
-## Nonparametric simultaneous tolerance intervals for small dimensions based on kernel density estimates
-
-### Abstract
+## Abstract
 
 - This study aims to contribute to the existing knowledge on the computation of STIs by developing procedures to compute nonparametric STIs with accurate coverage.  
 - The tolerance interval's property of containing a specified proportion of sampled population values with high degree of confidence makes its computation meaningful.  
@@ -398,7 +481,7 @@ qbeta(p=0.2, shape1=2, shape2=3)
 - The nonparametric STIs computed using the proposed methods are generally better than the ones obtained through a Bonferroni-corrected approach.  
 - A real-life application on the assessment of liver function is presented to illustrate the use of the proposed method.  
 
-### More Definitions {#definitions}
+## More Definitions {#definitions}
 
 **Simultaneous inference**  
 - Whenever there are several populations, it is of interest to construct simultaneous statistical intervals from the sample data.  
@@ -419,15 +502,15 @@ qbeta(p=0.2, shape1=2, shape2=3)
   - Common choices for $K(\cdot)$ include Gaussian kernel and the Epanichikov kernel.  
   - This study uses the Gaussian kernel and estimtes the CDF by plugging the PDF of the standard normal distribution into $K(\cdot)$ and integrating the resulting quantity, giving $\hat{F}(x)=\frac{1}{n} \sum^n_{i=1} \Phi \left( \frac{x-X_i}{h} \right)$ where $\hat{F}(x)$ is the estimate of $F(x)$ and $\Phi$ is the CDF of the standard normal distribution.  
 
-### Methodology
+## Methodology
 
-#### Data layout & statistical criterion
+### Data layout & statistical criterion
 
 Here discusses the data to be used in computing STIs and the criterion to be followed.
 
 **Data**: random sample $\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n$ of multivariate measurements with dimension $p$, coming from an unknown continuous distributions, say $F_X(\cdot)$. Each $\mathbf{X}_i = \left( X_{i1}, X_{i2}, \dots, X_{ip}\right)'$ is a $(p \times 1)$ column vector of measurements taken from the $i$th subject, $i = 1, 2, \dots, n$
 
-#### Two sided STIs
+### Two sided STIs
 
 **Objective**: We want to construct two-sided STIs for each component of $\mathbf{X} = (X_1, X_2, \dots, X_p)'$. That is, we want to find a region of the form $(c_1, d_1) \times (c_2, d_2) \times \dots \times (c_p, d_p)$ where $c_j$ and $d_j$, $j = 1, 2, \dots, p$, are functions of the random sample $\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n$ such that
 
@@ -439,7 +522,7 @@ The quantities $\gamma$ and $\left( 1-\alpha\right)$ are between 0 and 1 and are
 
 **Criterion**: With a confidence level of $100(1-\alpha)\%$, each marginal interval $(c_j, d_j), j = 1, 2, \dots, p$, should have a content of at least $\gamma$.
 
-#### One sided STI {#one-sided-sti}
+### One sided STI {#one-sided-sti}
 
 **Objective**: We want to construct 1-sided STIs.
 
@@ -471,7 +554,7 @@ $$
 
 **Notes**: Methodologies here make no assumptions about the correlation structure of $\mathbf{X}$ and so procedures also apply to case where $X_1, X_2, \dots, X_p$ are independent.
 
-#### Method A: nonparametric two-sided STIs
+### Method: Nonparametric two-sided STIs
 
 Reference: Lucagbo (2021), who develops nonparametric rectangular tolerance regions. The main idea of the proposed methods is to transform each component in $\mathbf{X}$.
 
@@ -568,135 +651,259 @@ $$
 \prod^p_{j=1}\left( c_j, d_j \right) = \prod^p_{j=1}\left( \hat{F}_j^{-1}(1-\hat{k}), \hat{F}_j^{-1}(\hat{k}) \right)
 $$
 
-------------------------------------------------------------------------
-
-**Algorithm: Nonparametric two-sided STIs**
+**Algorithm A: Nonparametric two-sided STIs**
 
 1.  Data are given by $\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n \overset{iid}{\sim}F_{\mathbf{X}}(\mathbf{x})$ where $\mathbf{X}_i = \left( X_{i1}, X_{i2}, \dots, X_{ip}\right)'$ is a $(p \times 1)$ vector of measurements taken from the $i$th subject, $i = 1, 2, \dots, n$. Also $F_{\mathbf{X}}(\mathbf{x})$ is some unknown (continuous) distribution, where $F_j(x)$ is the unknown distribution of the $j$th component
 
+```{r}
+get_sigma_matrices <- function(p = 3) {
+  sigma_list <- list(
+    Sigma_01  = 0.05 * diag(p) + 0.95 * matrix(1, p, p),
+    Sigma_02  = 0.5 * diag(p) + 0.5 * matrix(1, p, p),
+    Sigma_03  = 0.8 * diag(p) + 0.2 * matrix(1, p, p)
+  )
+  
+  if (p == 3) {
+    extra <- list(
+      Sigma_04 = matrix(c(1, -0.95, -0.95,
+                          -0.95, 1, 0.95,
+                          -0.95, 0.95, 1), 3, 3, byrow = TRUE),
+
+      Sigma_05 = matrix(c(1, -0.5, -0.5,
+                          -0.5, 1, 0.5,
+                          -0.5, 0.5, 1), 3, 3, byrow = TRUE),
+
+      Sigma_06 = matrix(c(1, -0.2, -0.2,
+                          -0.2, 1, 0.2,
+                          -0.2, 0.2, 1), 3, 3, byrow = TRUE),
+
+      Sigma_07 = matrix(c(1, 0.9, 0.5,
+                          0.9, 1, 0.1,
+                          0.5, 0.1, 1), 3, 3, byrow = TRUE),
+
+      Sigma_08 = matrix(c(1, 0.5, 0.5,
+                          0.5, 1, 0.95,
+                          0.5, 0.95, 1), 3, 3, byrow = TRUE),
+
+      Sigma_09 = matrix(c(1, 0.2, 0.2,
+                          0.2, 1, 0.95,
+                          0.2, 0.95, 1), 3, 3, byrow = TRUE),
+
+      Sigma_10 = matrix(c(1, -0.5, -0.5,
+                          -0.5, 1, 0.95,
+                          -0.5, 0.95, 1), 3, 3, byrow = TRUE)
+    )
+    sigma_list <- c(sigma_list, extra)
+  }
+  return(sigma_list)
+}
+
+sigma_p3 <- get_sigma_matrices(p = 3)
+sigma_p2 <- get_sigma_matrices(p = 2)
+```
+
+
+```{r}
+#library("compositions")
+library("MASS")
+gamma <- 0.95
+alpha <- 0.05
+n <- 500
+p <- 3
+MyVar <- sigma_p3[1]$Sigma_01
+MyMean <- rep(0,p)
+
+
+# STEP 1: Generate the random sample X1,X2,:::,Xn from the multivariate lognormal distribution
+set.seed(123) # for reproducibility
+log_data <- mvrnorm(n = n, mu = MyMean, Sigma = MyVar)
+
+# Convert to lognormal data by exponentiation
+X <- exp(log_data)
+
+colnames(X) <- paste0("p_", sprintf("%03d", seq(p)))
+```
+
+```{r}
+base_colors <- adjustcolor(rainbow(p), alpha.f = 0.25)
+# Limit to first p columns
+colors_to_use <- base_colors[1:p]
+columns_to_plot <- X[, 1:p, drop = FALSE]
+
+
+par(mfrow = c(1, p+1))
+# Set up plot
+hist(columns_to_plot[,1], 
+     col = colors_to_use[[1]], 
+     xlim = range(X), 
+     main = "Overlaid Histograms", 
+     xlab = "exp(log_x)")
+
+# Add remaining histograms
+if (p > 1) {
+  for (i in 2:p) {
+    hist(columns_to_plot[,i], 
+         col = colors_to_use[[i]], 
+         add = TRUE)
+  }
+}
+
+# Add legend
+legend("topright", 
+       legend = colnames(columns_to_plot), 
+       fill = unlist(colors_to_use))
+
+
+for (p in seq(p)) {
+  hist((X[,p]), main = paste0("p_", sprintf("%03d", p)), xlab = "exp(log_x)", col = colors_to_use[[p]])
+}
+
+```
+
+
 2.  For each $j = 1, 2, \dots, p$, obtain the estimate $\hat{F}_j(x)$ via KDE using $X_{1j}, X_{2j}, \dots, X_{nj}$.
+
+```{r}
+kde_cdf_function <- function(datapoints, bandwidth) {
+  return(function(x) mean(pnorm((x - datapoints) / bandwidth)))
+}
+
+Fhat_Xj <- lapply(seq_len(ncol(X)), function(j) {
+  kde_cdf_function(X[, j], find_silver_bw(X[, j]))
+})
+
+names(Fhat_Xj) <- paste0("Fhat_X", seq_len(ncol(X)))
+
+Fhat_Xj
+```
 
 3.  Compute $U_{ij} = \hat{F}_j(X_{ij}), i = 1, 2, \dots, n$ and $j = 1, 2, \dots, p$
 
+```{r}
+# Step 3: compute estimates at each data point
+U_ij <- lapply(seq_len(ncol(X)), function(j) {
+  sapply(X[, j], Fhat_Xj[[j]])
+})
+
+names(U_ij) <- paste0("U_i", seq_len(ncol(X)))
+
+# Estimate CDFs and evaluate at data points
+for (i in seq_len(p)) {
+  U_ij[[i]] <- sapply(X[, i], Fhat_Xj[[i]])
+}
+
+# Overlay dot plots in one figure
+plot(X[,1], U_ij[[1]], col = colors_to_use[1], pch = 16,
+     xlab = "exp(log_x)", ylab = "U_ij",
+     main = "Overlaid Estimated CDFs", ylim = c(0, 1))
+
+for (i in 2:p) {
+  points(X[, i], U_ij[[i]], col = colors_to_use[i], pch = 16)
+}
+
+# Optional legend
+legend("bottomright", legend = paste0("U_i", 1:p),
+       col = colors_to_use, pch = 16)
+```
+
+This is an aside: Getting the estimated PDF from the estimated CDF.
+
+```{r}
+p <- ncol(X)
+base_colors <- adjustcolor(rainbow(p), alpha.f = 0.2)
+colors_to_use <- base_colors[1:p]
+base_colors_kde <- adjustcolor(rainbow(p), alpha.f = .75)
+colors_to_use_kde <- base_colors_kde[1:p]
+
+p <- 3  # number of individual plots
+
+par(mfrow = c(1, p + 1))
+
+base_colors <- adjustcolor(rainbow(p), alpha.f = 0.25)
+colors_to_use <- base_colors[1:p]
+
+# 1. Combined overlay histogram (spans entire first row)
+hist(X[, 1], col = colors_to_use[1], xlim = range(X), main = "Overlaid Histograms",
+     xlab = "exp(log_x)", freq = FALSE,breaks=seq(0,20,find_silver_bw(X[, 1])), border=NA)
+for (i in 2:p) {
+  hist(X[, i], col = colors_to_use[i], add = TRUE, freq = FALSE,breaks=seq(0,20,find_silver_bw(X[, i])), border=NA)
+}
+legend("topright", legend = colnames(X)[1:p], fill = colors_to_use)
+
+# 2. Individual histograms with KDE overlays (second row)
+for (j in seq_len(p)) {
+  # Calculate y-limits dynamically
+  h <- hist(X[, j], plot = FALSE, freq = FALSE, warn.unused=FALSE)
+  grid <- get_grid(X[, j])
+  kde_vals <- kde_manual(grid, X[, j], find_silver_bw(X[, j]))
+  y_max <- max(max(h$density), max(kde_vals))
+  
+  hist(X[, j], main = paste0("p_", sprintf("%03d", j)),breaks=seq(0,20,find_silver_bw(X[, j])),
+       xlab = "exp(log_x)", col = colors_to_use[j], freq = FALSE,border=NA)
+  lines(grid, kde_vals, col = adjustcolor(colors_to_use_kde[j], alpha.f = 1), lwd = 1)
+}
+```
+
+
 4.  Compute $Y_{ij} = \max \left\{ U_{ij}, 1-U_{ij} \right\}, i = 1, 2, \dots, n$ and $j = 1, 2, \dots, p$
+
+```{r}
+Y_ij <- lapply(U_ij, function(U) {
+  pmax(U, 1 - U)
+})
+
+names(Y_ij) <- paste0("Y_i", seq_len(ncol(X)))
+```
 
 5.  For each $j=1, 2, \dots, p$, compute the $\gamma$-content, $100(1-\alpha)\%$-confidence nonparametric upper tolerance limit based on $Y_{1j}, Y_{2j}, \dots, Y_{nj}$ using the methodology [here](#definitions) (nonparametric tolerance intervals). Call this $k_j, j = 1, 2, \dots, p$
 
+```{r}
+k_j <- lapply(Y_ij, function(Y) {
+  return(
+    nptol.int(Y, 
+              alpha = alpha, 
+              P = gamma, 
+              side = 1, 
+              method = "WILKS",
+              upper = NULL,
+              lower = NULL)$`1-sided.upper`)
+})
+names(k_j) <- paste0("k_", seq_len(ncol(X)))
+k_j
+```
+
+
 6.  Get the maximum of the $k_j$s. Call this $\hat{k} = \max\{k_1, k_2, \dots, k_p\}$
 
-7.  For each $j=1, 2, \dots, p$, compute $c_j =\hat{F}_j^{-1}(1-\hat{k})$ and $d_j = \hat{F}_j^{-1}(\hat{k})$
+```{r}
+k_hat <- max(unlist(k_j))
+k_hat
+```
 
+
+7.  For each $j=1, 2, \dots, p$, compute $c_j =\hat{F}_j^{-1}(1-\hat{k})$ and $d_j = \hat{F}_j^{-1}(\hat{k})$
 8.  The $\gamma$-content, $100(1-\alpha)\%$-confidence nonparametric two-sided STIs are given by $(c_j, d_j), j =1, 2, \dots, p$
+
+```{r}
+cj_dj <- lapply(Fhat_Xj, function(Fhat) {
+  f.inv <- inverse(Fhat, lower = -100, upper = 100)
+  setNames(c(f.inv(1 - k_hat), f.inv(k_hat)), c("c_j", "d_j"))
+})
+names(cj_dj) <- paste0("Finv_i", seq_len(ncol(X)))
+cj_dj
+```
 
 common $\hat{k}$ is to be used across all estimated distributions $\hat{F}_j$
 
-#### Simulation A: nonparametric two-sided STIs
+### Evaluation: Nonparametric two-sided STIs
 
 This is aimed to evaluate the performance of the proposed methodology.
 
--   To reflect the potential skewness of the observations, the data are generated from a multivariate lognormal distribution with mean vector $\mathbf{0}$ and covariance matrix $\Sigma$ in logarithmic scale.
--   DGP will be done using "compositions" R package.
--   The confidence level and content are set at $1-\alpha=0.95$ and $\gamma = 0.95$.
--   We use the sample sizes $n =100,n=300$, and $n=500$ for the simulations.
--   The covariance matrix $\Sigma$ is also varied to represent different correlation structures. We run simulations for the values of $\Sigma$ of the form $(1-\rho)\mathbf{I}_p + \rho1_p1_p'$. Here $\mathbf{I}_p$ is the $(p \times p)$ identity matrix and $1_p$ is a $(p \times 1)$ column vector of 1s. This choice of $\Sigma$ is a correlation matrix that assumes an exchangeable correlation structure. We run simulations for $p=2$ and $p=3$ for the ff covariance matrices:
-
-$$
-\Sigma_1 = 0.05\mathbf{I}_p + 0.95\ 1_p1'_p =
-\begin{bmatrix}
-1 & 0.95 & \ldots & 0.95\\
-0.95 & 1 & \ldots & 0.95\\
-0.95 & 0.95 & \ddots & 0.95\\
-\vdots & \vdots & \vdots & \vdots\\
-0.95 & 0.95 & \ldots & 1\\
-\end{bmatrix}
-$$
-
-$$
-\Sigma_2 = 0.5\mathbf{I}_p + 0.5\ 1_p1'_p =
-\begin{bmatrix}
-1 & 0.5 & \ldots & 0.5\\
-0.5 & 1 & \ldots & 0.5\\
-0.5 & 0.5 & \ddots & 0.5\\
-\vdots & \vdots & \vdots & \vdots\\
-0.5 & 0.5 & \ldots & 1\\
-\end{bmatrix}
-$$
-
-$$
-\Sigma_3 = 0.8\mathbf{I}_p + 0.2\ 1_p1'_p =
-\begin{bmatrix}
-1 & 0.2 & \ldots & 0.2\\
-0.2 & 1 & \ldots & 0.2\\
-0.2 & 0.2 & \ddots & 0.2\\
-\vdots & \vdots & \vdots & \vdots\\
-0.2 & 0.2 & \ldots & 1\\
-\end{bmatrix}
-$$
-
-In addition, we also run simulations for the following non-exchangeable structures $\Sigma$:
-
-$$
-\Sigma_4=
-\begin{bmatrix}
-1 & -0.95 & -0.95 \\
--0.95 & 1 & 0.95 \\
--0.95 & 0.95 & 1
-\end{bmatrix}
-$$
-
-$$
-\Sigma_5=
-\begin{bmatrix}
-1 & -0.5 & -0.5 \\
--0.5 & 1 & 0.5 \\
--0.5 & 0.5 & 1
-\end{bmatrix}
-$$
-
-$$
-\Sigma_6=
-\begin{bmatrix}
-1 & -0.2 & -0.2 \\
--0.2 & 1 & 0.2 \\
--0.2 & 0.2 & 1
-\end{bmatrix}
-$$
-
-$$
-\Sigma_7=
-\begin{bmatrix}
-1 & 0.9 & 0.5 \\
-0.9 & 1 & 0.1 \\
-0.5 & 0.1 & 1
-\end{bmatrix}
-$$
-
-$$
-\Sigma_8=
-\begin{bmatrix}
-1 & 0.5 & 0.5 \\
-0.5 & 1 & 0.95 \\
-0.5 & 0.95 & 1
-\end{bmatrix}
-$$
-
-$$
-\Sigma_9=
-\begin{bmatrix}
-1 & 0.2 & 0.2 \\
-0.2 & 1 & 0.95 \\
-0.2 & 0.95 & 1
-\end{bmatrix}
-$$
-
-$$
-\Sigma_{10}=
-\begin{bmatrix}
-1 & -0.5 & -0.5 \\
--0.5 & 1 & 0.95 \\
--0.5 & 0.95 & 1
-\end{bmatrix}
-$$
+- To reflect the potential skewness of the observations, the data are generated from a multivariate lognormal distribution with mean vector $\mathbf{0}$ and covariance matrix $\Sigma$ in logarithmic scale.
+- DGP will be done using "compositions" R package.
+- The confidence level and content are set at $1-\alpha=0.95$ and $\gamma = 0.95$.
+- We use the sample sizes $n =100,n=300$, and $n=500$ for the simulations.
+- The covariance matrix $\Sigma$ is also varied to represent different correlation structures. We run simulations for the values of $\Sigma$ of the form $(1-\rho)\mathbf{I}_p + \rho1_p1_p'$. Here $\mathbf{I}_p$ is the $(p \times p)$ identity matrix and $1_p$ is a $(p \times 1)$ column vector of 1s. This choice of $\Sigma$ is a correlation matrix that assumes an exchangeable correlation structure. We run simulations for $p=2$ and $p=3$ for the ff covariances in `sigma_p2/sigma_p3`
 
 The choices for the covariance matrices $\Sigma_1$ to $\Sigma_{10}$ are made so that they include as wide variety as possible of the correlation values in terms of both size and direction.
 
@@ -706,8 +913,8 @@ Aside: An exchangeable variance-covariance matrix is a structured covariance mat
 
 Furthermore, although this study is primarily concerned with multivariate measurements, we shall also investigate the performance of the KDE-based method in the univariate case and compare it with the performance of the standard approach to compute nonparametric tolerance intervals, which is that of Wilks (1941).
 
--   For the univariate case, we generate the simulated samples from the univariate lognormal distribution with log-scale mean 0.
--   The log-scale variances used are $\sigma^2 = 0.95, \sigma^2=0.5$, and $\sigma^2 = 0.20$.
+- For the univariate case, we generate the simulated samples from the univariate lognormal distribution with log-scale mean 0.
+- The log-scale variances used are $\sigma^2 = 0.95, \sigma^2=0.5$, and $\sigma^2 = 0.20$.
 
 Note that since the proposed methods apply mainly to the multivariate case, in the univariate care we refrain from saying "proposed method", and instead say "KDE-based method" even though the univariate case is a special case of the multivariate case.
 
@@ -715,498 +922,194 @@ The Gaussian kernel is used in obtaining the KDE. Moreover, the bandwidth $h$ us
 
 In Step 7 of Algorithm A, the inverse of the estimated distribution functions are calculated using the `GoFKernel` R package. In addition, nonparametric tolerance limits described are implemented in R through the `tolerance` R package. To estimate the coverage probability, this study uses $M=5000$ simulated samples in running Monte Carlo simulations.
 
-#### Simulation A: Performance Evaluation
 
-1.  Look at the estimated coverage probabilities. The desired or nominal confidence level is 0.95.
-
-For method A, also compute the expected lengths of the tolerance intervals for each component.
+To evaluate, look at the estimated coverage probabilities. The desired or nominal confidence level is 0.95. Also compute the expected lengths of the tolerance intervals for each component for algorithm A.
 
 **Algorithm: Performance evaluation of the Nonparametric two-sided STIs obtained from Algo A through estimated coverage probability and expected lengths**
 
-1.  Generate the random sample $\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n$ from the multivariate lognormal distribution with log-scale mean $\boldsymbol{\mu}$ and given log-scale covariance matrix $\Sigma$. Let $\mu_j$ be the $j$th element of $\boldsymbol{\mu}$ and $\sigma^2_j$ be the $j$th diagonal element of $\Sigma$.
+1. Generate the random sample $\mathbf{X}_1, \mathbf{X}_2, \dots, \mathbf{X}_n$ from the multivariate lognormal distribution with log-scale mean $\boldsymbol{\mu}$ and given log-scale covariance matrix $\Sigma$. Let $\mu_j$ be the $j$th element of $\boldsymbol{\mu}$ and $\sigma^2_j$ be the $j$th diagonal element of $\Sigma$.
 
-2.  Compute the 2-sided tolerance limits $c_j$ and $d_j$, $j = 1, 2, \dots, p$ using the procedure in Algo A.
+2. Compute the 2-sided tolerance limits $c_j$ and $d_j$, $j = 1, 2, \dots, p$ using the procedure in Algo A.
 
-3.  Compute $\min_{1 \leq j \leq p} \left\{ \Phi \left( \log d_j; \mu_j, \sigma^2_j\right) - \Phi \left( \log c_j; \mu_j, \sigma^2_j\right) \right\}$ where $\Phi \left( x; \mu_j, \sigma^2_j\right)$ denotes the CDF of the $N \left( \mu_j, \sigma_j^2 \right)$
+3. Compute $\min_{1 \leq j \leq p} \left\{ \Phi \left( \log d_j; \mu_j, \sigma^2_j\right) - \Phi \left( \log c_j; \mu_j, \sigma^2_j\right) \right\}$ where $\Phi \left( x; \mu_j, \sigma^2_j\right)$ denotes the CDF of the $N \left( \mu_j, \sigma_j^2 \right)$
 
-## Basics
-
-### Tolerance intervals
-
-**Parametric and univariate**
-
-Given a sample size $n$, sample mean $\bar{x}$, and sample standard deviation $s$, the two-sided normal tolerance interval is:
-
-$$
-\bar{x} \pm k \cdot s
-$$
-
-where $k$ is a factor based on:
-
-$n$, confidence level, $(1-\alpha)$, and population converage $\gamma$
-
-Assumptions:
-
--   normally distributed data
--   random sampling
--   if unknown mean and variance: We estimate both the mean and the standard deviation from the data. Why it matters: That's what distinguishes this from a theoretical tolerance interval based on known parameters. It affects the derivation of $\mathcal{k}$
--   moderate sample size: What it means: While larger n is better, a sample of 20 is acceptable for parametric TIs, especially if the distribution is normal. Why it matters: Small samples lead to more variability in s, making the TI wider or less reliable.
-
-**Example**
-
-Case for unknown $\mu$ and $\sigma$: Estimate the mean $\bar{x}$ and standard deviation, $\sigma$
 
 ```{r}
-#set.seed(777)
-#v = rnorm(20, mean = 10, sd = 0.25)
+get_TI_info <- function(tol_int, mu, var) {
+  info <- lapply(seq_along(tol_int), function(j) {
+    lower <- tol_int[[j]]["c_j"]
+    upper <- tol_int[[j]]["d_j"]
+    
+    # Coverage on CDF scale (difference of estimated quantiles)
+    coverage <- as.numeric(upper - lower)
+    
+    # TI length on original/lognormal scale
+    ti_length <- plnorm(upper, meanlog = mu[j], sdlog = sqrt(var[j, j])) -
+                 plnorm(lower, meanlog = mu[j], sdlog = sqrt(var[j, j]))
 
-hist(mdat$y)
+    # Return named vector
+    setNames(c(ti_length, coverage), c("TI_length", "Coverage"))
+  })
 
-# Q-Q plot
-qqnorm(mdat$y)
-qqline(mdat$y, col = "blue")
-
-shapiro.test(mdat$y)
-
-#W: the test statistic
-#p-value > 0.05 → data is likely normally distributed
-#p-value ≤ 0.05 → data likely not normally distributed
-```
-
-Aside:
-
-In R, to find the smallest value $m$ such that $P(Y \le m-1) \ge 1-\alpha$ for a binomial distribution $Y \sim \text{Binomial}(n, \gamma)$, you can use the cumulative distribution function (CDF) for the Binomial distribution, which is available in the `pbinom()` function.
-
-The condition $P(Y \le m-1) \ge 1-\alpha$ suggests that you are looking for the quantile $m$ such that the cumulative probability is at least $1-\alpha$.
-:::
-
-
-## Related Literature
-
-::: panel-tabset
-### Kernel density estimation
-
-[Reference 1](https://medium.com/analytics-vidhya/kernel-density-estimation-kernel-construction-and-bandwidth-optimization-using-maximum-b1dfce127073) [Plotting KDE](https://rpubs.com/mcocam12/kdf_byhand)
-
-Kernel - Kernel functions are used to estimate density of random variables and as weighing function in non-parametric regression.
-
-```{r}
-x_data <- sort(c(65, 75, 67, 79, 81, 91))
-x_data_sd <- sd(x_data)
-x_data_iqr <- IQR(x_data)
-x_data_n <- length(x_data)
-h_silver <- 0.9*x_data_n^(-1/5)*min(c(x_data_sd, x_data_iqr/1.34))
-
-
-xi <- 65#x_data[1]
-h <- 5.5 #h_silver
-min_val <- 40#min(x_data)-round(h)
-max_val <- 120#max(x_data)+round(h)
-x <- seq(from = min_val, to = max_val, by = 1) # grid
-```
-
-#### manual1
-
-```{r}
-# Estimate PDF
-outmat <- t(kde_manual_presum(x, x_data, h))
-estimated_density <- kde_manual(x, x_data, h)
-
-
-# Estimate CDF
-estimated_cdf <- kde_cdf(x, x_data, h)
-```
-
-```{r}
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-
-rownames(outmat) <- x
-colnames(outmat) <- x_data
-mat <- cbind(grid = rownames(outmat), outmat)
-rownames(outmat) <- 1:nrow(outmat)
-
-df_long <- as.data.frame(mat,as.numeric) %>%
-  pivot_longer(cols = colnames(outmat), names_to = "sample", values_to = "k")
-
-df_long$grid <- as.numeric(df_long$grid)
-df_long$sample <- as.factor(df_long$sample)
-df_long$k <- as.numeric(df_long$k)
-df_long <- df_long %>% mutate(norm_kern = k/6)
-comp <- df_long %>% group_by(grid) %>% summarize(composite=sum(k)/x_data_n)
-ggplot() +
-  geom_line(data = df_long, aes(x = grid, y = norm_kern, color = sample, group = sample), alpha = 0.75) +
-  geom_line(data = comp, aes(x = grid, y = composite), alpha = 0.5) +
-  xlim(min_val, max_val) +
-  geom_vline(xintercept = c(65, 67, 75, 79, 81, 91), linetype = "dotted", size = 0.2) +
-  theme_minimal() +
-  ggtitle("Kernels at different data points")
-
-#df_long %>% filter(sample==65) %>% select(k) %>% pull() %>% hist()
-
-#estimated_pdf <- function(n, kernel_matrix){
-#  return(rowSums(kernel_matrix)/n)
-#}
-```
-
-```{r}
-x_data <- sort(c(65, 75, 67, 79, 81, 91))
-x_data_sd <- sd(x_data)
-x_data_iqr <- IQR(x_data)
-x_data_n <- length(x_data)
-h_silver <- 0.9*x_data_n^(-1/5)*min(c(x_data_sd, x_data_iqr/1.34))
-
-
-xi <- 65#x_data[1]
-h <- 5.5 #h_silver
-min_val <- 40#min(x_data)-round(h)
-max_val <- 120#max(x_data)+round(h)
-x <- seq(from = min_val, to = max_val, by = 1) # grid
-```
-
-#### manual2
-
-```{r}
-
-# Assume: x_grid and pdf_vals are already defined and same length
-
-# Approximate CDF using left Riemann sums
-dx <- diff(x)            # Spacing between x points (assumes equally spaced)
-dx <- c(dx, tail(dx, 1))      # Pad to same length
-
-cdf_from_pdf <- cumsum(comp[['composite']] * dx)
-
-plot(x, cdf_from_pdf, type = "l", lwd = 2, col = "blue",
-     xlab = "x", ylab = "Estimated CDF",
-     main = "Estimated CDFs Comparison")
-
-lines(x, estimated_cdf, lwd = 2, col = "red", lty = 2)
-
-# Add empirical CDF for reference
-lines(x, ecdf(x_data)(x), col = "darkgreen", lwd = 2, lty = 3)
-legend("bottomright", legend = c("Numerical Integration", "Kernel CDF (pnorm)", "Empirical CDF"),
-c(1, 2, 3), lwd = 2)
-
-
-#legend("bottomright", legend = c("From PDF (numerical integration)", "From pnorm (kernel CDF)"),
-    #   col = c("blue", "red"), lty = c(1, 2), lwd = 2)
-```
-
-```{r}
-f <- function(x) pnorm(x, mean = 0, sd = 1)
-f.inv <- inverse(f,lower=-100,upper=100)
-f.inv(.2)
-```
-
-### DGP
-
-```{r}
-set.seed(1029)
-uninorm <- rlnorm(100,0,1)
-```
-
-```{r}
-npout = nptol.int(uninorm, alpha = 0.05, P = 0.95, side = 2, method = "WILKS",
-                  upper = NULL, lower = NULL)
-npout
-```
-
-```{r}
-# STEP 1
-library("compositions")
-gamma <- 0.95
-alpha <- 0.05
-n<-500
-MyVar <- matrix(c(
-1,0.95,0.95,
-0.95,1,0.95,
-0.95,0.95,1),byrow=TRUE,nrow=3)
-MyMean <- c(0,0,0)
-p <- 3
-
-#library("MASS")
-set.seed(1724532)
-datas <- rnorm.rplus(n,MyMean,MyVar)
-#datas <- mvrnorm(n,MyMean,MyVar, tol = 1e-06, empirical = FALSE)
-colnames(datas) <- c("p_1", "p_2", "p_3")
-mat <- cbind(grid = rownames(datas), datas)
-rownames(datas) <- sapply(1:n, function(i) paste0("n_", sprintf("%03d", i)))
-
-h <- find_silver_bw(datas[,1])
-x <- get_grid(datas[,1])
-
-#p1_outmat <-sapply(datas[,1], function(xi) gaussian_kernel(xi = xi, x = x, h = h))
-#dx <- diff(x)
-#dx <- c(dx, tail(dx, 1))
-
-estimated_cdf <- kde_cdf(x, datas[,1], h)
-
-#cdf_vals <- cumsum(estimated_pdf(n ,p1_outmat) * dx) #ESTIMATED CDF
-
-plot(x, estimated_cdf, type = "l", lwd = 2,
-     xlab = "x", ylab = "Estimated CDF",
-     main = "Estimated CDF")
-
-plot(x, estimated_cdf, type = "p",
-     xlab = "x", ylab = "Estimated CDF",
-     main = "Estimated CDF")
-```
-
-```{r}
-estimated_density <- kde_manual(x, datas[,1], h)
-plot(x, estimated_density, type = "l", lwd = 2,
-      xlab = "x", ylab = "Estimated CDF",
-      main = "Estimated PDF")
-
-
-hist(estimated_density)
-```
-
-```{r}
-get_upper_limit <- function(p_data){
-  h <- find_silver_bw(p_data)
-  #x <- get_grid(p_data)
-  #estimated_cdf <- kde_cdf(x, p_data, h)
-  #transformed_data <- transform_data(p_data, estimated_cdf, x)
-  
-
-  #U_mat <- kde_cdf(p_data, p_data, h)
-  #U_mat <- sapply(p_data, function(i) kde_cdf(i, p_data, h))
-  
-  
-  cdf_j <- kde_cdf_function(p_data, h)
-  U_mat <- sapply(p_data, cdf_j)
-  
-  # Step 4: Compute Y_ij = max{U_ij, 1 - U_ij}
-  Y_mat <- pmax(U_mat, 1 - U_mat)
-  
-  #u<-data.frame(original = transformed_data, complement = 1 - transformed_data)
-  #y1 <- apply(u, 1, max)
-  npout = nptol.int(Y_mat, alpha = alpha, P = gamma, side = 1, method = "WILKS",
-                  upper = NULL, lower = NULL)
-  return(npout$`1-sided.upper`)
+  # Name each component list
+  names(info) <- paste0("p_", seq_along(tol_int))
+  return(info)
 }
 
-get_upper_limit(datas[,1])
-```
-
-```{r}
-# step 5
-k_j <- apply(datas, 2, get_upper_limit)
-```
-
-```{r}
-k_j
-```
-
-```{r}
-# step 6
-max(k_j)
-```
-
-```{r}
-# step 7
-
-#p_data <- datas#[,1]
-
-# Custom CDF function
-library("GoFKernel")
-kde_cdf_function <- function(datapoints, bandwidth) {
-  function(x) mean(pnorm((x - datapoints) / bandwidth))
-}
-
-get_tolerance_interval <- function(p_data, maxk=max(k_j)){
-  h <- find_silver_bw(p_data)
-  cdf_fun <- kde_cdf_function(p_data,h)
-
-  #f.inv <- inverse(function(i) kde_cdf(i, p_data, h),#kde_cdf(i, p_data, h),
-  #                 lower=-100,upper=100)
-  inv_cdf <- inverse(cdf_fun,lower=min(p_data) - 3 * h,upper=max(p_data) + 3 * h)
-  lower_bound <- inv_cdf(1 - maxk)
-  upper_bound <- inv_cdf(maxk)
-
-
-  #print(f.inv(1 - maxk))
-  return(c(lower_bound, upper_bound))
-}
-```
-
-## SIM
-
-```{r}
-
-# STEP 1
-library("compositions")
-library("MASS")
-gamma <- 0.95
-alpha <- 0.05
-n <- 500
-MyVar <- matrix(c(
-1,0.95,0.95,
-0.95,1,0.95,
-0.95,0.95,1),byrow=TRUE,nrow=3)
-MyMean <- c(0,0,0)
-p <- 3
-
-set.seed(7778)
-
-# STEP 1: Generate the random sample X1,X2,:::,Xn from the multivariate lognormal distribution
-set.seed(123) # for reproducibility
-log_data <- mvrnorm(n = n, mu = MyMean, Sigma = MyVar)
-
-# Convert to lognormal data by exponentiation
-datas <- exp(log_data)
-
-# Optional: Treat the data as compositional (e.g., close parts to sum to 1)
-# For example, using acomp() from compositions package
-#comp_data <- acomp(lognormal_data)
-```
-
-
-
-```{r}
-X<-datas
-hist(X[,1], col = rgb(1, 0, 0, 0.4), xlim = range(datas), main = "Overlaid Histograms", xlab = "Values")
-hist(X[,2], col = rgb(0, 1, 0, 0.4), add = TRUE)
-hist(X[,3], col = rgb(0, 0, 1, 0.4), add = TRUE)
-legend("topright", legend = c("1", "2", "3"),
-       fill = c(rgb(1, 0, 0, 0.4), rgb(0, 1, 0, 0.4), rgb(0, 0, 1, 0.4)))
-colnames(X) <- c("p_1", "p_2", "p_3")
-mat <- cbind(grid = rownames(X), X)
-rownames(X) <- sapply(1:n, function(i) paste0("n_", sprintf("%03d", i)))
-```
-
-```{r}
-par(mfrow = c(1, 3))
-hist((X[,1]), main = "1", xlab = "LOG Values", col = "skyblue")
-hist((X[,2]), main = "2", xlab = "LOG Values", col = "salmon")
-hist((X[,3]), main = "3", xlab = "LOG Values", col = "lightgreen")
-par(mfrow = c(1, 1))
-```
-
-```{r}
-k_j <- apply(X, 2, get_upper_limit)
-k_j
-maxkj <- max(k_j)
-max(k_j)
-```
-
-```{r}
-tols <- apply(X, 2, function(s) get_tolerance_interval(s,maxk=maxkj))
-tols
-```
-
-
-
-```{r}
-summary(datas)
-```
-
-```{r}
-p_data <- datas[,1]
-h <- find_silver_bw(p_data)
-
-#f.inv <- inverse(function(i) kde_cdf(i, p_data, h),#kde_cdf(i, p_data, h),
-#                 lower=-100,upper=100)
-f.inv <- inverse(kde_cdf_function(p_data,h),lower=-100,upper=100)
-lower_bound <- f.inv(1 - maxkj)
-upper_bound <- f.inv(maxkj)
-lower_bound;upper_bound 
-
-
-
-```
-
-```{r}
-step3 <- function(i){
-  return(plnorm(tols[2,i],MyMean[i],MyVar[i,i]) - plnorm(tols[1,i],MyMean[i],MyVar[i,i]))
-}
-
-step4 <- function(i){
-  return(tols[2,i] - tols[1,i])
-}
-
-
-I <- min(sapply(1:3, step3)) #>= gamma
-I
-#Lj <- sapply(1:3, step4)
+get_TI_info(cj_dj, MyMean, MyVar)
 ```
 
 
 
 
-
-
+### Simulation A: Full Simulation
 
 ```{r}
 # Bonferoni
 
-bonferonni <- function(p_data) {
-  
-  if (length(p_data) >= 119) {
-    to <- nptol.int(p_data, alpha = alpha/3, P = gamma, side = 2, method = "WILKS",
-                  upper = NULL, lower = NULL)
+# bonferonni <- function(p_data) {
+#   
+#   if (length(p_data) >= 119) {
+#     to <- nptol.int(p_data, alpha = alpha/3, P = gamma, side = 2, method = "WILKS",
+#                   upper = NULL, lower = NULL)
+# 
+#     lower_bound <- to$`2-sided.lower`
+#     upper_bound <- to$`2-sided.upper`
+#       
+#   }
+#   
+#   else {
+#     lower_bound <- min(p_data)
+#     upper_bound <- max(p_data)
+#   }
+# 
+#   return(c(lower_bound, upper_bound))
+# }
 
+bonferonni <- function(p_data) {
+  if (length(p_data) >= 119) {
+    to <- nptol.int(p_data, alpha = alpha / 3, P = gamma, side = 2, method = "WILKS",
+                    upper = NULL, lower = NULL)
     lower_bound <- to$`2-sided.lower`
     upper_bound <- to$`2-sided.upper`
-      
-  }
-  
-  else {
+  } else {
     lower_bound <- min(p_data)
     upper_bound <- max(p_data)
   }
 
-  return(c(lower_bound, upper_bound))
+  return(setNames(c(lower_bound, upper_bound), c("c_j", "d_j")))
 }
+
+bonf_results <- lapply(seq_len(ncol(X)), function(j) {
+  bonferonni(X[, j])
+})
+
+names(bonf_results) <- paste0("Bonf_i", seq_along(bonf_results))
 ```
 
 
 
 ```{r}
-run_simulation <- function(n, MyMean, MyVar, gamma = 0.90, n_sim = 5000) {
+get_TI_info <- function(tol_int, mu, var) {
+  tol_int <- as.data.frame(tol_int)
+  info <- lapply(seq_along(tol_int), function(j) {
+    lower <- tol_int[1,j]
+    upper <- tol_int[2,j]
+    
+    # Coverage on CDF scale (difference of estimated quantiles)
+    ti_length <- as.numeric(upper - lower)
+    
+    # TI length on original/lognormal scale
+    coverage <- plnorm(upper, meanlog = mu[j], sdlog = sqrt(var[j, j])) -
+                 plnorm(lower, meanlog = mu[j], sdlog = sqrt(var[j, j]))
+
+    # Return named vector
+    setNames(c(ti_length, coverage), c("TI_length", "Coverage"))
+  })
+
+  # Name each component list
+  names(info) <- paste0("p_", seq_along(tol_int))
+  return(info)
+}
+
+get_TI_info(cj_dj, MyMean, MyVar)
+get_TI_info(bonf_results, MyMean, MyVar)
+```
+
+```{r}
+# Assuming get_TI_info(), cj_dj, bonf_results, MyMean, MyVar are defined
+
+# Run get_TI_info on both lists
+ti_info_cj_dj <- get_TI_info(cj_dj, MyMean, MyVar)
+ti_info_bonf <- get_TI_info(bonf_results, MyMean, MyVar)
+
+# Combine with prefixed names
+combined <- c(
+  setNames(ti_info_cj_dj, paste0("cj_dj_", names(ti_info_cj_dj))),
+  setNames(ti_info_bonf, paste0("bonf_", names(ti_info_bonf)))
+)
+
+# Convert to a data frame (base R)
+df_combined <- do.call(
+  rbind,
+  lapply(names(combined), function(nm) {
+    vals <- combined[[nm]]
+    data.frame(
+      source = nm,
+      TI_length = vals["TI_length"],
+      Coverage = vals["Coverage"],
+      row.names = NULL
+    )
+  })
+)
+
+# View result
+print(df_combined)
+
+```
+
+
+```{r eval=FALSE}
+run_simulation <- function(n, MyMean, MyVar, gamma = 0.90, n_sim = 100) {
   results <- replicate(n_sim, {
+    # Step 1: Simulate lognormal data
     log_data <- MASS::mvrnorm(n = n, mu = MyMean, Sigma = MyVar)
     datas <- exp(log_data)
     colnames(datas) <- paste0("p_", seq_along(MyMean))
     rownames(datas) <- sprintf("n_%03d", seq_len(n))
     
+    # Step 2: Compute tolerance intervals
     k_j <- apply(datas, 2, get_upper_limit)
     tols <- apply(datas, 2, function(s) get_tolerance_interval(s, maxk = max(k_j)))
     bonf <- apply(datas, 2, bonferonni)
 
-    step3 <- function(i){
-      plnorm(tols[2, i], mean = MyMean[i], sd = sqrt(MyVar[i, i])) -
-        plnorm(tols[1, i], mean = MyMean[i], sd = sqrt(MyVar[i, i]))
-    }
-    
-    step4 <- function(i){
-      tols[2, i] - tols[1, i]
-    }
+    # Step 3: Use get_ti_info to compute coverage and width
+    proposed_info <- as.data.frame(get_TI_info(
+        tols,
+        MyMean,
+        MyVar
+      ))
+  
+    bonf_info <- as.data.frame(get_TI_info(
+        bonf,
+        MyMean,
+        MyVar
+      ))
 
-    step3b <- function(i){
-      plnorm(bonf[2, i], mean = MyMean[i], sd = sqrt(MyVar[i, i])) -
-        plnorm(bonf[1, i], mean = MyMean[i], sd = sqrt(MyVar[i, i]))
-    }
+    # Step 4: Aggregate results
+    I  <- min(proposed_info["Coverage", ]) >= gamma
     
-    step4b <- function(i){
-      bonf[2, i] - bonf[1, i]
-    }
-
-    I <- min(sapply(seq_along(MyMean), step3)) >= gamma
-    Lj <- sapply(seq_along(MyMean), step4)
-    
-    Ib <- min(sapply(seq_along(MyMean), step3b)) >= gamma
-    Ljb <- sapply(seq_along(MyMean), step4b)
-
+    Lj <- unlist(proposed_info[1, ])
+    Ib  <- min(bonf_info["Coverage", ]) >= gamma
+    Ljb <- unlist(bonf_info["TI_length", ])
     list(Lj = Lj, I = I, Ljb = Ljb, Ib = Ib)
   }, simplify = FALSE)
 
-  # Collect and summarize results
-  I_vals <- sapply(results, function(res) res$I)
-  Lj_vals <- t(sapply(results, function(res) res$Lj))
-  Ib_vals <- sapply(results, function(res) res$Ib)
+  # Step 5: Summarize results
+
+  I_vals   <- sapply(results, function(res) res$I)
+  Lj_vals  <- t(sapply(results, function(res) res$Lj))
+  Ib_vals  <- sapply(results, function(res) res$Ib)
   Ljb_vals <- t(sapply(results, function(res) res$Ljb))
 
   list(
@@ -1214,199 +1117,75 @@ run_simulation <- function(n, MyMean, MyVar, gamma = 0.90, n_sim = 5000) {
     colMeans_Lj = colMeans(Lj_vals),
     mean_Ib = mean(Ib_vals),
     colMeans_Ljb = colMeans(Ljb_vals),
-    raw_results = results # optional if you want full access later
+    raw_results = results  # Optional: retain raw simulation results
   )
 }
-
 ```
 
 
+
+```{r eval=FALSE}
+library(foreach)
+library(doParallel)
+# Detect available cores and register parallel backend
+n_cores <- parallel::detectCores() - 1
+cl <- makeCluster(n_cores)
+registerDoParallel(cl)
+
+p <- 2
+MyMean <- c(0,0)
+gamma <- 0.95
+sigma_list <- get_sigma_matrices(p=2)
+n_values <- c(100, 300, 500)
+
+results_df <- foreach(n = n_values, .combine = rbind, .packages = c("MASS", "GoFKernel", "tolerance")) %:%
+  foreach(sigma_name = names(sigma_list), .combine = rbind) %dopar% {
+    MyVar <- sigma_list[[sigma_name]]
+    res <- run_simulation(n, MyMean, MyVar, gamma, n_sim = 5000)
+
+    # Create data.frames for proposed and bonferroni methods
+    proposed_row <- data.frame(
+      n = n,
+      gamma = gamma,
+      sigma = sigma_name,
+      method = "proposed",
+      mean_I = res$mean_I,
+      Lj_1 = res$colMeans_Lj[1],
+      Lj_2 = res$colMeans_Lj[2]
+    )
+
+    bonf_row <- data.frame(
+      n = n,
+      gamma = gamma,
+      sigma = sigma_name,
+      method = "bonferroni",
+      mean_I = res$mean_Ib,
+      Lj_1 = res$colMeans_Ljb[1],
+      Lj_2 = res$colMeans_Ljb[2]
+    )
+
+    rbind(proposed_row, bonf_row)
+  }
+
+stopCluster(cl)
+```
+
+
+### Results
+
+#### p = 3 Two sided
 
 ```{r}
+load("results_df_p3.RData")
 
-p <- 3  # or any integer
-
-# Sigma_2 = 0.5 * I_p + 0.5 * 1_p 1_p'
-Sigma_2 <- 0.5 * diag(p) + 0.5 * matrix(1, p, p)
-
-# Sigma_3 = 0.8 * I_p + 0.2 * 1_p 1_p'
-Sigma_3 <- 0.8 * diag(p) + 0.2 * matrix(1, p, p)
-
-
-# Sigma_4
-Sigma_4 <- matrix(c(
-  1,   -0.95, -0.95,
- -0.95, 1,     0.95,
- -0.95, 0.95,  1
-), nrow = 3, byrow = TRUE)
-
-# Sigma_5
-Sigma_5 <- matrix(c(
-  1,  -0.5, -0.5,
- -0.5,  1,   0.5,
- -0.5,  0.5, 1
-), nrow = 3, byrow = TRUE)
-
-# Sigma_6
-Sigma_6 <- matrix(c(
-  1,  -0.2, -0.2,
- -0.2,  1,   0.2,
- -0.2,  0.2, 1
-), nrow = 3, byrow = TRUE)
-
-# Sigma_7
-Sigma_7 <- matrix(c(
-  1,   0.9,  0.5,
-  0.9, 1,    0.1,
-  0.5, 0.1,  1
-), nrow = 3, byrow = TRUE)
-
-# Sigma_8
-Sigma_8 <- matrix(c(
-  1,   0.5,  0.5,
-  0.5, 1,    0.95,
-  0.5, 0.95, 1
-), nrow = 3, byrow = TRUE)
-
-# Sigma_9
-Sigma_9 <- matrix(c(
-  1,   0.2,  0.2,
-  0.2, 1,    0.95,
-  0.2, 0.95, 1
-), nrow = 3, byrow = TRUE)
-
-# Sigma_10
-Sigma_10 <- matrix(c(
-  1,   -0.5, -0.5,
- -0.5,  1,    0.95,
- -0.5,  0.95, 1
-), nrow = 3, byrow = TRUE)
-
+print(results_df_p3, row.names = FALSE)
 ```
 
+#### p = 2 Two sided
 
 ```{r}
-# library(foreach)
-# library(doParallel)
-# # Detect available cores and register parallel backend
-# n_cores <- parallel::detectCores() - 1
-# cl <- makeCluster(n_cores)
-# registerDoParallel(cl)
+load("results_df_p2.RData")
 
+print(results_df_p2, row.names = FALSE)
 ```
 
-
-```{r}
-get_sigma_matrices <- function(p = 3) {
-  list(
-    Sigma_1 = matrix(c(
-      1,0.95,0.95,
-      0.95,1,0.95,
-      0.95,0.95,1),byrow=TRUE,nrow=3),
-    Sigma_2  = 0.5 * diag(p) + 0.5 * matrix(1, p, p),
-    Sigma_3  = 0.8 * diag(p) + 0.2 * matrix(1, p, p),
-    Sigma_4  = matrix(c(1, -0.95, -0.95, -0.95, 1, 0.95, -0.95, 0.95, 1), 3, 3, byrow=TRUE),
-    Sigma_5  = matrix(c(1, -0.5, -0.5, -0.5, 1, 0.5, -0.5, 0.5, 1), 3, 3, byrow=TRUE),
-    Sigma_6  = matrix(c(1, -0.2, -0.2, -0.2, 1, 0.2, -0.2, 0.2, 1), 3, 3, byrow=TRUE),
-    Sigma_7  = matrix(c(1, 0.9, 0.5, 0.9, 1, 0.1, 0.5, 0.1, 1), 3, 3, byrow=TRUE),
-    Sigma_8  = matrix(c(1, 0.5, 0.5, 0.5, 1, 0.95, 0.5, 0.95, 1), 3, 3, byrow=TRUE),
-    Sigma_9  = matrix(c(1, 0.2, 0.2, 0.2, 1, 0.95, 0.2, 0.95, 1), 3, 3, byrow=TRUE),
-    Sigma_10 = matrix(c(1, -0.5, -0.5, -0.5, 1, 0.95, -0.5, 0.95, 1), 3, 3, byrow=TRUE)
-  )
-}
-
-```
-
-
-
-```{r}
-# MyMean <- rep(0, 3)
-# gamma <- 0.95
-# sigma_list <- get_sigma_matrices()
-# n_values <- c(100, 300, 500)
-# 
-# results_df <- foreach(n = n_values, .combine = rbind, .packages = c("MASS", "GoFKernel", "tolerance")) %:%
-#   foreach(sigma_name = names(sigma_list), .combine = rbind) %dopar% {
-#     MyVar <- sigma_list[[sigma_name]]
-#     res <- run_simulation(n, MyMean, MyVar, gamma, n_sim = 5000)
-# 
-#     # Create data.frames for proposed and bonferroni methods
-#     proposed_row <- data.frame(
-#       n = n,
-#       gamma = gamma,
-#       sigma = sigma_name,
-#       method = "proposed",
-#       mean_I = res$mean_I,
-#       Lj_1 = res$colMeans_Lj[1],
-#       Lj_2 = res$colMeans_Lj[2],
-#       Lj_3 = res$colMeans_Lj[3]
-#     )
-# 
-#     bonf_row <- data.frame(
-#       n = n,
-#       gamma = gamma,
-#       sigma = sigma_name,
-#       method = "bonferroni",
-#       mean_I = res$mean_Ib,
-#       Lj_1 = res$colMeans_Ljb[1],
-#       Lj_2 = res$colMeans_Ljb[2],
-#       Lj_3 = res$colMeans_Ljb[3]
-#     )
-# 
-#     rbind(proposed_row, bonf_row)
-#   }
-
-#stopCluster(cl)
-```
-
-
-```{r}
-load("results_df.RData")
-results_df
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r}
-mk <- get_upper_limit(uninorm)
-get_tolerance_interval(uninorm,mk)
-hist(log(uninorm))
-
-nptol.int(uninorm, alpha = 0.05, P = 0.95, side = 2, method = "WILKS",
-                  upper = NULL, lower = NULL)
-hist((uninorm))
-```
-
-```{r}
-hist(kde_cdf(datas[,1], datas[,1], h), probability = TRUE, 
-     main = "Histogram of PIT-transformed values",
-     xlab = "PIT values")
-abline(h = 1, col = "red", lwd = 2) 
-```
-
-```{r}
-# generated from a lognormal dist
-hist(datas[,1])
-```
-
-```{r}
-# taking the log of a variate from lognormal dist makes it normally distributed
-hist(log(datas[,1]))
-```
-
-[Probability Integral Transform](https://matthewfeickert.github.io/Statistics-Notes/notebooks/Introductory/probability-integral-transform.html)
