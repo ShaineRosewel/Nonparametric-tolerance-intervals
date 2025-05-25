@@ -959,10 +959,7 @@ get_TI_info <- function(tol_int, mu, var) {
 get_TI_info(cj_dj, MyMean, MyVar)
 ```
 
-
-
-
-### Simulation A: Nonparametric two-sided STIs
+## Simulation for nonparametric two-sided STIs
 
 ```{r}
 bonferonni <- function(p_data) {
@@ -1150,9 +1147,9 @@ stopCluster(cl)
 ```
 
 
-### Results
+## Results
 
-#### p = 3 Two sided
+### p = 3 Two sided
 
 ```{r}
 load("rdata/results_df_p3.RData")
@@ -1160,7 +1157,7 @@ load("rdata/results_df_p3.RData")
 print(results_df_p3, row.names = FALSE)
 ```
 
-#### p = 2 Two sided
+### p = 2 Two sided
 
 ```{r}
 load("rdata/results_df_p2.RData")

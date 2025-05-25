@@ -169,7 +169,7 @@ window.Quarto = {
   <li><a href="#method-nonparametric-two-sided-stis" id="toc-method-nonparametric-two-sided-stis" class="nav-link" data-scroll-target="#method-nonparametric-two-sided-stis">Method: Nonparametric two-sided STIs</a></li>
   <li><a href="#evaluation-nonparametric-two-sided-stis" id="toc-evaluation-nonparametric-two-sided-stis" class="nav-link" data-scroll-target="#evaluation-nonparametric-two-sided-stis">Evaluation: Nonparametric two-sided STIs</a></li>
   </ul></li>
-  <li><a href="#simulation-a-nonparametric-two-sided-stis" id="toc-simulation-a-nonparametric-two-sided-stis" class="nav-link" data-scroll-target="#simulation-a-nonparametric-two-sided-stis">Simulation A: Nonparametric two-sided STIs</a></li>
+  <li><a href="#simulation-for-nonparametric-two-sided-stis" id="toc-simulation-for-nonparametric-two-sided-stis" class="nav-link" data-scroll-target="#simulation-for-nonparametric-two-sided-stis">Simulation for nonparametric two-sided STIs</a></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
   <ul class="collapse">
   <li><a href="#p-3-two-sided" id="toc-p-3-two-sided" class="nav-link" data-scroll-target="#p-3-two-sided">p = 3 Two sided</a></li>
@@ -1028,19 +1028,19 @@ Attaching package: 'MASS'</code></pre>
 <pre><code>$Fhat_X1
 function (x) 
 mean(pnorm((x - datapoints)/bandwidth))
-&lt;environment: 0x5641a22ee708&gt;
+&lt;environment: 0x559b34fb91b8&gt;
 
 $Fhat_X2
 function (x) 
 mean(pnorm((x - datapoints)/bandwidth))
-&lt;bytecode: 0x5641a1ad5e40&gt;
-&lt;environment: 0x5641a28e1cf0&gt;
+&lt;bytecode: 0x559b4138b4f8&gt;
+&lt;environment: 0x559b3f0a9fa8&gt;
 
 $Fhat_X3
 function (x) 
 mean(pnorm((x - datapoints)/bandwidth))
-&lt;bytecode: 0x5641a1ad5e40&gt;
-&lt;environment: 0x5641a1acf938&gt;</code></pre>
+&lt;bytecode: 0x559b4138b4f8&gt;
+&lt;environment: 0x559b402ba848&gt;</code></pre>
 </div>
 </div>
 <ol start="3" type="1">
@@ -1263,8 +1263,8 @@ TI_length  Coverage
 </div>
 </section>
 </section>
-<section id="simulation-a-nonparametric-two-sided-stis" class="level2">
-<h2 class="anchored" data-anchor-id="simulation-a-nonparametric-two-sided-stis">Simulation A: Nonparametric two-sided STIs</h2>
+<section id="simulation-for-nonparametric-two-sided-stis" class="level2">
+<h2 class="anchored" data-anchor-id="simulation-for-nonparametric-two-sided-stis">Simulation for nonparametric two-sided STIs</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>bonferonni <span class="ot">&lt;-</span> <span class="cf">function</span>(p_data) {</span>
 <span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(p_data) <span class="sc">&gt;=</span> <span class="dv">119</span>) {</span>
