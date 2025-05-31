@@ -174,6 +174,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#p-3-two-sided" id="toc-p-3-two-sided" class="nav-link" data-scroll-target="#p-3-two-sided">p = 3 Two sided</a></li>
   <li><a href="#p-2-two-sided" id="toc-p-2-two-sided" class="nav-link" data-scroll-target="#p-2-two-sided">p = 2 Two sided</a></li>
+  <li><a href="#observing-performance-as-p-increases" id="toc-observing-performance-as-p-increases" class="nav-link" data-scroll-target="#observing-performance-as-p-increases">Observing performance as <code>p</code> increases</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -1028,19 +1029,19 @@ Attaching package: 'MASS'</code></pre>
 <pre><code>$Fhat_X1
 function (x) 
 mean(pnorm((x - datapoints)/bandwidth))
-&lt;environment: 0x559b34fb91b8&gt;
+&lt;environment: 0x562876edb980&gt;
 
 $Fhat_X2
 function (x) 
 mean(pnorm((x - datapoints)/bandwidth))
-&lt;bytecode: 0x559b4138b4f8&gt;
-&lt;environment: 0x559b3f0a9fa8&gt;
+&lt;bytecode: 0x562883386d68&gt;
+&lt;environment: 0x56287ed65e08&gt;
 
 $Fhat_X3
 function (x) 
 mean(pnorm((x - datapoints)/bandwidth))
-&lt;bytecode: 0x559b4138b4f8&gt;
-&lt;environment: 0x559b402ba848&gt;</code></pre>
+&lt;bytecode: 0x562883386d68&gt;
+&lt;environment: 0x56288338b8c8&gt;</code></pre>
 </div>
 </div>
 <ol start="3" type="1">
@@ -1437,10 +1438,10 @@ TI_length  Coverage
 <span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(n_cores)</span>
 <span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a><span class="fu">registerDoParallel</span>(cl)</span>
 <span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>MyMean <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>MyMean <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,p)</span>
 <span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fl">0.95</span></span>
-<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a>sigma_list <span class="ot">&lt;-</span> <span class="fu">get_sigma_matrices</span>(<span class="at">p=</span><span class="dv">2</span>)</span>
+<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a>sigma_list <span class="ot">&lt;-</span> <span class="fu">get_sigma_matrices</span>(<span class="at">p=</span>p)</span>
 <span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a>n_values <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">300</span>, <span class="dv">500</span>)</span>
 <span id="cb65-13"><a href="#cb65-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-14"><a href="#cb65-14" aria-hidden="true" tabindex="-1"></a>results_df <span class="ot">&lt;-</span> <span class="fu">foreach</span>(<span class="at">n =</span> n_values, <span class="at">.combine =</span> rbind, <span class="at">.packages =</span> <span class="fu">c</span>(<span class="st">"MASS"</span>, <span class="st">"GoFKernel"</span>, <span class="st">"tolerance"</span>)) <span class="sc">%:%</span></span>
@@ -1474,15 +1475,18 @@ TI_length  Coverage
 <span id="cb65-42"><a href="#cb65-42" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-43"><a href="#cb65-43" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co">#save(results_df, file = "rdata/results_df_p10.RData")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="results" class="level2">
 <h2 class="anchored" data-anchor-id="results">Results</h2>
 <section id="p-3-two-sided" class="level3">
 <h3 class="anchored" data-anchor-id="p-3-two-sided">p = 3 Two sided</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"rdata/results_df_p3.RData"</span>)</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results_df_p3, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"rdata/results_df_p3.RData"</span>)</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results_df_p3, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   n gamma    sigma     method mean_I      Lj_1      Lj_2      Lj_3
  100  0.95 Sigma_01   proposed 0.9400  9.496373  9.426451  9.457114
@@ -1551,9 +1555,9 @@ TI_length  Coverage
 <section id="p-2-two-sided" class="level3">
 <h3 class="anchored" data-anchor-id="p-2-two-sided">p = 2 Two sided</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"rdata/results_df_p2.RData"</span>)</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results_df_p2, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"rdata/results_df_p2.RData"</span>)</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results_df_p2, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   n gamma    sigma     method mean_I      Lj_1      Lj_2
  100  0.95 Sigma_01   proposed 0.9502  9.464721  9.425839
@@ -1574,6 +1578,56 @@ TI_length  Coverage
  500  0.95 Sigma_02 bonferroni 0.9898  9.223034  9.191342
  500  0.95 Sigma_03   proposed 0.9458  6.412759  6.407571
  500  0.95 Sigma_03 bonferroni 0.9868  9.216039  9.216604</code></pre>
+</div>
+</div>
+</section>
+<section id="observing-performance-as-p-increases" class="level3">
+<h3 class="anchored" data-anchor-id="observing-performance-as-p-increases">Observing performance as <code>p</code> increases</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">paste0</span>(<span class="st">"rdata/results_df_p"</span>,<span class="dv">2</span>,<span class="st">".RData"</span>))</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>results_df_p2[[<span class="st">'p'</span>]] <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>res[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> results_df_p2</span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">paste0</span>(<span class="st">"rdata/results_df_p"</span>,<span class="dv">3</span>,<span class="st">".RData"</span>))</span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a>results_df_p3[[<span class="st">'p'</span>]] <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a>res[[<span class="dv">3</span>]] <span class="ot">&lt;-</span> results_df_p3[<span class="fu">colnames</span>(results_df_p2)]</span>
+<span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-11"><a href="#cb71-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">10</span>) {</span>
+<span id="cb71-12"><a href="#cb71-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">load</span>(<span class="fu">paste0</span>(<span class="st">"rdata/results_df_p"</span>,i,<span class="st">".RData"</span>))</span>
+<span id="cb71-13"><a href="#cb71-13" aria-hidden="true" tabindex="-1"></a>  results_df[[<span class="st">'p'</span>]] <span class="ot">&lt;-</span> i</span>
+<span id="cb71-14"><a href="#cb71-14" aria-hidden="true" tabindex="-1"></a>  res[[i]] <span class="ot">&lt;-</span> results_df[<span class="fu">colnames</span>(results_df_p2)]</span>
+<span id="cb71-15"><a href="#cb71-15" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">do.call</span>(<span class="st">"rbind"</span>, res)</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sigma <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Sigma_01"</span>, <span class="st">"Sigma_02"</span>, <span class="st">"Sigma_03"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"mean_I"</span>, <span class="st">"Lj_1"</span>, <span class="st">"Lj_2"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> p, <span class="at">y =</span> value)) <span class="sc">+</span></span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(</span>
+<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="fu">as.factor</span>(n),  <span class="co"># make it discrete</span></span>
+<span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> method,</span>
+<span id="cb72-10"><a href="#cb72-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> <span class="fu">interaction</span>(n, method, name)</span>
+<span id="cb72-11"><a href="#cb72-11" aria-hidden="true" tabindex="-1"></a>  ), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb72-12"><a href="#cb72-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(name <span class="sc">~</span> sigma, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb72-13"><a href="#cb72-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb72-14"><a href="#cb72-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"Sample Size"</span>,</span>
+<span id="cb72-15"><a href="#cb72-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">"Method"</span>,</span>
+<span id="cb72-16"><a href="#cb72-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"p (number of variables)"</span>,</span>
+<span id="cb72-17"><a href="#cb72-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Bonferroni &amp; Proposed Method Coverage &amp; TI Length"</span>,</span>
+<span id="cb72-18"><a href="#cb72-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Results for various p, n, and sigma"</span>,</span>
+<span id="cb72-19"><a href="#cb72-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Only shows TI Length for the first 2 variables. This is done for 5000 replications. </span><span class="sc">\n</span><span class="st">This shows that performance for coverage deteriorates with higher p </span><span class="sc">\n</span><span class="st">but the decline is less pronounced for the proposed method."</span></span>
+<span id="cb72-20"><a href="#cb72-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb72-21"><a href="#cb72-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 
