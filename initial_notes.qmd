@@ -1192,7 +1192,7 @@ for (i in 4:10) {
 ```
 
 
-```{r fig.width=14, fig.height=10}
+```{r fig.width=12, fig.height=10, echo = FALSE}
 df <- do.call("rbind", res)
 
 df %>%
@@ -1200,7 +1200,7 @@ df %>%
   pivot_longer(cols = c("mean_I", "Lj_1", "Lj_2")) %>%
   ggplot(aes(x = p, y = value)) +
   geom_line(aes(
-    colour = as.factor(n),  # make it discrete
+    colour = as.factor(n),
     linetype = method,
     group = interaction(n, method, name)
   ), alpha = 0.85) +
@@ -1211,9 +1211,9 @@ df %>%
     x = "p (number of variables)",
     title = "Bonferroni & Proposed Method Coverage & TI Length",
     subtitle = "Results for various p, n, and sigma",
-    caption = "Only shows TI Length for the first 2 variables. This is done for 5000 replications. \nThis shows that performance for coverage deteriorates with higher p \nbut the decline is less pronounced for the proposed method."
+    caption = "Only shows TI Length for the first 2 variables. This is done for 5000 replications. \nThis shows that performance for coverage deteriorates with higher p."
   ) +
-  theme_light()
+  theme_light()#(base_size = 25)
 ```
 
 
