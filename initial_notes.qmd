@@ -1192,7 +1192,10 @@ for (i in 4:10) {
 ```
 
 
-```{r fig.width=12, fig.height=10, echo = FALSE}
+```{r}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 8
 df <- do.call("rbind", res)
 
 df %>%
