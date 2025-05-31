@@ -1029,19 +1029,19 @@ Attaching package: 'MASS'</code></pre>
 <pre><code>$Fhat_X1
 function (x) 
 mean(pnorm((x - datapoints)/bandwidth))
-&lt;environment: 0x562876edb980&gt;
+&lt;environment: 0x556e37853580&gt;
 
 $Fhat_X2
 function (x) 
 mean(pnorm((x - datapoints)/bandwidth))
-&lt;bytecode: 0x562883386d68&gt;
-&lt;environment: 0x56287ed65e08&gt;
+&lt;bytecode: 0x556e37168328&gt;
+&lt;environment: 0x556e376471e8&gt;
 
 $Fhat_X3
 function (x) 
 mean(pnorm((x - datapoints)/bandwidth))
-&lt;bytecode: 0x562883386d68&gt;
-&lt;environment: 0x56288338b8c8&gt;</code></pre>
+&lt;bytecode: 0x556e37168328&gt;
+&lt;environment: 0x556e37164e18&gt;</code></pre>
 </div>
 </div>
 <ol start="3" type="1">
@@ -1611,7 +1611,7 @@ TI_length  Coverage
 <span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="fu">as.factor</span>(n),  <span class="co"># make it discrete</span></span>
 <span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> method,</span>
 <span id="cb72-10"><a href="#cb72-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> <span class="fu">interaction</span>(n, method, name)</span>
-<span id="cb72-11"><a href="#cb72-11" aria-hidden="true" tabindex="-1"></a>  ), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb72-11"><a href="#cb72-11" aria-hidden="true" tabindex="-1"></a>  ), <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
 <span id="cb72-12"><a href="#cb72-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(name <span class="sc">~</span> sigma, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
 <span id="cb72-13"><a href="#cb72-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
 <span id="cb72-14"><a href="#cb72-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"Sample Size"</span>,</span>
@@ -1625,7 +1625,7 @@ TI_length  Coverage
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="initial_notes_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="initial_notes_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="1152"></p>
 </figure>
 </div>
 </div>
