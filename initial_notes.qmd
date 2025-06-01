@@ -465,7 +465,124 @@ hist(kde_cdf(exp(log_x), exp(log_x), find_silver_bw(exp(log_x))), probability = 
 abline(h = 1, col = "red", lwd = 2) 
 ```
 
+
+
+
 [Probability Integral Transform](https://matthewfeickert.github.io/Statistics-Notes/notebooks/Introductory/probability-integral-transform.html)
+
+## Bootstrap Calibration
+
+> The actual coverage of a confidence procedure is rarely equal to the desired (nominal) coverage, and often is substantially different.
+
+*Miscalibration at level $\alpha$ Problem: If you construct a 95% CI using a particular method, it might no actually capture the true parameter 95% of the time over repeated sampling. The actual coverage might be 93% or 97%, depending on the method and the data.*
+
+>One way to think about the coverage accuracy of a confidence procedure is in terms of its *calibration*: that is, for each $\alpha$, if $\text{Prob} \{ \theta \leq \hat{\theta}[\alpha]\}$ doesn't hold for $\hat{\theta}[\alpha]$, perhaps it will hold for $\hat{\theta}[\lambda]$ where $\lambda \neq \alpha$. 
+
+*The upper confidence limit estimate $\hat{\theta}[\alpha]$ does not actually yield $\alpha$-level coverage; i.e., the chance that the true parameter $\theta$ is below that estimate is not $\alpha$, due to skew, bias, etc. Calibration is adjusting the level $\alpha$ to $\lambda$.*
+
+For example, if we want the probability $\alpha$ to be 5%, perhaps we can achieve this by using the 3% confidence point. If we knew the mapping $\alpha \rightarrow \lambda$, we could construct a confidence procedure with exactly the desired coverage.
+
+The bootstrap can be used to carry out the calibration.
+
+Denote the family of confidence points by $\hat{\theta}_\lambda = \hat{\theta}[\lambda]$. We seek a value $\hat{\lambda}$ such that $p(\hat{\lambda}) = \text{Prob} \{ \theta \leq \hat{\theta}_{\hat{\lambda}}\} = \alpha$.
+
+*We want $\hat{\lambda}$ ST the actual coverage of the confidence point $\hat{\theta}_{\hat{\lambda}}$ is exactly $\alpha$. $\hat{\lambda}$ is the calibrated level — the quantile we should use to get correct coverage.*
+
+Algorithm 18.1: Confidence point calibration via the bootstrap
+
+1. Generate B bootstrap samples $\mathbf{x}^{*1}, \dots, \mathbf{x}^{*B}$. For each sample $b = 1, 2, \dots, B$, compute a $\lambda$-level confidence point $\hat{\theta}_{\lambda}^* (b)$ for a grid of values of $\lambda$. For example, these might be the normal confidence points $\hat{\theta}^* (b)-z^{(1-\lambda)}\hat{se}^*(b)$
+
+2. For each $\lambda$, compute $\hat{p}(\lambda) =  \frac{ \#\left\{ \hat{\theta} \leq \hat{\theta}_{\lambda}^* (b) \right\} }{B}$
+
+3. Find the value of $\lambda$ satisfying $\hat{p}(\lambda) = \alpha$
+
+
+```{r}
+library("bootstrap")
+data(law)
+law <- as.matrix(law)
+n <- nrow(law)
+B <- 1000
+theta <- function(x,xdata){ cor(xdata[x,1],xdata[x,2]) }
+
+#set.seed(123)
+results <- bootstrap(1:n, B, theta, law)
+
+# Calculate percentile CI
+ci <- quantile(results$thetastar, c(0.025, 0.975))
+ci
+```
+
+```{r}
+data(law)
+theta_hat <- cor(law$LSAT, law$GPA)
+theta_star <- numeric(B)
+
+set.seed(7)
+for (b in 1:B) {
+  idx <- sample(1:n, n, replace = TRUE)
+  sample_data <- law[idx, ]
+  theta_star[b] <- cor(sample_data$LSAT, sample_data$GPA)
+}
+
+ci_percentile <- quantile(theta_star, probs = c(0.025, 0.975))
+
+cat("95% Percentile CI for correlation:", 
+    round(ci_percentile[1], 4), "to", round(ci_percentile[2], 4), "\n")
+```
+
+```{r}
+data(law)
+xdata <- as.matrix(law)
+theta <- function(x,xdata){ cor(xdata[x,1],xdata[x,2]) }
+set.seed(7)
+results <- bcanon(1:n,B,theta,xdata)
+
+cat("BCA 95% CI for correlation:", 
+    round(results$confpoints[c(1,8),2][1], 4), "to", round(results$confpoints[c(1,8),2][2], 4), "\n")
+```
+
+
+```{r}
+# TO FURTHER REVIEW
+# Step 1: Original estimate
+theta_hat <- cor(law$LSAT, law$GPA)
+
+# Step 2: Bootstrap estimates
+set.seed(7)
+theta_star <- replicate(B, {
+  idx <- sample(1:nrow(law), replace = TRUE)
+  cor(law$LSAT[idx], law$GPA[idx])
+})
+
+# Step 3–6: Grid search for calibrated quantiles
+alpha <- 0.05
+lambda_L_grid <- seq(0.005, 0.07, length.out = 1000)
+coverage <- numeric(length(lambda_L_grid))
+
+for (i in seq_along(lambda_L_grid)) {
+  lambda_L <- lambda_L_grid[i]
+  lambda_U <- 1 - lambda_L
+  qL <- quantile(theta_star, probs = lambda_L)
+  qU <- quantile(theta_star, probs = lambda_U)
+  coverage[i] <- as.numeric(theta_hat >= qL & theta_hat <= qU)
+}
+
+# Step 7: Choose the best lambda_L
+best_idx <- which.min(abs(coverage - (1 - alpha)))
+lambda_L_cal <- lambda_L_grid[best_idx]
+lambda_U_cal <- 1 - lambda_L_cal
+
+ci_calibrated <- quantile(theta_star, probs = c(lambda_L_cal, lambda_U_cal))
+
+# Output
+cat("Calibrated lower quantile:", round(lambda_L_cal, 4), "\n")
+cat("Calibrated upper quantile:", round(lambda_U_cal, 4), "\n")
+cat("Calibrated 95% CI for correlation:", 
+    round(ci_calibrated[1], 4), "to", round(ci_calibrated[2], 4), "\n")
+```
+
+[An Introduction to the Bootstrap](https://www.taylorfrancis.com/books/mono/10.1201/9780429246593/introduction-bootstrap-bradley-efron-tibshirani)
 
 # Nonparametric simultaneous tolerance intervals for small dimensions based on kernel density estimates
 
