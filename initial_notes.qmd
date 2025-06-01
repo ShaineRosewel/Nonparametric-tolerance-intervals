@@ -544,7 +544,7 @@ cat("BCA 95% CI for correlation:",
 
 
 ```{r}
-# TO FURTHER REVIEW
+# TO FURTHER REVIEW: THIS IS ALGORITHM 18.1
 # Step 1: Original estimate
 theta_hat <- cor(law$LSAT, law$GPA)
 
