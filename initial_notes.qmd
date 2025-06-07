@@ -560,11 +560,96 @@ text(3.2, 0.02, expression(alpha / 2 == 0.025), col = "blue4")
 
 Algorithm 18.1: Confidence point calibration via the bootstrap
 
-1. Generate B bootstrap samples $\mathbf{x}^{*1}, \dots, \mathbf{x}^{*B}$. For each sample $b = 1, 2, \dots, B$, compute a $\lambda$-level confidence point $\hat{\theta}_{\lambda}^* (b)$ for a grid of values of $\lambda$. For example, these might be the normal confidence points $\hat{\theta}^* (b)-z^{(1-\lambda)}\hat{se}^*(b)$
+1. Generate B bootstrap samples $\mathbf{x}^{*1}, \dots, \mathbf{x}^{*B}$. For each sample $b = 1, 2, \dots, B$, compute a $\lambda$-level confidence point $\hat{\theta}_{\lambda}^* (b)$ (for each bootstrap sample, perform another layer of bootstrap sampling) for a grid of values of $\lambda$. For example, these might be the normal confidence points $\hat{\theta}^* (b)-z^{(1-\lambda)}\hat{se}^*(b)$
 
 2. For each $\lambda$, compute $\hat{p}(\lambda) =  \frac{ \#\left\{ \hat{\theta} \leq \hat{\theta}_{\lambda}^* (b) \right\} }{B}$
 
 3. Find the value of $\lambda$ satisfying $\hat{p}(\lambda) = \alpha$
+
+```{r}
+library("bootstrap")
+data(law)
+law
+```
+
+
+```{r eval=FALSE}
+# plan for coding:
+# do this for 2-sided intervals
+# write a function that calculates the lambda confidence point for a given lambda
+n <- dim(law)[1]
+calculate_sample_correl <- function(x,y){return(cor(x, y))}
+sample_correl <- calculate_sample_correl(law[,1], law[,2])
+B1<-5000
+B2<-200
+x_b1<-list()
+b1_correl<-list()
+x_b2<-list()
+b2_correl<-vector()
+
+#lambdas <- seq(0.01,1,0.01)
+nominal_levels <- seq(0.99, 0.01, -0.01)
+b1_lambda <- matrix(0, nrow=B1, ncol=length(nominal_levels))
+b1_percentile <- matrix(0, nrow=B1, ncol=length(nominal_levels))
+#dimnames(b1_lambda) <- list(c(1:B1), lambdas)
+dimnames(b1_lambda) <- list(c(1:B1), nominal_levels)
+z_values <- qnorm(1 - nominal_levels / 2)
+
+for (b1 in 1:B1) {
+  #print(paste("bootstrap #", b1))
+  #print("############################################")
+  x_b1 <- law[sample(1:n, size = n, replace = TRUE),]
+  row.names(x_b1) <- 1:n
+  b1_correl <- calculate_sample_correl(x_b1[,1], x_b1[,2])
+  #print("========")
+  #print(b1_correl)
+  #print("========")
+  b2_correl <- rep(0,B2)
+  for (b2 in 1:B2) {
+    x_b2 <- x_b1[sample(1:n, size = n, replace = TRUE),]
+    b2_correl[b2] <- calculate_sample_correl(x_b2[,1], x_b2[,2])
+  }
+  
+  lambda <- 1 - nominal_levels
+  
+  se_b2 <- sd(b2_correl)
+  lower_lambda <- b1_correl - qnorm(1 - lambda / 2) * se_b2
+  upper_lambda <- b1_correl + qnorm(1 - lambda / 2) * se_b2
+  
+  lower_percentile <- quantile(b2_correl, probs = (1 - nominal_levels) / 2)
+  upper_percentile <- quantile(b2_correl, probs = 1 - (1 - nominal_levels) / 2)
+    
+  b1_lambda[b1, ] <- as.numeric(sample_correl >= lower_lambda & sample_correl <= upper_lambda)
+  b1_percentile[b1, ] <- as.numeric(sample_correl >= lower_percentile & sample_correl <= upper_percentile)
+}
+```
+
+```{r}
+# normap <-colSums(b1_lambda) / B1
+# percen <- colSums(b1_percentile) / B1
+# save(nominal_levels, normap, percen, file = "bsc.Rdata")
+
+load("bsc.Rdata")
+```
+
+
+```{r}
+plot(nominal_levels, normap, type = "b", pch = 19, col = "blue",
+     xlab = "Nominal Confidence Level (lambda)",
+     ylab = "Estimated Coverage Probability",
+     main = "Bootstrap Coverage Probability vs. Nominal Confidence Level")
+
+# Add diagonal line y=x
+abline(a = 0, b = 1, col = "red", lty = 2)
+
+# Add second technique line
+lines(nominal_levels, percen, type = "b", pch = 17, col = "green")
+
+# Optional: Add legend
+legend("bottomright", legend = c("Normal approx", "Percentile", "Ideal"),
+       col = c("blue", "green", "red"), pch = c(19, 17, NA), lty = c(1, 1, 2))
+```
+
 
 
 ```{r}
