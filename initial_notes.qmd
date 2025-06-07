@@ -569,7 +569,7 @@ Algorithm 18.1: Confidence point calibration via the bootstrap
 ```{r}
 library("bootstrap")
 data(law)
-law
+law <- law82
 ```
 
 
@@ -630,27 +630,35 @@ for (b1 in 1:B1) {
 # save(nominal_levels, normap, percen, file = "bsc.Rdata")
 
 load("bsc.Rdata")
+load("bsc82.Rdata")
 ```
 
-
 ```{r}
-plot(nominal_levels, normap, type = "b", pch = 19, col = "blue",
+# chatgpt generated
+plot(nominal_levels, normap_82, type = "b", pch = 19, col = "blue",
      xlab = "Nominal Confidence Level (lambda)",
      ylab = "Estimated Coverage Probability",
      main = "Bootstrap Coverage Probability vs. Nominal Confidence Level")
 
-# Add diagonal line y=x
+# Add diagonal line y = x
 abline(a = 0, b = 1, col = "red", lty = 2)
 
-# Add second technique line
-lines(nominal_levels, percen, type = "b", pch = 17, col = "green")
+# Add second technique line (percentile)
+lines(nominal_levels, percen_82, type = "b", pch = 17, col = "green")
 
-# Optional: Add legend
-legend("bottomright", legend = c("Normal approx", "Percentile", "Ideal"),
-       col = c("blue", "green", "red"), pch = c(19, 17, NA), lty = c(1, 1, 2))
+# Add third technique line (repeat normal approx with different style)
+lines(nominal_levels, normap, type = "b", pch = 15, col = "purple")
+
+# Add fourth technique line (repeat percentile with different style)
+lines(nominal_levels, percen, type = "b", pch = 18, col = "orange")
+
+# Update legend with all four
+legend("bottomright", legend = c("Normal approx-all data", "Percentile N82", "Normal approx N82", "Percentile n15", "Ideal"),
+       col = c("blue", "green", "purple", "orange", "red"),
+       pch = c(19, 17, 15, 18, NA),
+       lty = c(1, 1, 1, 1, 2))
+
 ```
-
-
 
 ```{r}
 library("bootstrap")
