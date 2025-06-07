@@ -470,6 +470,78 @@ abline(h = 1, col = "red", lwd = 2)
 
 [Probability Integral Transform](https://matthewfeickert.github.io/Statistics-Notes/notebooks/Introductory/probability-integral-transform.html)
 
+## Confidence Intervals Related terms review
+
+[Reference 1](https://www.ncl.ac.uk/webtemplate/ask-assets/external/maths-resources/statistics/hypothesis-testing/critical-region-and-confidence-interval.html)
+
+[Reference 2](https://www.craftonhills.edu/current-students/tutoring-center/mathematics-tutoring/distribution_tables_normal_studentt_chisquared.pdf)
+
+**Confidence interval**
+A confidence interval, aka the acceptance region, is a set of values for the test statistic for which the null hypothesis is accepted. That is, if the observed test statistic is in the confidence interval then we accept the null hypothesis and reject the alternative hypothesis.
+
+**Significance level**
+Confidence intervals can be calculated at different significance levels. We use $\alpha$ to denote the level of significance and perform a hypothesis test with a $100(1-\alpha)%$ confidence interval. A 95% confidence interval means that among the many times of choosing a random sample from this population, 95% results in a confidence interval which contains the true value being estimated.
+
+**Critical region**
+This is aka the rejection region. It is a set of values for the test statistic for which the null hypothesis is rejected. If the observed test statistic is in the critical region then we reject the null hypothesis and accept the alternative hypothesis.
+
+
+This means 97.5% of the standard normal distribution lies to the left of 1.96 — the same value you'd find in a left-tail Z-table.
+
+```{r}
+# chatgpt generated
+z <- 1.96
+p_left <- pnorm(z)
+cat("P(Z ≤", z, ") =", p_left, "\n")
+```
+
+
+```{r}
+# chatgpt generated
+z <- 1.96
+curve(pnorm, from = -4, to = 4, col = "blue", ylab = "Cumulative Probability",
+      main = "Standard Normal Cumulative (Left-Tail) Curve")
+abline(v = z, col = "red", lty = 2)
+text(z, 0.5, labels = paste0("P(Z ≤ ", z, ") = ", round(pnorm(z), 4)), pos = 4)
+
+```
+
+
+```{r}
+# chatgpt generated
+alpha <- 0.05
+z_crit <- qnorm(1 - alpha / 2)  # 1.96 for 95% confidence; 2-tailed
+
+x <- seq(-4, 4, length = 1000)
+y <- dnorm(x)
+
+# Plot the standard normal curve
+plot(x, y, type = "l", lwd = 2, col = "blue",
+     ylab = "Density", xlab = "Z",
+     main = expression(paste("Standard Normal Curve with ", alpha, " = 0.05 (Two-tailed)")))
+
+# Shade the left tail (alpha/2)
+x_left <- x[x <= -z_crit]
+y_left <- y[x <= -z_crit]
+#polygon(c(-z_crit, x_left, min(x_left)), c(0, y_left, 0), col = "skyblue", border = NA)
+
+# Shade the right tail (alpha/2)
+x_right <- x[x >= z_crit]
+y_right <- y[x >= z_crit]
+#polygon(c(z_crit, x_right, max(x_right)), c(0, y_right, 0), col = "skyblue", border = NA)
+
+# Add vertical lines at ±Z_crit
+abline(v = -z_crit, col = "red", lty = 2, lwd = 2)
+abline(v = z_crit, col = "red", lty = 2, lwd = 2)
+
+# Annotate critical Z-values and alpha
+text(-z_crit, 0.05, paste("Z =", round(-z_crit, 2)), pos = 2, col = "red")
+text(z_crit, 0.05, paste("Z =", round(z_crit, 2)), pos = 4, col = "red")
+text(-3.2, 0.02, expression(alpha / 2 == 0.025), col = "blue4")
+text(3.2, 0.02, expression(alpha / 2 == 0.025), col = "blue4")
+```
+
+
 ## Bootstrap Calibration
 
 > The actual coverage of a confidence procedure is rarely equal to the desired (nominal) coverage, and often is substantially different.
@@ -480,11 +552,9 @@ abline(h = 1, col = "red", lwd = 2)
 
 *The upper confidence limit estimate $\hat{\theta}[\alpha]$ does not actually yield $\alpha$-level coverage; i.e., the chance that the true parameter $\theta$ is below that estimate is not $\alpha$, due to skew, bias, etc. Calibration is adjusting the level $\alpha$ to $\lambda$.*
 
-For example, if we want the probability $\alpha$ to be 5%, perhaps we can achieve this by using the 3% confidence point. If we knew the mapping $\alpha \rightarrow \lambda$, we could construct a confidence procedure with exactly the desired coverage.
+> For example, if we want the probability $\alpha$ to be 5%, perhaps we can achieve this by using the 3% confidence point. If we knew the mapping $\alpha \rightarrow \lambda$, we could construct a confidence procedure with exactly the desired coverage. The bootstrap can be used to carry out the calibration.
 
-The bootstrap can be used to carry out the calibration.
-
-Denote the family of confidence points by $\hat{\theta}_\lambda = \hat{\theta}[\lambda]$. We seek a value $\hat{\lambda}$ such that $p(\hat{\lambda}) = \text{Prob} \{ \theta \leq \hat{\theta}_{\hat{\lambda}}\} = \alpha$.
+> Denote the family of confidence points by $\hat{\theta}_\lambda = \hat{\theta}[\lambda]$. We seek a value $\hat{\lambda}$ such that $p(\hat{\lambda}) = \text{Prob} \{ \theta \leq \hat{\theta}_{\hat{\lambda}}\} = \alpha$.
 
 *We want $\hat{\lambda}$ ST the actual coverage of the confidence point $\hat{\theta}_{\hat{\lambda}}$ is exactly $\alpha$. $\hat{\lambda}$ is the calibrated level — the quantile we should use to get correct coverage.*
 
@@ -513,23 +583,8 @@ ci <- quantile(results$thetastar, c(0.025, 0.975))
 ci
 ```
 
-```{r}
-data(law)
-theta_hat <- cor(law$LSAT, law$GPA)
-theta_star <- numeric(B)
 
-set.seed(7)
-for (b in 1:B) {
-  idx <- sample(1:n, n, replace = TRUE)
-  sample_data <- law[idx, ]
-  theta_star[b] <- cor(sample_data$LSAT, sample_data$GPA)
-}
 
-ci_percentile <- quantile(theta_star, probs = c(0.025, 0.975))
-
-cat("95% Percentile CI for correlation:", 
-    round(ci_percentile[1], 4), "to", round(ci_percentile[2], 4), "\n")
-```
 
 ```{r}
 data(law)
@@ -543,44 +598,6 @@ cat("BCA 95% CI for correlation:",
 ```
 
 
-```{r}
-# TO FURTHER REVIEW: THIS IS ALGORITHM 18.1
-# Step 1: Original estimate
-theta_hat <- cor(law$LSAT, law$GPA)
-
-# Step 2: Bootstrap estimates
-set.seed(7)
-theta_star <- replicate(B, {
-  idx <- sample(1:nrow(law), replace = TRUE)
-  cor(law$LSAT[idx], law$GPA[idx])
-})
-
-# Step 3–6: Grid search for calibrated quantiles
-alpha <- 0.05
-lambda_L_grid <- seq(0.005, 0.07, length.out = 1000)
-coverage <- numeric(length(lambda_L_grid))
-
-for (i in seq_along(lambda_L_grid)) {
-  lambda_L <- lambda_L_grid[i]
-  lambda_U <- 1 - lambda_L
-  qL <- quantile(theta_star, probs = lambda_L)
-  qU <- quantile(theta_star, probs = lambda_U)
-  coverage[i] <- as.numeric(theta_hat >= qL & theta_hat <= qU)
-}
-
-# Step 7: Choose the best lambda_L
-best_idx <- which.min(abs(coverage - (1 - alpha)))
-lambda_L_cal <- lambda_L_grid[best_idx]
-lambda_U_cal <- 1 - lambda_L_cal
-
-ci_calibrated <- quantile(theta_star, probs = c(lambda_L_cal, lambda_U_cal))
-
-# Output
-cat("Calibrated lower quantile:", round(lambda_L_cal, 4), "\n")
-cat("Calibrated upper quantile:", round(lambda_U_cal, 4), "\n")
-cat("Calibrated 95% CI for correlation:", 
-    round(ci_calibrated[1], 4), "to", round(ci_calibrated[2], 4), "\n")
-```
 
 [An Introduction to the Bootstrap](https://www.taylorfrancis.com/books/mono/10.1201/9780429246593/introduction-bootstrap-bradley-efron-tibshirani)
 
