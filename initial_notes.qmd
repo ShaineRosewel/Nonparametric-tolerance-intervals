@@ -569,7 +569,7 @@ Algorithm 18.1: Confidence point calibration via the bootstrap
 ```{r}
 library("bootstrap")
 data(law)
-law <- law82
+law <- law
 ```
 
 
@@ -586,9 +586,13 @@ x_b1<-list()
 b1_correl<-list()
 x_b2<-list()
 b2_correl<-vector()
+b1_correl<-rep(0,B1)
 
 #lambdas <- seq(0.01,1,0.01)
 nominal_levels <- seq(0.99, 0.01, -0.01)
+
+lambdas <- 1 - nominal_levels
+
 b1_lambda <- matrix(0, nrow=B1, ncol=length(nominal_levels))
 b1_percentile <- matrix(0, nrow=B1, ncol=length(nominal_levels))
 #dimnames(b1_lambda) <- list(c(1:B1), lambdas)
@@ -600,7 +604,7 @@ for (b1 in 1:B1) {
   #print("############################################")
   x_b1 <- law[sample(1:n, size = n, replace = TRUE),]
   row.names(x_b1) <- 1:n
-  b1_correl <- calculate_sample_correl(x_b1[,1], x_b1[,2])
+  b1_correl[b1] <- calculate_sample_correl(x_b1[,1], x_b1[,2])
   #print("========")
   #print(b1_correl)
   #print("========")
@@ -609,25 +613,35 @@ for (b1 in 1:B1) {
     x_b2 <- x_b1[sample(1:n, size = n, replace = TRUE),]
     b2_correl[b2] <- calculate_sample_correl(x_b2[,1], x_b2[,2])
   }
-  
-  lambda <- 1 - nominal_levels
-  
   se_b2 <- sd(b2_correl)
-  lower_lambda <- b1_correl - qnorm(1 - lambda / 2) * se_b2
-  upper_lambda <- b1_correl + qnorm(1 - lambda / 2) * se_b2
   
-  lower_percentile <- quantile(b2_correl, probs = (1 - nominal_levels) / 2)
-  upper_percentile <- quantile(b2_correl, probs = 1 - (1 - nominal_levels) / 2)
-    
+  lower_lambda <- b1_correl[b1] - qnorm(1 - lambdas / 2) * se_b2
+  upper_lambda <- b1_correl[b1] + qnorm(1 - lambdas / 2) * se_b2
   b1_lambda[b1, ] <- as.numeric(sample_correl >= lower_lambda & sample_correl <= upper_lambda)
-  b1_percentile[b1, ] <- as.numeric(sample_correl >= lower_percentile & sample_correl <= upper_percentile)
+
+  # lower_percentile <- quantile(b2_correl, probs = lambdas / 2)
+  # upper_percentile <- quantile(b2_correl, probs = 1 - lambdas / 2)
+  # b1_percentile[b1, ] <- as.numeric(sample_correl >= lower_percentile & sample_correl <= upper_percentile)
 }
+lower_percentile2 <- quantile(b1_correl, probs = lambdas / 2)
+upper_percentile2 <- quantile(b1_correl, probs = 1 - lambdas / 2)
+b1_percentile[b1, ] <- as.numeric(sample_correl >= lower_percentile2 & sample_correl <= upper_percentile2)
 ```
 
+
+
 ```{r}
-# normap <-colSums(b1_lambda) / B1
-# percen <- colSums(b1_percentile) / B1
-# save(nominal_levels, normap, percen, file = "bsc.Rdata")
+# lower_percentile2 <- quantile(b1_correl, probs = lambdas / 2)
+# upper_percentile2 <- quantile(b1_correl, probs = 1 - lambdas / 2)
+# b1_percentile[b1, ] <- as.numeric(sample_correl >= lower_percentile2 & sample_correl <= upper_percentile2)
+```
+
+
+
+```{r}
+#normap <-colSums(b1_lambda) / B1
+#percen <- colSums(b1_percentile) / B1
+#save(nominal_levels, normap, file = "bsc.Rdata")
 
 load("bsc.Rdata")
 load("bsc82.Rdata")
@@ -635,30 +649,31 @@ load("bsc82.Rdata")
 
 ```{r}
 # chatgpt generated
-plot(nominal_levels, normap_82, type = "b", pch = 19, col = "blue",
+plot(nominal_levels, normap_82, type = "b", pch = 19, col = "orange",
      xlab = "Nominal Confidence Level (lambda)",
      ylab = "Estimated Coverage Probability",
      main = "Bootstrap Coverage Probability vs. Nominal Confidence Level")
 
 # Add diagonal line y = x
-abline(a = 0, b = 1, col = "red", lty = 2)
+abline(a = 0, b = 1, col = "black", lty = 2)
 
 # Add second technique line (percentile)
-lines(nominal_levels, percen_82, type = "b", pch = 17, col = "green")
+#lines(nominal_levels, percen_82, type = "b", pch = 17, col = "green")
 
 # Add third technique line (repeat normal approx with different style)
 lines(nominal_levels, normap, type = "b", pch = 15, col = "purple")
 
 # Add fourth technique line (repeat percentile with different style)
-lines(nominal_levels, percen, type = "b", pch = 18, col = "orange")
+#lines(nominal_levels, percen, type = "b", pch = 18, col = "orange")
 
 # Update legend with all four
-legend("bottomright", legend = c("Normal approx-all data", "Percentile N82", "Normal approx N82", "Percentile n15", "Ideal"),
-       col = c("blue", "green", "purple", "orange", "red"),
+legend("bottomright", legend = c("Normal approx N82", "Normal approx n15", "Ideal"),
+       col = c("orange", "purple", "black"),
        pch = c(19, 17, 15, 18, NA),
        lty = c(1, 1, 1, 1, 2))
 
 ```
+
 
 ```{r}
 library("bootstrap")
