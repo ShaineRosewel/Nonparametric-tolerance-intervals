@@ -619,15 +619,14 @@ for (b1 in 1:B1) {
   upper_lambda <- b1_correl[b1] + qnorm(1 - lambdas / 2) * se_b2
   b1_lambda[b1, ] <- as.numeric(sample_correl >= lower_lambda & sample_correl <= upper_lambda)
 
-  # lower_percentile <- quantile(b2_correl, probs = lambdas / 2)
-  # upper_percentile <- quantile(b2_correl, probs = 1 - lambdas / 2)
-  # b1_percentile[b1, ] <- as.numeric(sample_correl >= lower_percentile & sample_correl <= upper_percentile)
+  lower_percentile <- quantile(b2_correl, probs = lambdas / 2)
+  upper_percentile <- quantile(b2_correl, probs = 1 - lambdas / 2)
+  b1_percentile[b1, ] <- as.numeric(sample_correl >= lower_percentile & sample_correl <= upper_percentile)
 }
-lower_percentile2 <- quantile(b1_correl, probs = lambdas / 2)
-upper_percentile2 <- quantile(b1_correl, probs = 1 - lambdas / 2)
-b1_percentile[b1, ] <- as.numeric(sample_correl >= lower_percentile2 & sample_correl <= upper_percentile2)
+# lower_percentile2 <- quantile(b1_correl, probs = lambdas / 2)
+# upper_percentile2 <- quantile(b1_correl, probs = 1 - lambdas / 2)
+# b1_percentile[b1, ] <- as.numeric(sample_correl >= lower_percentile2 & sample_correl <= upper_percentile2)
 ```
-
 
 
 ```{r}
@@ -641,7 +640,7 @@ b1_percentile[b1, ] <- as.numeric(sample_correl >= lower_percentile2 & sample_co
 ```{r}
 #normap <-colSums(b1_lambda) / B1
 #percen <- colSums(b1_percentile) / B1
-#save(nominal_levels, normap, file = "bsc.Rdata")
+#save(nominal_levels, normap, percen,file = "bsc.Rdata")
 
 load("bsc.Rdata")
 load("bsc82.Rdata")
@@ -649,31 +648,32 @@ load("bsc82.Rdata")
 
 ```{r}
 # chatgpt generated
-plot(nominal_levels, normap_82, type = "b", pch = 19, col = "orange",
-     xlab = "Nominal Confidence Level (lambda)",
+plot(nominal_levels, normap_82, type = "b", pch = 19, col = "deeppink", cex = 0.6,
+     xlab = "Lambda",
      ylab = "Estimated Coverage Probability",
-     main = "Bootstrap Coverage Probability vs. Nominal Confidence Level")
+     main = "Bootstrap Coverage Probability vs. Significance Level")
 
 # Add diagonal line y = x
 abline(a = 0, b = 1, col = "black", lty = 2)
+abline(v = 1, col = "red", lty = 2)
+abline(h = 1, col = "red", lty = 2)
 
 # Add second technique line (percentile)
-#lines(nominal_levels, percen_82, type = "b", pch = 17, col = "green")
+lines(nominal_levels, percen_82, type = "b", pch = 17, col = "green", cex = 0.6)
 
 # Add third technique line (repeat normal approx with different style)
-lines(nominal_levels, normap, type = "b", pch = 15, col = "purple")
+lines(nominal_levels, normap, type = "b", pch = 15, col = "purple", cex = 0.6)
 
 # Add fourth technique line (repeat percentile with different style)
-#lines(nominal_levels, percen, type = "b", pch = 18, col = "orange")
+lines(nominal_levels, percen, type = "b", pch = 18, col = "orange", cex = 0.75)
 
 # Update legend with all four
-legend("bottomright", legend = c("Normal approx N82", "Normal approx n15", "Ideal"),
-       col = c("orange", "purple", "black"),
-       pch = c(19, 17, 15, 18, NA),
-       lty = c(1, 1, 1, 1, 2))
+legend("bottomright", legend = c("Normal approx N82", "Percentile N82", "Normal approx n15", "Percentile n15", "Ideal"),
+       col = c("deeppink","green", "purple", "orange","black"),
+       pch = c(19, 17, 15,18,NA),
+       lty = c(1, 1, 1, 1,2))
 
 ```
-
 
 ```{r}
 library("bootstrap")

@@ -887,13 +887,13 @@ Copyright M. P. Wand 1997-2009</code></pre>
 <span id="cb43-43"><a href="#cb43-43" aria-hidden="true" tabindex="-1"></a>  upper_lambda <span class="ot">&lt;-</span> b1_correl[b1] <span class="sc">+</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> lambdas <span class="sc">/</span> <span class="dv">2</span>) <span class="sc">*</span> se_b2</span>
 <span id="cb43-44"><a href="#cb43-44" aria-hidden="true" tabindex="-1"></a>  b1_lambda[b1, ] <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(sample_correl <span class="sc">&gt;=</span> lower_lambda <span class="sc">&amp;</span> sample_correl <span class="sc">&lt;=</span> upper_lambda)</span>
 <span id="cb43-45"><a href="#cb43-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-46"><a href="#cb43-46" aria-hidden="true" tabindex="-1"></a>  <span class="co"># lower_percentile &lt;- quantile(b2_correl, probs = lambdas / 2)</span></span>
-<span id="cb43-47"><a href="#cb43-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># upper_percentile &lt;- quantile(b2_correl, probs = 1 - lambdas / 2)</span></span>
-<span id="cb43-48"><a href="#cb43-48" aria-hidden="true" tabindex="-1"></a>  <span class="co"># b1_percentile[b1, ] &lt;- as.numeric(sample_correl &gt;= lower_percentile &amp; sample_correl &lt;= upper_percentile)</span></span>
+<span id="cb43-46"><a href="#cb43-46" aria-hidden="true" tabindex="-1"></a>  lower_percentile <span class="ot">&lt;-</span> <span class="fu">quantile</span>(b2_correl, <span class="at">probs =</span> lambdas <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb43-47"><a href="#cb43-47" aria-hidden="true" tabindex="-1"></a>  upper_percentile <span class="ot">&lt;-</span> <span class="fu">quantile</span>(b2_correl, <span class="at">probs =</span> <span class="dv">1</span> <span class="sc">-</span> lambdas <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb43-48"><a href="#cb43-48" aria-hidden="true" tabindex="-1"></a>  b1_percentile[b1, ] <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(sample_correl <span class="sc">&gt;=</span> lower_percentile <span class="sc">&amp;</span> sample_correl <span class="sc">&lt;=</span> upper_percentile)</span>
 <span id="cb43-49"><a href="#cb43-49" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb43-50"><a href="#cb43-50" aria-hidden="true" tabindex="-1"></a>lower_percentile2 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(b1_correl, <span class="at">probs =</span> lambdas <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb43-51"><a href="#cb43-51" aria-hidden="true" tabindex="-1"></a>upper_percentile2 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(b1_correl, <span class="at">probs =</span> <span class="dv">1</span> <span class="sc">-</span> lambdas <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb43-52"><a href="#cb43-52" aria-hidden="true" tabindex="-1"></a>b1_percentile[b1, ] <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(sample_correl <span class="sc">&gt;=</span> lower_percentile2 <span class="sc">&amp;</span> sample_correl <span class="sc">&lt;=</span> upper_percentile2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb43-50"><a href="#cb43-50" aria-hidden="true" tabindex="-1"></a><span class="co"># lower_percentile2 &lt;- quantile(b1_correl, probs = lambdas / 2)</span></span>
+<span id="cb43-51"><a href="#cb43-51" aria-hidden="true" tabindex="-1"></a><span class="co"># upper_percentile2 &lt;- quantile(b1_correl, probs = 1 - lambdas / 2)</span></span>
+<span id="cb43-52"><a href="#cb43-52" aria-hidden="true" tabindex="-1"></a><span class="co"># b1_percentile[b1, ] &lt;- as.numeric(sample_correl &gt;= lower_percentile2 &amp; sample_correl &lt;= upper_percentile2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lower_percentile2 &lt;- quantile(b1_correl, probs = lambdas / 2)</span></span>
@@ -903,35 +903,37 @@ Copyright M. P. Wand 1997-2009</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co">#normap &lt;-colSums(b1_lambda) / B1</span></span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="co">#percen &lt;- colSums(b1_percentile) / B1</span></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="co">#save(nominal_levels, normap, file = "bsc.Rdata")</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="co">#save(nominal_levels, normap, percen,file = "bsc.Rdata")</span></span>
 <span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"bsc.Rdata"</span>)</span>
 <span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"bsc82.Rdata"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chatgpt generated</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(nominal_levels, normap_82, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"orange"</span>,</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Nominal Confidence Level (lambda)"</span>,</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(nominal_levels, normap_82, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"deeppink"</span>, <span class="at">cex =</span> <span class="fl">0.6</span>,</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Lambda"</span>,</span>
 <span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Estimated Coverage Probability"</span>,</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Bootstrap Coverage Probability vs. Nominal Confidence Level"</span>)</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Bootstrap Coverage Probability vs. Significance Level"</span>)</span>
 <span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Add diagonal line y = x</span></span>
 <span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Add second technique line (percentile)</span></span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a><span class="co">#lines(nominal_levels, percen_82, type = "b", pch = 17, col = "green")</span></span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Add third technique line (repeat normal approx with different style)</span></span>
-<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(nominal_levels, normap, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">15</span>, <span class="at">col =</span> <span class="st">"purple"</span>)</span>
-<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Add fourth technique line (repeat percentile with different style)</span></span>
-<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a><span class="co">#lines(nominal_levels, percen, type = "b", pch = 18, col = "orange")</span></span>
-<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Update legend with all four</span></span>
-<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Normal approx N82"</span>, <span class="st">"Normal approx n15"</span>, <span class="st">"Ideal"</span>),</span>
-<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"orange"</span>, <span class="st">"purple"</span>, <span class="st">"black"</span>),</span>
-<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">19</span>, <span class="dv">17</span>, <span class="dv">15</span>, <span class="dv">18</span>, <span class="cn">NA</span>),</span>
-<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Add second technique line (percentile)</span></span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(nominal_levels, percen_82, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">17</span>, <span class="at">col =</span> <span class="st">"green"</span>, <span class="at">cex =</span> <span class="fl">0.6</span>)</span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Add third technique line (repeat normal approx with different style)</span></span>
+<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(nominal_levels, normap, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">15</span>, <span class="at">col =</span> <span class="st">"purple"</span>, <span class="at">cex =</span> <span class="fl">0.6</span>)</span>
+<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Add fourth technique line (repeat percentile with different style)</span></span>
+<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(nominal_levels, percen, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">18</span>, <span class="at">col =</span> <span class="st">"orange"</span>, <span class="at">cex =</span> <span class="fl">0.75</span>)</span>
+<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Update legend with all four</span></span>
+<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Normal approx N82"</span>, <span class="st">"Percentile N82"</span>, <span class="st">"Normal approx n15"</span>, <span class="st">"Percentile n15"</span>, <span class="st">"Ideal"</span>),</span>
+<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"deeppink"</span>,<span class="st">"green"</span>, <span class="st">"purple"</span>, <span class="st">"orange"</span>,<span class="st">"black"</span>),</span>
+<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">19</span>, <span class="dv">17</span>, <span class="dv">15</span>,<span class="dv">18</span>,<span class="cn">NA</span>),</span>
+<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1265,19 +1267,19 @@ Attaching package: 'MASS'</code></pre>
 <pre><code>$Fhat_X1
 function (x) 
 mean(pnorm((x - datapoints)/bandwidth))
-&lt;environment: 0x55781b943840&gt;
+&lt;environment: 0x564b003eb118&gt;
 
 $Fhat_X2
 function (x) 
 mean(pnorm((x - datapoints)/bandwidth))
-&lt;bytecode: 0x557819eae390&gt;
-&lt;environment: 0x55781b76ec38&gt;
+&lt;bytecode: 0x564affe83258&gt;
+&lt;environment: 0x564b002418b0&gt;
 
 $Fhat_X3
 function (x) 
 mean(pnorm((x - datapoints)/bandwidth))
-&lt;bytecode: 0x557819eae390&gt;
-&lt;environment: 0x557819eaae48&gt;</code></pre>
+&lt;bytecode: 0x564affe83258&gt;
+&lt;environment: 0x564affe7f178&gt;</code></pre>
 </div>
 </div>
 <ol start="3" type="1">
