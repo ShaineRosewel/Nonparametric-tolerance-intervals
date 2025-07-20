@@ -709,6 +709,51 @@ cat("BCA 95% CI for correlation:",
 
 [An Introduction to the Bootstrap](https://www.taylorfrancis.com/books/mono/10.1201/9780429246593/introduction-bootstrap-bradley-efron-tibshirani)
 
+# A joint confidence region for an overall ranking of populations
+
+
+Let the population with the smallest $\theta_k$ have rank 1.
+
+In words: The unknown, true rank $r_k$ of $\theta_k$ is the number of elements $\theta_j$ that are less than or equal to $\theta_k$, including itself. This is equal to 1 (for $\theta_k$ itself) plus the number of other $\theta_j$ values with $j$ or $k$ that are less than or equal to $\theta_k$
+
+$$
+r_k = \sum^K_{j=1} I(\theta_j \leq \theta_k) = 1 + \sum_{j:j\neq k} I(\theta_j \leq \theta_k), \ for \ k = 1, \dots, K
+$$
+
+The estimated overall ranking, computed on the basis of the estimates, $\hat{\theta}_1, \dots, \hat{\theta}_K$, is denoted by ($\hat{r}_1, \dots, \hat{r}_K$) where
+
+$$
+r_k = 1 + \sum_{j:j\neq k} I(\hat{\theta_j} \leq \hat{\theta_k}), \ for \ k = 1, \dots, K
+$$
+Naturally, uncertainty in the estimators $\hat{\theta}_1, \dots, \hat{\theta}_K$ is propagated tot he estimated ranking. And understandable measure of uncertainty should accompany a released **overall** ranking.
+
+Although the values $\theta_1, \dots, \theta_K$ are unknown, suppose the for each $k \in \{1, 2, \dots, K\}$ we know real numbers $L_k < U_k$ ST
+
+$$
+\theta_k \in (L_k, U_k) (5)
+$$
+
+That is, although each $\theta_k$ is unknown, we do know that $\theta_k$ is contained in the open interval $(L_k, U_k)$. 
+
+For deriving a confidence region for the ranking, there will be no loss of generality regarding $\theta_k \in (L_k, U_k)$ because when we construct the confidence region later, we shall replace the intervals in expression (5) with joint confidence intervals and the main result will then be used to obtain a probability statement.
+
+For each $k \in \{1, 2, \dots, K\}$, define
+
+$$
+I_k = \{1, 2, \dots, K\}-\{k\}
+\\
+\Lambda_{Lk} =  \{ j \in I_k : U_j \leq L_k\}
+\\
+\Lambda_{Rk} =  \{ j \in I_k : U_k \leq L_j\}
+\\
+\Lambda_{Ok} = \{ j \in I_k : U_j > L_k \ \text{and} \ U_k > L_j \}  = I_k - (\Lambda_{Lk} \cup \Lambda_{Rk})
+$$
+
+- Line 1: all items other than $k$  
+- Line 2: all items whose entire interval is to the left of $\theta_k$'s interval. ($U_j \leq L_k$) means the upper end of $\theta_j$'s interval le less than or equal to the lower end of $\theta_k$'s - no overlap and $\theta_j$ is definitely smaller than $\theta_k$  
+- Line 3: all items whose entire interval is to the right of $\theta_k$'s interval. ($U_k \leq L_j$) means the upper end of $\theta_k$ is less than or equal to the lower end of $\theta_j$ - no overlap and $\theta_j$ is definitely larger than $\theta_k$  
+- Line 4: 
+
 # Nonparametric simultaneous tolerance intervals for small dimensions based on kernel density estimates
 
 ## Abstract
